@@ -1,137 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>My Albums</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Photo Album</title>
 
 <style>
 :root {
   --bg: #ffffff;
-  --card: #f5f5f5;
-  --text: #111111;
-  --muted: #666;
-  --accent: #e0e0e0;
+  --text: #111;
+  --card: #f3f3f3;
+  --accent: #444;
 }
 
-body.dark {
-  --bg: #0f0f0f;
-  --card: #1a1a1a;
+[data-theme="dark"] {
+  --bg: #121212;
   --text: #f5f5f5;
-  --muted: #aaa;
-  --accent: #2a2a2a;
-}
-
-* {
-  box-sizing: border-box;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --card: #1e1e1e;
+  --accent: #aaa;
 }
 
 body {
   margin: 0;
+  font-family: system-ui, sans-serif;
   background: var(--bg);
   color: var(--text);
 }
 
 header {
-  position: sticky;
-  top: 0;
-  background: var(--bg);
-  padding: 14px 16px;
-  border-bottom: 1px solid var(--accent);
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-header h1 {
-  font-size: 18px;
-  margin: 0;
+  padding: 1rem;
 }
 
 button {
   background: var(--card);
   color: var(--text);
   border: none;
-  padding: 10px 14px;
-  border-radius: 10px;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
   cursor: pointer;
 }
 
-button:active {
-  transform: scale(0.97);
+button:hover {
+  opacity: 0.85;
 }
 
-.container {
-  padding: 16px;
+.album-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
 }
 
 .album {
   background: var(--card);
-  padding: 14px;
-  border-radius: 14px;
-  margin-bottom: 16px;
+  border-radius: 12px;
+  padding: 0.8rem;
+  text-align: center;
+  cursor: pointer;
 }
 
-.album-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.album-header h2 {
-  font-size: 16px;
-  margin: 0;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
-  margin-top: 10px;
-}
-
-.grid img {
+.album img {
   width: 100%;
-  height: 100px;
-  object-fit: cover;
   border-radius: 8px;
+  height: 120px;
+  object-fit: cover;
 }
 
-input[type="text"],
-input[type="file"] {
-  width: 100%;
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid var(--accent);
-  background: var(--bg);
-  color: var(--text);
-  margin-top: 8px;
-}
+.hidden { display: none; }
 
 .modal {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.5);
-  display: none;
-  align-items: center;
+  background: rgba(0,0,0,0.6);
+  display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .modal-content {
   background: var(--bg);
-  padding: 20px;
+  padding: 1.5rem;
+  border-radius: 12px;
   width: 90%;
   max-width: 400px;
-  border-radius: 16px;
-}
-
-.modal-content h3 {
-  margin-top: 0;
-}
-
-.modal.show {
-  display: flex;
 }
 </style>
 </head>
@@ -139,92 +93,150 @@ input[type="file"] {
 <body>
 
 <header>
-  <h1>📸 My Albums</h1>
-  <button onclick="toggleTheme()">🌙</button>
+  <h2>📸 My Album</h2>
+  <div>
+    <button onclick="toggleTheme()">🌗</button>
+    <button onclick="openLogin()">Admin</button>
+  </div>
 </header>
 
-<div class="container" id="albums"></div>
+<h3 style="padding-left:1rem;">⭐ Favorite Album</h3>
+<div id="favoriteAlbum" class="album-grid"></div>
 
-<div class="container">
-  <button onclick="openModal()">➕ Create Album</button>
-</div>
+<h3 style="padding-left:1rem;">Other Albums</h3>
+<div id="albums" class="album-grid"></div>
 
-<!-- MODAL -->
-<div class="modal" id="modal">
+<!-- LOGIN MODAL -->
+<div id="loginModal" class="modal hidden">
   <div class="modal-content">
-    <h3>New Album</h3>
-    <input type="text" id="albumName" placeholder="Album name">
-    <button style="margin-top:10px;width:100%" onclick="createAlbum()">Create</button>
+    <h3>Admin Login</h3>
+    <input id="user" placeholder="Username" style="width:100%;margin-bottom:0.5rem;">
+    <input id="pass" type="password" placeholder="Password" style="width:100%;margin-bottom:0.5rem;">
+    <button onclick="login()">Login</button>
+    <button onclick="closeLogin()">Cancel</button>
   </div>
 </div>
 
 <script>
+/* ==============================
+   CONFIG (ENCRYPTED CREDENTIALS)
+================================*/
+const ADMIN_USER = "ricajyn";
+const ADMIN_PASS_HASH =
+"9bb08b44e90a6f19fa88f877ccffbd4c193c7097b5c23c0d44a18c39e91c3b0d";
+
+/* ==============================
+   STATE
+================================*/
+let isAdmin = false;
 let albums = JSON.parse(localStorage.getItem("albums")) || [];
 
-function save() {
-  localStorage.setItem("albums", JSON.stringify(albums));
+/* ==============================
+   THEME
+================================*/
+function toggleTheme() {
+  document.body.dataset.theme =
+    document.body.dataset.theme === "dark" ? "" : "dark";
 }
 
+/* ==============================
+   LOGIN
+================================*/
+async function sha256(text) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+  return [...new Uint8Array(buf)].map(x => x.toString(16).padStart(2, '0')).join('');
+}
+
+async function login() {
+  const u = user.value;
+  const p = pass.value;
+  const hash = await sha256(p);
+
+  if (u === ADMIN_USER && hash === ADMIN_PASS_HASH) {
+    isAdmin = true;
+    alert("Admin logged in");
+    closeLogin();
+    render();
+  } else {
+    alert("Invalid credentials");
+  }
+}
+
+function openLogin() {
+  loginModal.classList.remove("hidden");
+}
+function closeLogin() {
+  loginModal.classList.add("hidden");
+}
+
+/* ==============================
+   ALBUM RENDERING
+================================*/
 function render() {
-  const container = document.getElementById("albums");
-  container.innerHTML = "";
+  favoriteAlbum.innerHTML = "";
+  albumsDiv.innerHTML = "";
 
-  albums.forEach((album, i) => {
-    const div = document.createElement("div");
-    div.className = "album";
+  const fav = albums.find(a => a.favorite);
+  if (fav) favoriteAlbum.appendChild(albumCard(fav));
 
-    div.innerHTML = `
-      <div class="album-header">
-        <h2>${album.name}</h2>
-        <input type="file" accept="image/*" onchange="addImage(event, ${i})">
-      </div>
-      <div class="grid">
-        ${album.images.map(img => `<img src="${img}">`).join("")}
-      </div>
-    `;
-
-    container.appendChild(div);
+  albums.filter(a => !a.favorite).forEach(a => {
+    albumsDiv.appendChild(albumCard(a));
   });
+
+  if (isAdmin) adminControls();
 }
 
-function openModal() {
-  document.getElementById("modal").classList.add("show");
+function albumCard(album) {
+  const div = document.createElement("div");
+  div.className = "album";
+  div.innerHTML = `
+    <img src="${album.cover || ''}">
+    <strong>${album.name}</strong>
+  `;
+  div.onclick = () => openAlbum(album.id);
+  return div;
 }
 
-function createAlbum() {
-  const name = document.getElementById("albumName").value.trim();
+/* ==============================
+   ADMIN CONTROLS
+================================*/
+function adminControls() {
+  if (!document.getElementById("adminBar")) {
+    const bar = document.createElement("div");
+    bar.id = "adminBar";
+    bar.style.padding = "1rem";
+    bar.innerHTML = `
+      <button onclick="newAlbum()">➕ New Album</button>
+    `;
+    document.body.insertBefore(bar, albums);
+  }
+}
+
+function newAlbum() {
+  const name = prompt("Album name?");
   if (!name) return;
 
-  albums.push({ name, images: [] });
+  albums.push({
+    id: Date.now(),
+    name,
+    photos: [],
+    cover: "",
+    favorite: albums.length === 0
+  });
+
   save();
+}
+
+/* ==============================
+   SAVE
+================================*/
+function save() {
+  localStorage.setItem("albums", JSON.stringify(albums));
   render();
-
-  document.getElementById("albumName").value = "";
-  document.getElementById("modal").classList.remove("show");
 }
 
-function addImage(e, index) {
-  const file = e.target.files[0];
-  if (!file) return;
-
-  const reader = new FileReader();
-  reader.onload = () => {
-    albums[index].images.push(reader.result);
-    save();
-    render();
-  };
-  reader.readAsDataURL(file);
-}
-
-function toggleTheme() {
-  document.body.classList.toggle("dark");
-  localStorage.setItem("theme", document.body.classList.contains("dark") ? "dark" : "light");
-}
-
-if (localStorage.getItem("theme") === "dark") {
-  document.body.classList.add("dark");
-}
-
+/* INIT */
+const albumsDiv = document.getElementById("albums");
 render();
 </script>
 
