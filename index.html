@@ -15,7 +15,11 @@
             --accent-hover: #7a6d62;
             --border: #e0e0e0;
             --shadow: rgba(0, 0, 0, 0.1);
-            --overlay: rgba(0, 0, 0, 0.7);
+            --overlay: rgba(0, 0, 0, 0.9);
+            --z-dropdown: 2000;
+            --z-modal: 3000;
+            --z-lightbox: 4000;
+            --z-nav: 1000;
         }
 
         [data-theme="dark"] {
@@ -27,13 +31,14 @@
             --accent-hover: #cbbead;
             --border: #3a3a3a;
             --shadow: rgba(0, 0, 0, 0.3);
-            --overlay: rgba(0, 0, 0, 0.85);
+            --overlay: rgba(0, 0, 0, 0.95);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -42,8 +47,10 @@
             color: var(--text-primary);
             transition: background 0.4s ease, color 0.4s ease;
             overflow-x: hidden;
+            width: 100%;
         }
 
+        /* --- Header --- */
         .header {
             position: fixed;
             top: 0;
@@ -51,18 +58,18 @@
             right: 0;
             background: var(--bg-primary);
             border-bottom: 1px solid var(--border);
-            padding: 1.5rem 3rem;
+            padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            z-index: 1000;
+            z-index: var(--z-nav);
             backdrop-filter: blur(10px);
             transition: all 0.3s ease;
         }
 
         .logo {
             font-family: 'Playfair Display', serif;
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 700;
             letter-spacing: 1px;
             color: var(--text-primary);
@@ -70,22 +77,24 @@
 
         .header-controls {
             display: flex;
-            gap: 1.5rem;
+            gap: 1rem;
             align-items: center;
         }
 
+        /* --- Buttons --- */
         .btn {
-            padding: 0.7rem 1.8rem;
+            padding: 0.6rem 1.2rem;
             background: transparent;
             border: 1px solid var(--border);
             color: var(--text-primary);
             font-family: 'Raleway', sans-serif;
-            font-size: 0.875rem;
+            font-size: 0.8rem;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
             letter-spacing: 1px;
             text-transform: uppercase;
+            border-radius: 4px;
         }
 
         .btn:hover {
@@ -119,28 +128,29 @@
             transform: rotate(180deg);
         }
 
+        /* --- Layout --- */
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 7rem 2rem 4rem;
+            padding: 6rem 1.5rem 4rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
+        /* --- Dropdown (Fixed) --- */
         .album-selector-wrapper {
             display: flex;
             justify-content: center;
-            margin-bottom: 3rem;
-            opacity: 0;
-            animation: fadeIn 0.6s ease forwards;
-        }
-
-        @keyframes fadeIn {
-            to { opacity: 1; }
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: var(--z-dropdown); /* High Z-Index to fix clicking issue */
         }
 
         .custom-select {
             position: relative;
             min-width: 300px;
-            z-index: 2000;
+            max-width: 100%;
         }
 
         .select-display {
@@ -154,7 +164,8 @@
             transition: all 0.3s ease;
             letter-spacing: 0.5px;
             position: relative;
-            z-index: 101;
+            border-radius: 4px;
+            user-select: none;
         }
 
         .select-display:hover {
@@ -170,7 +181,6 @@
             font-size: 0.75rem;
             color: var(--text-secondary);
             transition: transform 0.3s ease;
-            pointer-events: none;
         }
 
         .select-display.open::after {
@@ -187,8 +197,8 @@
             max-height: 300px;
             overflow-y: auto;
             display: none;
-            z-index: 3000;
             box-shadow: 0 10px 30px var(--shadow);
+            border-radius: 4px;
         }
 
         .select-options.show {
@@ -201,8 +211,6 @@
             transition: background 0.2s ease;
             text-align: center;
             border-bottom: 1px solid var(--border);
-            position: relative;
-            z-index: 103;
         }
 
         .select-option:last-child {
@@ -218,52 +226,42 @@
             color: white;
         }
 
+        /* --- Album Info --- */
         .album-info {
             text-align: center;
-            margin-bottom: 3rem;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease 0.2s forwards;
-        }
-
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1; /* Lower z-index so dropdown goes over it */
         }
 
         .album-title {
             font-family: 'Playfair Display', serif;
-            font-size: 3.5rem;
+            font-size: 2.5rem;
             font-weight: 700;
-            margin-bottom: 1rem;
-            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
         }
 
         .album-subtitle {
-            font-size: 1.25rem;
+            font-size: 1.1rem;
             color: var(--text-secondary);
-            font-weight: 400;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             font-style: italic;
         }
 
         .album-description {
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: var(--text-secondary);
             max-width: 700px;
             margin: 0 auto;
-            line-height: 1.8;
+            line-height: 1.6;
         }
 
+        /* --- Admin Controls --- */
         .admin-controls {
             display: none;
-            gap: 1rem;
-            margin-bottom: 3rem;
+            gap: 0.8rem;
+            margin-bottom: 2rem;
             flex-wrap: wrap;
             justify-content: center;
         }
@@ -272,24 +270,29 @@
             display: flex;
         }
 
+        /* --- Slideshow --- */
         .slideshow-container {
             position: relative;
             max-width: 100%;
             margin: 0 auto;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease 0.4s forwards;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            z-index: 1;
         }
 
         .slide-wrapper {
             position: relative;
             width: 100%;
-            height: 70vh;
-            min-height: 500px;
+            height: 60vh;
+            min-height: 400px;
             background: var(--bg-secondary);
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
+            border-radius: 8px;
+            touch-action: pan-y; /* Allow vertical scroll, handle horizontal in JS */
         }
 
         .slide {
@@ -302,50 +305,27 @@
             top: 0;
             left: 0;
             opacity: 0;
-            transition: opacity 0.6s ease, transform 0.6s ease;
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+            user-select: none;
         }
 
         .slide.active {
             display: flex;
-            position: relative;
             opacity: 1;
-        }
-
-        .slide.slide-in-left {
-            animation: slideInFromLeft 0.6s ease forwards;
-        }
-
-        .slide.slide-in-right {
-            animation: slideInFromRight 0.6s ease forwards;
-        }
-
-        @keyframes slideInFromLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-100px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes slideInFromRight {
-            from {
-                opacity: 0;
-                transform: translateX(100px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+            z-index: 2;
         }
 
         .slide img {
             max-width: 100%;
             max-height: 100%;
             object-fit: contain;
-            cursor: pointer;
+            cursor: zoom-in;
+            pointer-events: none; /* Let clicks pass to slide wrapper for swipe logic, handle click manually */
+        }
+        
+        /* Specific fix to allow clicking image */
+        .slide-content-click-target {
+            pointer-events: auto !important; 
         }
 
         .slide-controls {
@@ -362,15 +342,14 @@
         }
 
         .slide-btn {
-            padding: 0.6rem 1rem;
+            padding: 0.5rem 0.8rem;
             background: var(--overlay);
             border: none;
             color: white;
             cursor: pointer;
-            font-size: 0.875rem;
+            font-size: 0.75rem;
             transition: background 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            border-radius: 4px;
         }
 
         .slide-btn:hover {
@@ -381,70 +360,60 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background: var(--overlay);
+            background: rgba(0,0,0,0.3);
             border: none;
             color: white;
             font-size: 2rem;
-            padding: 1rem 1.5rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
             cursor: pointer;
             transition: all 0.3s ease;
             z-index: 5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .nav-btn:hover {
             background: var(--accent);
         }
 
-        .nav-btn.prev {
-            left: 1rem;
-        }
+        .nav-btn.prev { left: 1rem; }
+        .nav-btn.next { right: 1rem; }
 
-        .nav-btn.next {
-            right: 1rem;
+        @media (max-width: 768px) {
+            .nav-btn { display: none; } /* Hide arrows on mobile, rely on swipe */
         }
 
         .slide-counter {
-            position: absolute;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--overlay);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            font-size: 0.95rem;
+            text-align: center;
+            margin-top: 1rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
             letter-spacing: 1px;
         }
 
+        /* --- Thumbnails --- */
         .thumbnail-strip {
             display: flex;
-            gap: 1rem;
-            margin-top: 2rem;
+            gap: 0.8rem;
+            margin-top: 1.5rem;
             overflow-x: auto;
-            padding: 1rem 0;
+            padding: 0.5rem;
             scrollbar-width: thin;
             scrollbar-color: var(--accent) var(--bg-secondary);
         }
 
-        .thumbnail-strip::-webkit-scrollbar {
-            height: 8px;
-        }
-
-        .thumbnail-strip::-webkit-scrollbar-track {
-            background: var(--bg-secondary);
-        }
-
-        .thumbnail-strip::-webkit-scrollbar-thumb {
-            background: var(--accent);
-            border-radius: 4px;
-        }
-
         .thumbnail {
-            min-width: 120px;
-            height: 80px;
+            min-width: 80px;
+            height: 60px;
             cursor: pointer;
-            opacity: 0.6;
+            opacity: 0.5;
             transition: all 0.3s ease;
             border: 2px solid transparent;
+            border-radius: 4px;
+            overflow: hidden;
         }
 
         .thumbnail:hover,
@@ -459,6 +428,7 @@
             object-fit: cover;
         }
 
+        /* --- Modals --- */
         .modal {
             display: none;
             position: fixed;
@@ -467,11 +437,12 @@
             width: 100%;
             height: 100%;
             background: var(--overlay);
-            z-index: 2000;
+            z-index: var(--z-modal);
             align-items: center;
             justify-content: center;
             opacity: 0;
             transition: opacity 0.3s ease;
+            backdrop-filter: blur(5px);
         }
 
         .modal.active {
@@ -481,44 +452,47 @@
 
         .modal-content {
             background: var(--bg-primary);
-            padding: 3rem;
-            max-width: 550px;
+            padding: 2.5rem;
+            max-width: 500px;
             width: 90%;
-            border: 2px solid var(--border);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
             max-height: 90vh;
             overflow-y: auto;
         }
 
         .modal-header {
             font-family: 'Playfair Display', serif;
-            font-size: 2rem;
-            margin-bottom: 2rem;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
             font-weight: 600;
         }
 
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.2rem;
         }
 
         .form-label {
             display: block;
             margin-bottom: 0.5rem;
-            font-size: 0.875rem;
+            font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 1px;
             color: var(--text-secondary);
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .form-input,
         .form-textarea {
             width: 100%;
-            padding: 1rem;
+            padding: 0.8rem;
             background: var(--bg-secondary);
-            border: 2px solid var(--border);
+            border: 1px solid var(--border);
             color: var(--text-primary);
             font-family: 'Raleway', sans-serif;
             font-size: 1rem;
+            border-radius: 4px;
             transition: border-color 0.3s ease;
         }
 
@@ -529,7 +503,7 @@
         }
 
         .form-textarea {
-            min-height: 120px;
+            min-height: 100px;
             resize: vertical;
         }
 
@@ -537,8 +511,10 @@
             display: flex;
             gap: 1rem;
             margin-top: 2rem;
+            justify-content: flex-end;
         }
 
+        /* --- Lightbox --- */
         .lightbox {
             display: none;
             position: fixed;
@@ -546,8 +522,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: var(--overlay);
-            z-index: 3000;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: var(--z-lightbox);
             align-items: center;
             justify-content: center;
             opacity: 0;
@@ -560,98 +536,75 @@
         }
 
         .lightbox-content {
-            max-width: 95%;
-            max-height: 95%;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             position: relative;
         }
 
         .lightbox-img {
             max-width: 100%;
-            max-height: 95vh;
+            max-height: 100%;
             object-fit: contain;
+            transition: transform 0.1s ease-out;
+            user-select: none;
+            pointer-events: auto;
         }
 
         .lightbox-close {
             position: absolute;
-            top: -3rem;
-            right: 0;
+            top: 1rem;
+            right: 1.5rem;
             background: none;
             border: none;
             color: white;
             font-size: 3rem;
             cursor: pointer;
             padding: 0.5rem;
-            line-height: 1;
+            line-height: 0.5;
+            z-index: 10;
         }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.5);
+            font-size: 4rem;
+            padding: 1rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            z-index: 5;
+            user-select: none;
+        }
+        
+        .lightbox-nav:hover { color: white; }
+        .lightbox-prev { left: 0; }
+        .lightbox-next { right: 0; }
 
         .empty-state {
             text-align: center;
-            padding: 5rem 2rem;
+            padding: 4rem 2rem;
             color: var(--text-secondary);
         }
 
         .empty-state-icon {
-            font-size: 4rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .file-upload {
-            display: none;
-        }
-
-        .notification-modal .modal-content {
-            max-width: 450px;
-            padding: 2rem;
-            text-align: center;
-        }
-
-        .notification-icon {
             font-size: 3rem;
             margin-bottom: 1rem;
+            opacity: 0.5;
         }
 
-        .notification-message {
-            font-size: 1rem;
-            line-height: 1.6;
-            color: var(--text-primary);
-            margin-bottom: 1.5rem;
-        }
+        .file-upload { display: none; }
 
-        @media (max-width: 768px) {
-            .header {
-                padding: 1rem 1.5rem;
-            }
-
-            .logo {
-                font-size: 1.5rem;
-            }
-
-            .album-title {
-                font-size: 2.5rem;
-            }
-
-            .slide-wrapper {
-                height: 50vh;
-                min-height: 400px;
-            }
-
-            .nav-btn {
-                padding: 0.75rem 1rem;
-                font-size: 1.5rem;
-            }
-
-            .modal-content {
-                padding: 2rem;
-            }
-
-            .btn {
-                padding: 0.6rem 1.2rem;
-                font-size: 0.75rem;
-            }
-
-            .custom-select {
-                min-width: 250px;
-            }
+        @media (max-width: 600px) {
+            .album-title { font-size: 2rem; }
+            .header { padding: 1rem; }
+            .custom-select { min-width: 100%; }
+            .lightbox-nav { display: none; } /* Hide arrows in lightbox on mobile */
         }
     </style>
 </head>
@@ -659,7 +612,7 @@
     <header class="header">
         <div class="logo">Gallery</div>
         <div class="header-controls">
-            <button class="theme-toggle" onclick="toggleTheme()">◐</button>
+            <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Theme">◐</button>
             <button class="btn" id="loginBtn" onclick="showLoginModal()">Admin</button>
             <button class="btn" id="logoutBtn" onclick="logout()" style="display: none;">Logout</button>
         </div>
@@ -693,33 +646,33 @@
 
         <div class="slideshow-container" id="slideshowContainer">
             <div class="slide-wrapper" id="slideWrapper"></div>
+            
             <button class="nav-btn prev" onclick="changeSlide(-1)">‹</button>
             <button class="nav-btn next" onclick="changeSlide(1)">›</button>
+            
             <div class="slide-counter" id="slideCounter"></div>
             <div class="thumbnail-strip" id="thumbnailStrip"></div>
         </div>
     </div>
 
-    <!-- Login Modal -->
     <div class="modal" id="loginModal">
         <div class="modal-content">
             <h2 class="modal-header">Admin Login</h2>
             <div class="form-group">
                 <label class="form-label">Username</label>
-                <input type="text" class="form-input" id="username" placeholder="Enter username">
+                <input type="text" class="form-input" id="username" placeholder="ricajyn">
             </div>
             <div class="form-group">
                 <label class="form-label">Password</label>
                 <input type="password" class="form-input" id="password" placeholder="Enter password">
             </div>
             <div class="form-actions">
-                <button class="btn btn-primary" onclick="login()">Login</button>
                 <button class="btn" onclick="closeModal('loginModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="login()">Login</button>
             </div>
         </div>
     </div>
 
-    <!-- Create/Edit Album Modal -->
     <div class="modal" id="albumModal">
         <div class="modal-content">
             <h2 class="modal-header" id="albumModalTitle">Create Album</h2>
@@ -736,30 +689,32 @@
                 <textarea class="form-textarea" id="albumDescriptionInput" placeholder="Enter description (optional)"></textarea>
             </div>
             <div class="form-actions">
-                <button class="btn btn-primary" onclick="saveAlbum()">Save</button>
                 <button class="btn" onclick="closeModal('albumModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="saveAlbum()">Save</button>
             </div>
         </div>
     </div>
 
-    <!-- Notification Modal -->
-    <div class="modal notification-modal" id="notificationModal">
-        <div class="modal-content">
-            <div class="notification-icon" id="notificationIcon">ℹ️</div>
-            <div class="notification-message" id="notificationMessage"></div>
+    <div class="modal" id="notificationModal">
+        <div class="modal-content" style="text-align: center;">
+            <div class="notification-icon" id="notificationIcon" style="font-size: 3rem; margin-bottom: 1rem;">ℹ️</div>
+            <p id="notificationMessage" style="margin-bottom: 1.5rem; line-height: 1.5;"></p>
             <button class="btn btn-primary" onclick="closeModal('notificationModal')" style="width: 100%;">OK</button>
         </div>
     </div>
 
-    <!-- Lightbox -->
-    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
-        <div class="lightbox-content" onclick="event.stopPropagation()">
-            <button class="lightbox-close" onclick="closeLightbox()">×</button>
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" onclick="closeLightbox()">×</button>
+        <button class="lightbox-nav lightbox-prev" onclick="changeSlide(-1, true)">‹</button>
+        <button class="lightbox-nav lightbox-next" onclick="changeSlide(1, true)">›</button>
+        
+        <div class="lightbox-content" id="lightboxContent">
             <img class="lightbox-img" id="lightboxImg" src="" alt="">
         </div>
     </div>
 
     <script>
+        // --- DATA SECTION ---
         // ALBUMS_DATA_START
         let ALBUMS_DATA = [
             {
@@ -767,93 +722,92 @@
                 title: "My Collection",
                 subtitle: "A curated selection",
                 description: "Welcome to my photo gallery",
-                isFavorite: true
+                isFavorite: true,
+                photos: []
             }
         ];
         // ALBUMS_DATA_END
         
-        const STORED_PASSWORD_HASH = "0979f26609b496b1e58207a0acaf4819b8bdf72efbb57004136dba0acd469810";
-
-        async function hashPassword(password) {
-            const encoder = new TextEncoder();
-            const data = encoder.encode(password);
-            const hash = await crypto.subtle.digest('SHA-256', data);
-            return Array.from(new Uint8Array(hash))
-                .map(b => b.toString(16).padStart(2, '0'))
-                .join('');
-        }
-
+        // --- CONFIGURATION ---
+        // SHA-256 hash for "HisMasterpiece"
+        const STORED_PASSWORD_HASH = "b477c78494191393630f9a2634e00b3e6c075024253372274488346e921d701a";
         const ADMIN_USERNAME = 'ricajyn';
-        
+
+        // --- STATE ---
         let albums = [];
         let currentAlbumIndex = 0;
         let currentSlideIndex = 0;
         let isAdmin = false;
         let editingAlbumIndex = null;
-        let slideDirection = 1;
-        let lightboxIndex = 0;
+        
+        // --- TOUCH/SWIPE VARIABLES ---
+        let touchStartX = 0;
+        let touchEndX = 0;
+        let touchStartY = 0;
+        const minSwipeDistance = 50; // Minimum px to register as swipe
 
-                
-        function resetToUserMode() {
-            isAdmin = false;
-            document.getElementById('loginBtn').style.display = 'block';
-            document.getElementById('logoutBtn').style.display = 'none';
-            document.getElementById('adminControls').classList.remove('visible');
-        }
-
+        // --- INITIALIZATION ---
         async function init() {
-            resetToUserMode()
+            resetToUserMode();
             albums = JSON.parse(JSON.stringify(ALBUMS_DATA));
             
-            // Auto-load photos from folders
-            await loadPhotosFromFolders();
+            // Attempt to load photo list if hosted (skipped for local demo/added photos)
+            // await loadPhotosFromFolders(); 
             
+            // Find favorite album
             const favoriteIndex = albums.findIndex(a => a.isFavorite);
             currentAlbumIndex = favoriteIndex >= 0 ? favoriteIndex : 0;
             
             checkTheme();
             displayAlbumSelector();
             displayCurrentAlbum();
+            setupTouchListeners();
         }
 
-        async function loadPhotosFromFolders() {
-            for (let album of albums) {
-                try {
-                    const response = await fetch(`images/${album.folderName}/`);
-                    if (response.ok) {
-                        const text = await response.text();
-                        const parser = new DOMParser();
-                        const doc = parser.parseFromString(text, 'text/html');
-                        const links = doc.querySelectorAll('a');
-                        const photos = [];
-                        
-                        links.forEach(link => {
-                            const href = link.getAttribute('href');
-                            if (href && /\.(jpg|jpeg|png|gif|webp)$/i.test(href)) {
-                                photos.push(href);
-                            }
-                        });
-                        
-                        if (photos.length > 0) {
-                            album.photos = photos;
-                        }
+        // --- TOUCH GESTURE LOGIC ---
+        function setupTouchListeners() {
+            const slideWrapper = document.getElementById('slideWrapper');
+            const lightboxContent = document.getElementById('lightboxContent');
+
+            // Helper for touch start
+            const handleStart = (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+                touchStartY = e.changedTouches[0].screenY;
+            };
+
+            // Helper for touch end
+            const handleEnd = (e, isLightbox = false) => {
+                touchEndX = e.changedTouches[0].screenX;
+                const touchEndY = e.changedTouches[0].screenY;
+                
+                // Calculate horizontal and vertical difference
+                const xDiff = touchStartX - touchEndX;
+                const yDiff = touchStartY - touchEndY;
+
+                // Ignore if it was mostly a vertical scroll (for the main page)
+                if (!isLightbox && Math.abs(yDiff) > Math.abs(xDiff)) return;
+
+                if (Math.abs(xDiff) > minSwipeDistance) {
+                    if (xDiff > 0) {
+                        // Swiped Left -> Next Image
+                        changeSlide(1, isLightbox);
+                    } else {
+                        // Swiped Right -> Prev Image
+                        changeSlide(-1, isLightbox);
                     }
-                } catch (error) {
-                    console.log(`Could not auto-load photos for ${album.folderName}`);
                 }
-            }
+            };
+
+            // Add listeners to Main Slider
+            slideWrapper.addEventListener('touchstart', handleStart, {passive: true});
+            slideWrapper.addEventListener('touchend', (e) => handleEnd(e, false), {passive: true});
+
+            // Add listeners to Lightbox
+            lightboxContent.addEventListener('touchstart', handleStart, {passive: true});
+            lightboxContent.addEventListener('touchend', (e) => handleEnd(e, true), {passive: true});
         }
 
-        function createFolderName(title) {
-            return title.replace(/[^a-zA-Z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
-        }
-
-        function showNotification(message, icon = 'ℹ️') {
-            document.getElementById('notificationIcon').textContent = icon;
-            document.getElementById('notificationMessage').textContent = message;
-            document.getElementById('notificationModal').classList.add('active');
-        }
-
+        // --- DISPLAY LOGIC ---
         function displayAlbumSelector() {
             const options = document.getElementById('selectOptions');
             const display = document.getElementById('selectedAlbum');
@@ -864,7 +818,7 @@
                 option.className = 'select-option' + (index === currentAlbumIndex ? ' active' : '');
                 option.textContent = album.title + (album.isFavorite ? ' ★' : '');
                 option.onclick = (e) => {
-                    e.stopPropagation();
+                    e.stopPropagation(); // Stop bubbling
                     selectAlbum(index);
                 };
                 options.appendChild(option);
@@ -880,28 +834,40 @@
             e.stopPropagation();
             const options = document.getElementById('selectOptions');
             const display = document.querySelector('.select-display');
-            options.classList.toggle('show');
-            display.classList.toggle('open');
+            
+            const isVisible = options.classList.contains('show');
+            
+            if (isVisible) {
+                options.classList.remove('show');
+                display.classList.remove('open');
+            } else {
+                // Close others if any (though we only have one)
+                options.classList.add('show');
+                display.classList.add('open');
+            }
         }
 
         function selectAlbum(index) {
             currentAlbumIndex = index;
             currentSlideIndex = 0;
+            
+            // Close dropdown
             const options = document.getElementById('selectOptions');
             const display = document.querySelector('.select-display');
             options.classList.remove('show');
             display.classList.remove('open');
+            
             displayAlbumSelector();
             displayCurrentAlbum();
         }
 
         function displayCurrentAlbum() {
             const album = albums[currentAlbumIndex];
+            
+            // Clear or Set Info
             if (!album) {
-                document.getElementById('albumTitle').textContent = '';
-                document.getElementById('albumSubtitle').textContent = '';
-                document.getElementById('albumDescription').textContent = '';
-                document.getElementById('slideWrapper').innerHTML = '<div class="empty-state"><div class="empty-state-icon">📷</div><p>No album selected</p></div>';
+                document.getElementById('albumTitle').textContent = 'No Album Selected';
+                document.getElementById('slideWrapper').innerHTML = '';
                 return;
             }
 
@@ -909,12 +875,16 @@
             document.getElementById('albumSubtitle').textContent = album.subtitle || '';
             document.getElementById('albumDescription').textContent = album.description || '';
 
+            const wrapper = document.getElementById('slideWrapper');
+            wrapper.innerHTML = '';
+
+            // Handle Empty Album
             if (!album.photos || album.photos.length === 0) {
-                document.getElementById('slideWrapper').innerHTML = `
+                wrapper.innerHTML = `
                     <div class="empty-state">
                         <div class="empty-state-icon">📷</div>
-                        <p>No photos in this album</p>
-                        ${isAdmin ? '<p style="margin-top: 1rem;">Click "Add Photos" to upload images</p>' : ''}
+                        <p>No photos in this album yet.</p>
+                        ${isAdmin ? '<p style="margin-top:1rem; font-size:0.8rem;">Click "Add Photos" to upload.</p>' : ''}
                     </div>
                 `;
                 document.getElementById('thumbnailStrip').innerHTML = '';
@@ -922,32 +892,31 @@
                 return;
             }
 
-            displaySlideshow(album);
-        }
-
-        function displaySlideshow(album) {
-            const wrapper = document.getElementById('slideWrapper');
-            wrapper.innerHTML = '';
-
+            // Render Slides
             album.photos.forEach((photoName, index) => {
-                const photoPath = `images/${album.folderName}/${photoName}`;
+                // Determine source: If it looks like a base64 or full URL, use it, else assume relative path
+                let imgSrc = photoName;
+                if (!photoName.startsWith('data:') && !photoName.startsWith('http')) {
+                    imgSrc = `images/${album.folderName}/${photoName}`;
+                }
+
                 const slide = document.createElement('div');
-                const img = slide.querySelector('img');
-
-                addSwipeSupport(img,
-                    () => changeSlide(1),
-                    () => changeSlide(-1)
-                );
-
-                // slide.className = 'slide' + (index === currentSlideIndex ? ' active' : '');
-                // slide.innerHTML = `
-                //     <img src="${photoPath}" alt="${photoName}" onclick="openLightbox('${photoPath}')" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'400\\' height=\\'300\\'%3E%3Crect fill=\\'%23ddd\\' width=\\'400\\' height=\\'300\\'/%3E%3Ctext x=\\'50%25\\' y=\\'50%25\\' text-anchor=\\'middle\\' dy=\\'.3em\\' fill=\\'%23999\\'%3EImage not found%3C/text%3E%3C/svg%3E'">
-                //     <div class="slide-controls">
-                //         ${index > 0 ? `<button class="slide-btn" onclick="event.stopPropagation(); movePhoto(${index}, -1)">Move Left</button>` : ''}
-                //         ${index < album.photos.length - 1 ? `<button class="slide-btn" onclick="event.stopPropagation(); movePhoto(${index}, 1)">Move Right</button>` : ''}
-                //         <button class="slide-btn" onclick="event.stopPropagation(); deletePhoto(${index})">Delete</button>
-                //     </div>
-                // `;
+                slide.className = 'slide' + (index === currentSlideIndex ? ' active' : '');
+                
+                // Internal HTML
+                let html = `<img src="${imgSrc}" class="slide-content-click-target" alt="Photo ${index+1}" onclick="openLightbox(this.src)">`;
+                
+                // Admin Controls on Slide
+                if (isAdmin) {
+                    html += `
+                    <div class="slide-controls">
+                        ${index > 0 ? `<button class="slide-btn" onclick="event.stopPropagation(); movePhoto(${index}, -1)">←</button>` : ''}
+                        ${index < album.photos.length - 1 ? `<button class="slide-btn" onclick="event.stopPropagation(); movePhoto(${index}, 1)">→</button>` : ''}
+                        <button class="slide-btn" style="background:#d32f2f;" onclick="event.stopPropagation(); deletePhoto(${index})">Del</button>
+                    </div>`;
+                }
+                
+                slide.innerHTML = html;
                 wrapper.appendChild(slide);
             });
 
@@ -960,31 +929,44 @@
             strip.innerHTML = '';
 
             album.photos.forEach((photoName, index) => {
-                const photoPath = `images/${album.folderName}/${photoName}`;
+                let imgSrc = photoName;
+                if (!photoName.startsWith('data:') && !photoName.startsWith('http')) {
+                    imgSrc = `images/${album.folderName}/${photoName}`;
+                }
+
                 const thumb = document.createElement('div');
                 thumb.className = 'thumbnail' + (index === currentSlideIndex ? ' active' : '');
-                thumb.innerHTML = `<img src="${photoPath}" alt="${photoName}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'120\\' height=\\'80\\'%3E%3Crect fill=\\'%23ddd\\' width=\\'120\\' height=\\'80\\'/%3E%3C/svg%3E'">`;
-                thumb.onclick = () => goToSlide(index);
+                thumb.innerHTML = `<img src="${imgSrc}" loading="lazy" alt="Thumb">`;
+                thumb.onclick = () => {
+                    currentSlideIndex = index;
+                    showSlide();
+                };
                 strip.appendChild(thumb);
             });
         }
 
-        function changeSlide(direction) {
+        // --- NAVIGATION ---
+        function changeSlide(direction, isLightbox = false) {
             const album = albums[currentAlbumIndex];
             if (!album || !album.photos || album.photos.length === 0) return;
 
-            slideDirection = direction;
             currentSlideIndex += direction;
+            
+            // Loop functionality
             if (currentSlideIndex < 0) currentSlideIndex = album.photos.length - 1;
             if (currentSlideIndex >= album.photos.length) currentSlideIndex = 0;
 
             showSlide();
-        }
 
-        function goToSlide(index) {
-            slideDirection = index > currentSlideIndex ? 1 : -1;
-            currentSlideIndex = index;
-            showSlide();
+            // If lightbox is active, update it too
+            if (document.getElementById('lightbox').classList.contains('active')) {
+                const currentImg = album.photos[currentSlideIndex];
+                let imgSrc = currentImg;
+                if (!currentImg.startsWith('data:') && !currentImg.startsWith('http')) {
+                    imgSrc = `images/${album.folderName}/${currentImg}`;
+                }
+                document.getElementById('lightboxImg').src = imgSrc;
+            }
         }
 
         function showSlide() {
@@ -992,35 +974,26 @@
             const thumbnails = document.querySelectorAll('.thumbnail');
             
             slides.forEach((slide, index) => {
-                slide.classList.remove('active', 'slide-out-left', 'slide-out-right', 'slide-in-left', 'slide-in-right');
-                
+                slide.classList.remove('active');
                 if (index === currentSlideIndex) {
                     slide.classList.add('active');
-                    if (slideDirection === 1) {
-                        slide.classList.add('slide-in-right');
-                    } else {
-                        slide.classList.add('slide-in-left');
-                    }
                 }
             });
 
             thumbnails.forEach((thumb, index) => {
                 thumb.classList.toggle('active', index === currentSlideIndex);
+                if (index === currentSlideIndex) {
+                    thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
             });
 
             updateSlideCounter();
-            
-            const activeThumb = document.querySelector('.thumbnail.active');
-            if (activeThumb) {
-                activeThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-            }
         }
 
         function updateSlideCounter() {
             const album = albums[currentAlbumIndex];
             const counter = document.getElementById('slideCounter');
-            
-            if (album && album.photos && album.photos.length > 0) {
+            if (album && album.photos.length > 0) {
                 counter.textContent = `${currentSlideIndex + 1} / ${album.photos.length}`;
                 counter.style.display = 'block';
             } else {
@@ -1028,323 +1001,274 @@
             }
         }
 
-        async function login() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
+        // --- AUTHENTICATION ---
+        async function hashPassword(password) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(password);
+            const hash = await crypto.subtle.digest('SHA-256', data);
+            return Array.from(new Uint8Array(hash))
+                .map(b => b.toString(16).padStart(2, '0'))
+                .join('');
+        }
 
-            if (username !== ADMIN_USERNAME) {
-                showNotification('Invalid username or password', '❌');
+        async function login() {
+            const u = document.getElementById('username').value;
+            const p = document.getElementById('password').value;
+
+            if (u !== ADMIN_USERNAME) {
+                showNotification('Invalid credentials', '❌');
                 return;
             }
 
-            const hash = await hashPassword(password);
-
+            const hash = await hashPassword(p);
+            
             if (hash === STORED_PASSWORD_HASH) {
                 isAdmin = true;
                 document.getElementById('loginBtn').style.display = 'none';
                 document.getElementById('logoutBtn').style.display = 'block';
                 document.getElementById('adminControls').classList.add('visible');
                 closeModal('loginModal');
+                
+                // Refresh view to show admin buttons on slides
+                displayCurrentAlbum();
+                
+                showNotification('Welcome back, Admin!', '✅');
+                
+                // Clear fields
                 document.getElementById('username').value = '';
                 document.getElementById('password').value = '';
-                showNotification('Welcome back, Admin!', '✅');
             } else {
-                showNotification('Invalid username or password', '❌');
+                showNotification('Invalid credentials', '❌');
             }
         }
 
         function logout() {
             isAdmin = false;
-            document.getElementById('loginBtn').style.display = 'block';
-            document.getElementById('logoutBtn').style.display = 'none';
-            document.getElementById('adminControls').classList.remove('visible');
+            resetToUserMode();
+            displayCurrentAlbum(); // Refresh to hide admin buttons
             showNotification('Logged out successfully', '👋');
         }
 
+        function resetToUserMode() {
+            document.getElementById('loginBtn').style.display = 'block';
+            document.getElementById('logoutBtn').style.display = 'none';
+            document.getElementById('adminControls').classList.remove('visible');
+        }
+
+        // --- ADMIN FUNCTIONS ---
+        function saveAlbum() {
+            const title = document.getElementById('albumTitleInput').value.trim();
+            if (!title) {
+                alert('Title is required');
+                return;
+            }
+
+            const subtitle = document.getElementById('albumSubtitleInput').value.trim();
+            const description = document.getElementById('albumDescriptionInput').value.trim();
+            const folderName = title.replace(/[^a-zA-Z0-9]/g, '-');
+
+            if (editingAlbumIndex !== null) {
+                // Edit existing
+                albums[editingAlbumIndex].title = title;
+                albums[editingAlbumIndex].subtitle = subtitle;
+                albums[editingAlbumIndex].description = description;
+                // Note: We don't change folderName usually to avoid breaking paths, 
+                // but for new albums it's fine.
+            } else {
+                // Create new
+                albums.push({
+                    folderName: folderName,
+                    title: title,
+                    subtitle: subtitle,
+                    description: description,
+                    photos: [],
+                    isFavorite: false
+                });
+                currentAlbumIndex = albums.length - 1;
+            }
+
+            closeModal('albumModal');
+            displayAlbumSelector();
+            displayCurrentAlbum();
+        }
+
+        function deleteCurrentAlbum() {
+            if (albums.length <= 1) {
+                showNotification("Cannot delete the only album.");
+                return;
+            }
+            if (confirm("Are you sure you want to delete this album?")) {
+                albums.splice(currentAlbumIndex, 1);
+                currentAlbumIndex = 0;
+                displayAlbumSelector();
+                displayCurrentAlbum();
+            }
+        }
+
+        function toggleFavoriteAlbum() {
+            albums.forEach(a => a.isFavorite = false);
+            albums[currentAlbumIndex].isFavorite = true;
+            displayAlbumSelector();
+            showNotification("Set as Favorite Album", "⭐");
+        }
+
+        function handlePhotoUpload(event) {
+            const files = event.target.files;
+            if (!files.length || !albums[currentAlbumIndex]) return;
+
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    // For client-side demo, we use Base64. 
+                    // In real hosting, you'd want to upload these and use filenames.
+                    // But since there is no backend, Base64 allows immediate viewing.
+                    // WARNING: Base64 bloats the HTML file significantly.
+                    // Ideally, user puts files in folder and adds filenames manually, 
+                    // but for this UI request, we render the result.
+                    albums[currentAlbumIndex].photos.push(e.target.result);
+                    displayCurrentAlbum();
+                };
+                reader.readAsDataURL(file);
+            });
+            
+            showNotification("Photos added! Remember to Save Changes.", "💾");
+            event.target.value = ''; // Reset input
+        }
+
+        function movePhoto(index, dir) {
+            const arr = albums[currentAlbumIndex].photos;
+            const newIndex = index + dir;
+            [arr[index], arr[newIndex]] = [arr[newIndex], arr[index]];
+            // Follow the photo
+            if (currentSlideIndex === index) currentSlideIndex = newIndex;
+            else if (currentSlideIndex === newIndex) currentSlideIndex = index;
+            displayCurrentAlbum();
+        }
+
+        function deletePhoto(index) {
+            if(confirm("Remove this photo?")) {
+                albums[currentAlbumIndex].photos.splice(index, 1);
+                if (currentSlideIndex >= albums[currentAlbumIndex].photos.length) {
+                    currentSlideIndex = Math.max(0, albums[currentAlbumIndex].photos.length - 1);
+                }
+                displayCurrentAlbum();
+            }
+        }
+
+        // --- EXPORT ---
+        function exportData() {
+            // We need to inject the current 'albums' array back into the HTML string
+            // so the user can download the updated file.
+            const currentHTML = document.documentElement.outerHTML;
+            const jsonString = JSON.stringify(albums, null, 4);
+            
+            // Regex to replace the JSON block
+            const regex = /\/\/ ALBUMS_DATA_START[\s\S]*?\/\/ ALBUMS_DATA_END/;
+            const newContent = `// ALBUMS_DATA_START\n        let ALBUMS_DATA = ${jsonString};\n        // ALBUMS_DATA_END`;
+            
+            const updatedHTML = currentHTML.replace(regex, newContent);
+            
+            const blob = new Blob([updatedHTML], {type: 'text/html'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'index.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showNotification("File downloaded! Upload this to GitHub.", "✅");
+        }
+
+        // --- UI HELPERS ---
         function showLoginModal() {
             document.getElementById('loginModal').classList.add('active');
         }
 
         function showCreateAlbumModal() {
             editingAlbumIndex = null;
-            document.getElementById('albumModalTitle').textContent = 'Create Album';
-            document.getElementById('albumTitleInput').value = '';
-            document.getElementById('albumSubtitleInput').value = '';
-            document.getElementById('albumDescriptionInput').value = '';
+            document.getElementById('albumModalTitle').textContent = "Create Album";
+            document.getElementById('albumTitleInput').value = "";
+            document.getElementById('albumSubtitleInput').value = "";
+            document.getElementById('albumDescriptionInput').value = "";
             document.getElementById('albumModal').classList.add('active');
         }
 
         function showEditAlbumModal() {
-            const album = albums[currentAlbumIndex];
-            if (!album) return;
-
+            const alb = albums[currentAlbumIndex];
             editingAlbumIndex = currentAlbumIndex;
-            document.getElementById('albumModalTitle').textContent = 'Edit Album';
-            document.getElementById('albumTitleInput').value = album.title;
-            document.getElementById('albumSubtitleInput').value = album.subtitle || '';
-            document.getElementById('albumDescriptionInput').value = album.description || '';
+            document.getElementById('albumModalTitle').textContent = "Edit Album";
+            document.getElementById('albumTitleInput').value = alb.title;
+            document.getElementById('albumSubtitleInput').value = alb.subtitle;
+            document.getElementById('albumDescriptionInput').value = alb.description;
             document.getElementById('albumModal').classList.add('active');
         }
 
-        function saveAlbum() {
-            const title = document.getElementById('albumTitleInput').value.trim();
-            if (!title) {
-                showNotification('Album title is required', '⚠️');
-                return;
-            }
-
-            const subtitle = document.getElementById('albumSubtitleInput').value.trim();
-            const description = document.getElementById('albumDescriptionInput').value.trim();
-            const folderName = createFolderName(title);
-
-            if (editingAlbumIndex !== null) {
-                const album = albums[editingAlbumIndex];
-                if (album) {
-                    album.title = title;
-                    album.subtitle = subtitle;
-                    album.description = description;
-                    album.folderName = folderName;
-                }
-                showNotification('Album updated successfully!', '✅');
-            } else {
-                const newAlbum = {
-                    folderName,
-                    title,
-                    subtitle,
-                    description,
-                    photos: [],
-                    isFavorite: false
-                };
-                albums.push(newAlbum);
-                currentAlbumIndex = albums.length - 1;
-                showNotification(`Album created! Remember to create the folder: images/${folderName}/`, '✅');
-            }
-
-            displayAlbumSelector();
-            displayCurrentAlbum();
-            closeModal('albumModal');
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
         }
 
-        function deleteCurrentAlbum() {
-            if (albums.length === 1) {
-                showNotification('Cannot delete the last album', '⚠️');
-                return;
-            }
-
-            const album = albums[currentAlbumIndex];
-            
-            // Create a custom confirmation modal
-            const confirmMsg = `Delete album "${album.title}"?\n\nThis will remove it from the gallery. The images/${album.folderName}/ folder will remain in GitHub.`;
-            
-            if (confirm(confirmMsg)) {
-                albums.splice(currentAlbumIndex, 1);
-                currentAlbumIndex = 0;
-                currentSlideIndex = 0;
-                displayAlbumSelector();
-                displayCurrentAlbum();
-                showNotification('Album deleted successfully', '✅');
-            }
+        function showNotification(msg, icon="ℹ️") {
+            document.getElementById('notificationIcon').textContent = icon;
+            document.getElementById('notificationMessage').textContent = msg;
+            document.getElementById('notificationModal').classList.add('active');
         }
 
-        function toggleFavoriteAlbum() {
-            albums.forEach(a => a.isFavorite = false);
-            const album = albums[currentAlbumIndex];
-            if (album) {
-                album.isFavorite = true;
-                showNotification(`"${album.title}" is now the default album`, '⭐');
-            }
-            displayAlbumSelector();
-        }
-
-        function handlePhotoUpload(event) {
-            const files = event.target.files;
-            if (!files.length) return;
-
-            const album = albums[currentAlbumIndex];
-            if (!album) return;
-
-            if (!album.photos) album.photos = [];
-
-            let processed = 0;
-            const totalFiles = files.length;
-
-            Array.from(files).forEach(file => {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const fileName = file.name;
-                    album.photos.push(fileName);
-                    
-                    // Store as base64 for temporary viewing
-                    // In real usage, these would be uploaded to GitHub
-                    const img = new Image();
-                    img.src = e.target.result;
-                    
-                    processed++;
-                    if (processed === totalFiles) {
-                        displayCurrentAlbum();
-                        showNotification(`${totalFiles} photo(s) added! Remember to click "Save Changes" and upload these files to images/${album.folderName}/ in GitHub.`, '✅');
-                    }
-                };
-                reader.readAsDataURL(file);
-            });
-
-            event.target.value = '';
-        }
-
-        function movePhoto(index, direction) {
-            const album = albums[currentAlbumIndex];
-            if (!album || !album.photos) return;
-
-            const newIndex = index + direction;
-            if (newIndex < 0 || newIndex >= album.photos.length) return;
-
-            [album.photos[index], album.photos[newIndex]] = [album.photos[newIndex], album.photos[index]];
-            
-            if (currentSlideIndex === index) {
-                currentSlideIndex = newIndex;
-            } else if (currentSlideIndex === newIndex) {
-                currentSlideIndex = index;
-            }
-            
-            displayCurrentAlbum();
-        }
-
-        function deletePhoto(index) {
-            const album = albums[currentAlbumIndex];
-            if (!album || !album.photos) return;
-            
-            if (confirm(`Delete "${album.photos[index]}"?\n\nYou should also delete this file from images/${album.folderName}/ in GitHub.`)) {
-                album.photos.splice(index, 1);
-                
-                if (currentSlideIndex >= album.photos.length) {
-                    currentSlideIndex = Math.max(0, album.photos.length - 1);
-                }
-                
-                displayCurrentAlbum();
-                showNotification('Photo removed from gallery', '✅');
-            }
-        }
-
-        function exportData() {
-            const albumsJSON = JSON.stringify(albums, null, 2);
-            
-            const htmlContent = document.documentElement.outerHTML
-                .replace(/\/\/ ALBUMS_DATA_START[\s\S]*?\/\/ ALBUMS_DATA_END/m, 
-                    `// ALBUMS_DATA_START\n        let ALBUMS_DATA = ${albumsJSON};\n        // ALBUMS_DATA_END`);
-            
-            const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
-            const htmlUrl = URL.createObjectURL(htmlBlob);
-            const htmlLink = document.createElement('a');
-            htmlLink.href = htmlUrl;
-            htmlLink.download = 'index.html';
-            document.body.appendChild(htmlLink);
-            htmlLink.click();
-            document.body.removeChild(htmlLink);
-            URL.revokeObjectURL(htmlUrl);
-            
-            showNotification('Gallery data saved! Upload the downloaded index.html to your GitHub repository to save your changes.', '💾');
-        }
-
+        // Lightbox
         function openLightbox(src) {
-            const album = albums[currentAlbumIndex];
-            lightboxIndex = album.photos.findIndex(p => src.includes(p));
-
             document.getElementById('lightboxImg').src = src;
             document.getElementById('lightbox').classList.add('active');
-
-            addSwipeSupport(
-                document.getElementById('lightboxImg'),
-                () => navigateLightbox(1),
-                () => navigateLightbox(-1)
-            );
         }
-
-        function navigateLightbox(direction) {
-            const album = albums[currentAlbumIndex];
-            if (!album || !album.photos.length) return;
-
-            lightboxIndex += direction;
-            if (lightboxIndex < 0) lightboxIndex = album.photos.length - 1;
-            if (lightboxIndex >= album.photos.length) lightboxIndex = 0;
-
-            document.getElementById('lightboxImg').src =
-                `images/${album.folderName}/${album.photos[lightboxIndex]}`;
-
-            currentSlideIndex = lightboxIndex;
-            showSlide();
-        }
-
-
+        
         function closeLightbox() {
             document.getElementById('lightbox').classList.remove('active');
         }
 
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('active');
-        }
-
+        // Theme
         function toggleTheme() {
             const html = document.documentElement;
-            const currentTheme = html.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            html.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
+            const cur = html.getAttribute('data-theme');
+            const next = cur === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
         }
 
         function checkTheme() {
-            const savedTheme = localStorage.getItem('theme') || 'light';
-            document.documentElement.setAttribute('data-theme', savedTheme);
+            const saved = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', saved);
         }
 
+        // Global Event for closing Dropdown
         document.addEventListener('click', (e) => {
             const select = document.querySelector('.custom-select');
             if (select && !select.contains(e.target)) {
-                const options = document.getElementById('selectOptions');
-                const display = document.querySelector('.select-display');
-                if (options && display) {
-                    options.classList.remove('show');
-                    display.classList.remove('open');
-                }
+                document.getElementById('selectOptions').classList.remove('show');
+                document.querySelector('.select-display').classList.remove('open');
             }
         });
 
+        // Key Listeners
         document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                const isLightbox = document.getElementById('lightbox').classList.contains('active');
+                changeSlide(-1, isLightbox);
+            }
+            if (e.key === 'ArrowRight') {
+                const isLightbox = document.getElementById('lightbox').classList.contains('active');
+                changeSlide(1, isLightbox);
+            }
             if (e.key === 'Escape') {
+                closeLightbox();
                 closeModal('loginModal');
                 closeModal('albumModal');
                 closeModal('notificationModal');
-                closeLightbox();
             }
-            if (e.key === 'ArrowLeft') changeSlide(-1);
-            if (e.key === 'ArrowRight') changeSlide(1);
         });
 
-        function addSwipeSupport(element, onSwipeLeft, onSwipeRight) {
-            let startX = 0;
-            let isDown = false;
-
-            element.addEventListener('pointerdown', e => {
-                isDown = true;
-                startX = e.clientX;
-                element.setPointerCapture(e.pointerId);
-            });
-
-            element.addEventListener('pointerup', e => {
-                if (!isDown) return;
-                const diff = e.clientX - startX;
-                isDown = false;
-
-                if (Math.abs(diff) > 50) {
-                    diff < 0 ? onSwipeLeft() : onSwipeRight();
-                }
-            });
-
-            element.addEventListener('pointercancel', () => {
-                isDown = false;
-            });
-        }
-
+        // Start
         window.addEventListener('DOMContentLoaded', init);
+
     </script>
 </body>
 </html>
