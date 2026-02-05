@@ -292,12 +292,47 @@
             height: 100%;
             align-items: center;
             justify-content: center;
-            position: relative;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.6s ease, transform 0.6s ease;
         }
 
         .slide.active {
             display: flex;
-            animation: slideIn 0.5s ease;
+            position: relative;
+            opacity: 1;
+        }
+
+        .slide.slide-in-left {
+            animation: slideInFromLeft 0.6s ease forwards;
+        }
+
+        .slide.slide-in-right {
+            animation: slideInFromRight 0.6s ease forwards;
+        }
+
+        @keyframes slideInFromLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInFromRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
         @keyframes slideIn {
@@ -620,7 +655,7 @@
     <div class="container">
         <div class="album-selector-wrapper">
             <div class="custom-select">
-                <div class="select-display" onclick="toggleSelect()">
+                <div class="select-display" onclick="toggleSelect(event)">
                     <span id="selectedAlbum">Select Album</span>
                 </div>
                 <div class="select-options" id="selectOptions"></div>
@@ -638,9 +673,8 @@
             <button class="btn" onclick="showEditAlbumModal()">Edit Album</button>
             <button class="btn" onclick="deleteCurrentAlbum()">Delete Album</button>
             <button class="btn" onclick="toggleFavoriteAlbum()">Set as Favorite</button>
-            <button class="btn btn-primary" onclick="document.getElementById('photoUpload').click()">Add Photos</button>
+            <button class="btn btn-primary" onclick="showManagePhotosModal()">Manage Photos</button>
             <button class="btn btn-primary" onclick="exportAlbums()">Export Gallery</button>
-            <input type="file" id="photoUpload" class="file-upload" accept="image/*" multiple onchange="handlePhotoUpload(event)">
         </div>
 
         <div class="slideshow-container" id="slideshowContainer">
@@ -704,7 +738,17 @@
 
     <script>
         // DATA_PLACEHOLDER - Albums data will be embedded here
-        let ALBUMS_DATA = [{"id":1,"title":"My Collection","subtitle":"A curated selection","description":"Welcome to my photo gallery","photos":[],"isFavorite":true}];
+        // Structure: { folderName: string, title: string, subtitle: string, description: string, photos: string[], isFavorite: boolean }
+        let ALBUMS_DATA = [
+            {
+                folderName: "My-Collection",
+                title: "My Collection",
+                subtitle: "A curated selection",
+                description: "Welcome to my photo gallery",
+                photos: [],
+                isFavorite: true
+            }
+        ];
         
         // PASSWORD_HASH_PLACEHOLDER
         const STORED_PASSWORD_HASH = "0979f26609b496b1e58207a0acaf4819b8bdf72efbb57004136dba0acd469810";
@@ -721,20 +765,25 @@
         const ADMIN_USERNAME = 'ricajyn';
         
         let albums = [];
-        let currentAlbumId = null;
+        let currentAlbumIndex = 0;
         let currentSlideIndex = 0;
         let isAdmin = false;
-        let editingAlbumId = null;
+        let editingAlbumIndex = null;
+        let slideDirection = 1; // 1 for forward, -1 for backward
 
         function init() {
             albums = JSON.parse(JSON.stringify(ALBUMS_DATA));
             
-            const favoriteAlbum = albums.find(a => a.isFavorite);
-            currentAlbumId = favoriteAlbum ? favoriteAlbum.id : (albums.length > 0 ? albums[0].id : null);
+            const favoriteIndex = albums.findIndex(a => a.isFavorite);
+            currentAlbumIndex = favoriteIndex >= 0 ? favoriteIndex : 0;
             
             checkTheme();
             displayAlbumSelector();
             displayCurrentAlbum();
+        }
+
+        function createFolderName(title) {
+            return title.replace(/[^a-zA-Z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
         }
 
         function displayAlbumSelector() {
@@ -742,37 +791,44 @@
             const display = document.getElementById('selectedAlbum');
             options.innerHTML = '';
             
-            albums.forEach(album => {
+            albums.forEach((album, index) => {
                 const option = document.createElement('div');
-                option.className = 'select-option' + (album.id === currentAlbumId ? ' active' : '');
+                option.className = 'select-option' + (index === currentAlbumIndex ? ' active' : '');
                 option.textContent = album.title + (album.isFavorite ? ' ★' : '');
-                option.onclick = () => selectAlbum(album.id);
+                option.onclick = (e) => {
+                    e.stopPropagation();
+                    selectAlbum(index);
+                };
                 options.appendChild(option);
             });
 
-            const currentAlbum = albums.find(a => a.id === currentAlbumId);
+            const currentAlbum = albums[currentAlbumIndex];
             if (currentAlbum) {
                 display.textContent = currentAlbum.title + (currentAlbum.isFavorite ? ' ★' : '');
             }
         }
 
-        function toggleSelect() {
+        function toggleSelect(e) {
+            e.stopPropagation();
             const options = document.getElementById('selectOptions');
             const display = document.querySelector('.select-display');
             options.classList.toggle('show');
             display.classList.toggle('open');
         }
 
-        function selectAlbum(albumId) {
-            currentAlbumId = albumId;
+        function selectAlbum(index) {
+            currentAlbumIndex = index;
             currentSlideIndex = 0;
-            toggleSelect();
+            const options = document.getElementById('selectOptions');
+            const display = document.querySelector('.select-display');
+            options.classList.remove('show');
+            display.classList.remove('open');
             displayAlbumSelector();
             displayCurrentAlbum();
         }
 
         function displayCurrentAlbum() {
-            const album = albums.find(a => a.id === currentAlbumId);
+            const album = albums[currentAlbumIndex];
             if (!album) {
                 document.getElementById('albumTitle').textContent = '';
                 document.getElementById('albumSubtitle').textContent = '';
@@ -805,15 +861,16 @@
             const wrapper = document.getElementById('slideWrapper');
             wrapper.innerHTML = '';
 
-            album.photos.forEach((photo, index) => {
+            album.photos.forEach((photoName, index) => {
+                const photoPath = `images/${album.folderName}/${photoName}`;
                 const slide = document.createElement('div');
                 slide.className = 'slide' + (index === currentSlideIndex ? ' active' : '');
                 slide.innerHTML = `
-                    <img src="${photo}" alt="Photo ${index + 1}" onclick="openLightbox('${photo}')">
+                    <img src="${photoPath}" alt="${photoName}" onclick="openLightbox('${photoPath}')">
                     <div class="slide-controls">
-                        ${index > 0 ? `<button class="slide-btn" onclick="movePhoto(${index}, -1)">Move Left</button>` : ''}
-                        ${index < album.photos.length - 1 ? `<button class="slide-btn" onclick="movePhoto(${index}, 1)">Move Right</button>` : ''}
-                        <button class="slide-btn" onclick="deletePhoto(${index})">Delete</button>
+                        ${index > 0 ? `<button class="slide-btn" onclick="event.stopPropagation(); movePhoto(${index}, -1)">Move Left</button>` : ''}
+                        ${index < album.photos.length - 1 ? `<button class="slide-btn" onclick="event.stopPropagation(); movePhoto(${index}, 1)">Move Right</button>` : ''}
+                        <button class="slide-btn" onclick="event.stopPropagation(); deletePhoto(${index})">Delete</button>
                     </div>
                 `;
                 wrapper.appendChild(slide);
@@ -827,19 +884,21 @@
             const strip = document.getElementById('thumbnailStrip');
             strip.innerHTML = '';
 
-            album.photos.forEach((photo, index) => {
+            album.photos.forEach((photoName, index) => {
+                const photoPath = `images/${album.folderName}/${photoName}`;
                 const thumb = document.createElement('div');
                 thumb.className = 'thumbnail' + (index === currentSlideIndex ? ' active' : '');
-                thumb.innerHTML = `<img src="${photo}" alt="Thumbnail ${index + 1}">`;
+                thumb.innerHTML = `<img src="${photoPath}" alt="${photoName}">`;
                 thumb.onclick = () => goToSlide(index);
                 strip.appendChild(thumb);
             });
         }
 
         function changeSlide(direction) {
-            const album = albums.find(a => a.id === currentAlbumId);
+            const album = albums[currentAlbumIndex];
             if (!album || album.photos.length === 0) return;
 
+            slideDirection = direction;
             currentSlideIndex += direction;
             if (currentSlideIndex < 0) currentSlideIndex = album.photos.length - 1;
             if (currentSlideIndex >= album.photos.length) currentSlideIndex = 0;
@@ -848,6 +907,7 @@
         }
 
         function goToSlide(index) {
+            slideDirection = index > currentSlideIndex ? 1 : -1;
             currentSlideIndex = index;
             showSlide();
         }
@@ -857,7 +917,16 @@
             const thumbnails = document.querySelectorAll('.thumbnail');
             
             slides.forEach((slide, index) => {
-                slide.classList.toggle('active', index === currentSlideIndex);
+                slide.classList.remove('active', 'slide-out-left', 'slide-out-right', 'slide-in-left', 'slide-in-right');
+                
+                if (index === currentSlideIndex) {
+                    slide.classList.add('active');
+                    if (slideDirection === 1) {
+                        slide.classList.add('slide-in-right');
+                    } else {
+                        slide.classList.add('slide-in-left');
+                    }
+                }
             });
 
             thumbnails.forEach((thumb, index) => {
@@ -865,10 +934,16 @@
             });
 
             updateSlideCounter();
+            
+            // Scroll thumbnail into view
+            const activeThumb = document.querySelector('.thumbnail.active');
+            if (activeThumb) {
+                activeThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
         }
 
         function updateSlideCounter() {
-            const album = albums.find(a => a.id === currentAlbumId);
+            const album = albums[currentAlbumIndex];
             const counter = document.getElementById('slideCounter');
             
             if (album && album.photos.length > 0) {
@@ -915,7 +990,7 @@
         }
 
         function showCreateAlbumModal() {
-            editingAlbumId = null;
+            editingAlbumIndex = null;
             document.getElementById('albumModalTitle').textContent = 'Create Album';
             document.getElementById('albumTitleInput').value = '';
             document.getElementById('albumSubtitleInput').value = '';
@@ -924,10 +999,10 @@
         }
 
         function showEditAlbumModal() {
-            const album = albums.find(a => a.id === currentAlbumId);
+            const album = albums[currentAlbumIndex];
             if (!album) return;
 
-            editingAlbumId = currentAlbumId;
+            editingAlbumIndex = currentAlbumIndex;
             document.getElementById('albumModalTitle').textContent = 'Edit Album';
             document.getElementById('albumTitleInput').value = album.title;
             document.getElementById('albumSubtitleInput').value = album.subtitle || '';
@@ -944,17 +1019,24 @@
 
             const subtitle = document.getElementById('albumSubtitleInput').value.trim();
             const description = document.getElementById('albumDescriptionInput').value.trim();
+            const folderName = createFolderName(title);
 
-            if (editingAlbumId) {
-                const album = albums.find(a => a.id === editingAlbumId);
+            if (editingAlbumIndex !== null) {
+                const album = albums[editingAlbumIndex];
                 if (album) {
+                    const oldFolderName = album.folderName;
                     album.title = title;
                     album.subtitle = subtitle;
                     album.description = description;
+                    album.folderName = folderName;
+                    
+                    if (oldFolderName !== folderName) {
+                        alert(`Album folder renamed from "${oldFolderName}" to "${folderName}". Remember to rename the folder in GitHub!`);
+                    }
                 }
             } else {
                 const newAlbum = {
-                    id: Date.now(),
+                    folderName,
                     title,
                     subtitle,
                     description,
@@ -962,7 +1044,9 @@
                     isFavorite: false
                 };
                 albums.push(newAlbum);
-                currentAlbumId = newAlbum.id;
+                currentAlbumIndex = albums.length - 1;
+                
+                alert(`Create a folder: images/${folderName}/ in your GitHub repository and add photos there.`);
             }
 
             displayAlbumSelector();
@@ -976,9 +1060,10 @@
                 return;
             }
 
-            if (confirm('Are you sure you want to delete this album?')) {
-                albums = albums.filter(a => a.id !== currentAlbumId);
-                currentAlbumId = albums[0].id;
+            const album = albums[currentAlbumIndex];
+            if (confirm(`Delete album "${album.title}"? Remember to also delete the images/${album.folderName}/ folder from GitHub.`)) {
+                albums.splice(currentAlbumIndex, 1);
+                currentAlbumIndex = 0;
                 currentSlideIndex = 0;
                 displayAlbumSelector();
                 displayCurrentAlbum();
@@ -987,7 +1072,7 @@
 
         function toggleFavoriteAlbum() {
             albums.forEach(a => a.isFavorite = false);
-            const album = albums.find(a => a.id === currentAlbumId);
+            const album = albums[currentAlbumIndex];
             if (album) {
                 album.isFavorite = true;
             }
@@ -995,30 +1080,29 @@
         }
 
         function handlePhotoUpload(event) {
-            const files = event.target.files;
-            if (!files.length) return;
-
-            const album = albums.find(a => a.id === currentAlbumId);
-            if (!album) return;
-
-            let processed = 0;
-            Array.from(files).forEach(file => {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    album.photos.push(e.target.result);
-                    processed++;
-                    if (processed === files.length) {
-                        displayCurrentAlbum();
-                    }
-                };
-                reader.readAsDataURL(file);
-            });
-
+            alert('To add photos:\n\n1. Create folder: images/' + albums[currentAlbumIndex].folderName + '/\n2. Upload your images to this folder\n3. Add the filenames to the album in the exported JSON\n\nOr use the "Manage Photos" button to add filenames manually.');
             event.target.value = '';
         }
 
+        function showManagePhotosModal() {
+            const album = albums[currentAlbumIndex];
+            if (!album) return;
+            
+            const photosList = album.photos.length > 0 ? album.photos.join('\n') : '';
+            const newList = prompt(
+                `Manage photos for "${album.title}"\n\nEnter one filename per line (e.g., photo1.jpg, photo2.jpg):\n\nCurrent photos in images/${album.folderName}/:`,
+                photosList
+            );
+            
+            if (newList !== null) {
+                album.photos = newList.split('\n').map(p => p.trim()).filter(p => p);
+                currentSlideIndex = 0;
+                displayCurrentAlbum();
+            }
+        }
+
         function movePhoto(index, direction) {
-            const album = albums.find(a => a.id === currentAlbumId);
+            const album = albums[currentAlbumIndex];
             if (!album) return;
 
             const newIndex = index + direction;
@@ -1036,10 +1120,10 @@
         }
 
         function deletePhoto(index) {
-            if (confirm('Delete this photo?')) {
-                const album = albums.find(a => a.id === currentAlbumId);
-                if (!album) return;
-
+            const album = albums[currentAlbumIndex];
+            if (!album) return;
+            
+            if (confirm(`Delete "${album.photos[index]}"?\n\nNote: This only removes it from the gallery. You should also delete the file from images/${album.folderName}/ in GitHub.`)) {
                 album.photos.splice(index, 1);
                 
                 if (currentSlideIndex >= album.photos.length) {
@@ -1051,20 +1135,33 @@
         }
 
         function exportAlbums() {
+            // Create JSON file with album data
+            const albumsJSON = JSON.stringify(albums, null, 2);
+            const jsonBlob = new Blob([albumsJSON], { type: 'application/json' });
+            const jsonUrl = URL.createObjectURL(jsonBlob);
+            const jsonLink = document.createElement('a');
+            jsonLink.href = jsonUrl;
+            jsonLink.download = 'albums-data.json';
+            document.body.appendChild(jsonLink);
+            jsonLink.click();
+            document.body.removeChild(jsonLink);
+            URL.revokeObjectURL(jsonUrl);
+            
+            // Create updated HTML file
             const htmlContent = document.documentElement.outerHTML
-                .replace(/let ALBUMS_DATA = \[.*?\];/s, `let ALBUMS_DATA = ${JSON.stringify(albums)};`);
+                .replace(/let ALBUMS_DATA = \[[\s\S]*?\];/m, `let ALBUMS_DATA = ${albumsJSON};`);
             
-            const blob = new Blob([htmlContent], { type: 'text/html' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'index.html';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+            const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
+            const htmlUrl = URL.createObjectURL(htmlBlob);
+            const htmlLink = document.createElement('a');
+            htmlLink.href = htmlUrl;
+            htmlLink.download = 'index.html';
+            document.body.appendChild(htmlLink);
+            htmlLink.click();
+            document.body.removeChild(htmlLink);
+            URL.revokeObjectURL(htmlUrl);
             
-            alert('Gallery exported! Replace your GitHub Pages index.html with this file.');
+            alert('Exported!\n\n1. index.html - Upload this to replace your current index.html\n2. albums-data.json - Backup of your album structure\n\nMake sure your images/ folder structure matches the album folders!');
         }
 
         function openLightbox(src) {
@@ -1095,9 +1192,13 @@
 
         document.addEventListener('click', (e) => {
             const select = document.querySelector('.custom-select');
-            if (!select.contains(e.target)) {
-                document.getElementById('selectOptions').classList.remove('show');
-                document.querySelector('.select-display').classList.remove('open');
+            if (select && !select.contains(e.target)) {
+                const options = document.getElementById('selectOptions');
+                const display = document.querySelector('.select-display');
+                if (options && display) {
+                    options.classList.remove('show');
+                    display.classList.remove('open');
+                }
             }
         });
 
