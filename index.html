@@ -4,30 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Photo Gallery</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Work+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-primary: #fdfcfa;
-            --bg-secondary: #f5f3ef;
-            --text-primary: #1a1410;
-            --text-secondary: #635e56;
-            --accent: #8b7355;
-            --accent-hover: #6d5940;
-            --border: #e4e0d8;
-            --shadow: rgba(0, 0, 0, 0.08);
-            --overlay: rgba(0, 0, 0, 0.6);
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f8f8;
+            --text-primary: #2c2c2c;
+            --text-secondary: #666666;
+            --accent: #9b8b7e;
+            --accent-hover: #7a6d62;
+            --border: #e0e0e0;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --overlay: rgba(0, 0, 0, 0.7);
         }
 
         [data-theme="dark"] {
-            --bg-primary: #1a1410;
-            --bg-secondary: #252119;
-            --text-primary: #f5f3ef;
-            --text-secondary: #b8b3aa;
-            --accent: #c4a57b;
-            --accent-hover: #d4b88f;
-            --border: #3a342a;
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2a2a2a;
+            --text-primary: #e8e8e8;
+            --text-secondary: #a0a0a0;
+            --accent: #b8a896;
+            --accent-hover: #cbbead;
+            --border: #3a3a3a;
             --shadow: rgba(0, 0, 0, 0.3);
-            --overlay: rgba(0, 0, 0, 0.8);
+            --overlay: rgba(0, 0, 0, 0.85);
         }
 
         * {
@@ -37,10 +37,10 @@
         }
 
         body {
-            font-family: 'Work Sans', sans-serif;
+            font-family: 'Raleway', sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
-            transition: background 0.3s ease, color 0.3s ease;
+            transition: background 0.4s ease, color 0.4s ease;
             overflow-x: hidden;
         }
 
@@ -51,7 +51,7 @@
             right: 0;
             background: var(--bg-primary);
             border-bottom: 1px solid var(--border);
-            padding: 1.5rem 2rem;
+            padding: 1.5rem 3rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -61,42 +61,42 @@
         }
 
         .logo {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.75rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
             color: var(--text-primary);
         }
 
         .header-controls {
             display: flex;
-            gap: 1rem;
+            gap: 1.5rem;
             align-items: center;
         }
 
         .btn {
-            padding: 0.6rem 1.4rem;
+            padding: 0.7rem 1.8rem;
             background: transparent;
             border: 1px solid var(--border);
             color: var(--text-primary);
-            font-family: 'Work Sans', sans-serif;
+            font-family: 'Raleway', sans-serif;
             font-size: 0.875rem;
-            font-weight: 400;
+            font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
             text-transform: uppercase;
         }
 
         .btn:hover {
             background: var(--accent);
-            color: var(--bg-primary);
+            color: white;
             border-color: var(--accent);
         }
 
         .btn-primary {
             background: var(--accent);
-            color: var(--bg-primary);
+            color: white;
             border-color: var(--accent);
         }
 
@@ -110,26 +110,113 @@
             border: none;
             color: var(--text-primary);
             cursor: pointer;
-            font-size: 1.25rem;
+            font-size: 1.5rem;
             padding: 0.5rem;
             transition: transform 0.3s ease;
         }
 
         .theme-toggle:hover {
-            transform: rotate(20deg);
+            transform: rotate(180deg);
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 6rem 2rem 3rem;
+            padding: 7rem 2rem 4rem;
         }
 
-        .album-header {
+        .album-selector-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .custom-select {
+            position: relative;
+            min-width: 300px;
+        }
+
+        .select-display {
+            padding: 1rem 3rem 1rem 1.5rem;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            text-align: center;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+        }
+
+        .select-display:hover {
+            border-color: var(--accent);
+        }
+
+        .select-display::after {
+            content: '▼';
+            position: absolute;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            transition: transform 0.3s ease;
+        }
+
+        .select-display.open::after {
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+        .select-options {
+            position: absolute;
+            top: calc(100% + 0.5rem);
+            left: 0;
+            right: 0;
+            background: var(--bg-primary);
+            border: 2px solid var(--border);
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+            z-index: 100;
+            box-shadow: 0 10px 30px var(--shadow);
+        }
+
+        .select-options.show {
+            display: block;
+        }
+
+        .select-option {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .select-option:last-child {
+            border-bottom: none;
+        }
+
+        .select-option:hover {
+            background: var(--bg-secondary);
+        }
+
+        .select-option.active {
+            background: var(--accent);
+            color: white;
+        }
+
+        .album-info {
             text-align: center;
             margin-bottom: 3rem;
             opacity: 0;
-            animation: fadeInUp 0.8s ease forwards;
+            animation: fadeInUp 0.8s ease 0.2s forwards;
         }
 
         @keyframes fadeInUp {
@@ -144,139 +231,202 @@
         }
 
         .album-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 3rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            letter-spacing: 1px;
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
         }
 
         .album-subtitle {
-            font-size: 1.125rem;
+            font-size: 1.25rem;
             color: var(--text-secondary);
-            font-weight: 300;
-            margin-bottom: 1rem;
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+            font-style: italic;
         }
 
         .album-description {
-            font-size: 0.95rem;
+            font-size: 1rem;
             color: var(--text-secondary);
-            max-width: 600px;
+            max-width: 700px;
             margin: 0 auto;
-            line-height: 1.7;
-        }
-
-        .albums-nav {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 3rem;
-            overflow-x: auto;
-            padding-bottom: 1rem;
-            scrollbar-width: thin;
-            scrollbar-color: var(--accent) var(--bg-secondary);
-        }
-
-        .albums-nav::-webkit-scrollbar {
-            height: 6px;
-        }
-
-        .albums-nav::-webkit-scrollbar-track {
-            background: var(--bg-secondary);
-        }
-
-        .albums-nav::-webkit-scrollbar-thumb {
-            background: var(--accent);
-            border-radius: 3px;
-        }
-
-        .album-tab {
-            padding: 0.75rem 1.5rem;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            color: var(--text-secondary);
-            cursor: pointer;
-            white-space: nowrap;
-            transition: all 0.3s ease;
-            font-size: 0.875rem;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
-        .album-tab:hover,
-        .album-tab.active {
-            background: var(--accent);
-            color: var(--bg-primary);
-            border-color: var(--accent);
+            line-height: 1.8;
         }
 
         .admin-controls {
             display: none;
             gap: 1rem;
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
             flex-wrap: wrap;
+            justify-content: center;
         }
 
         .admin-controls.visible {
             display: flex;
         }
 
-        .photo-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .photo-item {
+        .slideshow-container {
             position: relative;
-            aspect-ratio: 4/3;
-            overflow: hidden;
+            max-width: 100%;
+            margin: 0 auto;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 0.4s forwards;
+        }
+
+        .slide-wrapper {
+            position: relative;
+            width: 100%;
+            height: 70vh;
+            min-height: 500px;
             background: var(--bg-secondary);
-            cursor: pointer;
-            border: 1px solid var(--border);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .photo-item:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px var(--shadow);
-        }
-
-        .photo-item img {
+        .slide {
+            display: none;
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s ease;
+            align-items: center;
+            justify-content: center;
+            position: relative;
         }
 
-        .photo-item:hover img {
-            transform: scale(1.05);
+        .slide.active {
+            display: flex;
+            animation: slideIn 0.5s ease;
         }
 
-        .photo-controls {
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .slide img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            cursor: pointer;
+        }
+
+        .slide-controls {
             position: absolute;
-            top: 0.5rem;
-            right: 0.5rem;
+            top: 1rem;
+            right: 1rem;
             display: none;
             gap: 0.5rem;
+            z-index: 10;
         }
 
-        .admin-controls.visible ~ .photo-grid .photo-controls {
+        .admin-controls.visible ~ .slideshow-container .slide-controls {
             display: flex;
         }
 
-        .photo-btn {
-            padding: 0.5rem;
+        .slide-btn {
+            padding: 0.6rem 1rem;
             background: var(--overlay);
             border: none;
             color: white;
             cursor: pointer;
             font-size: 0.875rem;
             transition: background 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .photo-btn:hover {
+        .slide-btn:hover {
             background: var(--accent);
+        }
+
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--overlay);
+            border: none;
+            color: white;
+            font-size: 2rem;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 5;
+        }
+
+        .nav-btn:hover {
+            background: var(--accent);
+        }
+
+        .nav-btn.prev {
+            left: 1rem;
+        }
+
+        .nav-btn.next {
+            right: 1rem;
+        }
+
+        .slide-counter {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--overlay);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+        }
+
+        .thumbnail-strip {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            overflow-x: auto;
+            padding: 1rem 0;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent) var(--bg-secondary);
+        }
+
+        .thumbnail-strip::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .thumbnail-strip::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        .thumbnail-strip::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 4px;
+        }
+
+        .thumbnail {
+            min-width: 120px;
+            height: 80px;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .thumbnail:hover,
+        .thumbnail.active {
+            opacity: 1;
+            border-color: var(--accent);
+        }
+
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .modal {
@@ -301,18 +451,18 @@
 
         .modal-content {
             background: var(--bg-primary);
-            padding: 2.5rem;
-            max-width: 500px;
+            padding: 3rem;
+            max-width: 550px;
             width: 90%;
-            border: 1px solid var(--border);
+            border: 2px solid var(--border);
             max-height: 90vh;
             overflow-y: auto;
         }
 
         .modal-header {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.75rem;
-            margin-bottom: 1.5rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 2rem;
             font-weight: 600;
         }
 
@@ -325,19 +475,20 @@
             margin-bottom: 0.5rem;
             font-size: 0.875rem;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
             color: var(--text-secondary);
+            font-weight: 500;
         }
 
         .form-input,
         .form-textarea {
             width: 100%;
-            padding: 0.75rem;
+            padding: 1rem;
             background: var(--bg-secondary);
-            border: 1px solid var(--border);
+            border: 2px solid var(--border);
             color: var(--text-primary);
-            font-family: 'Work Sans', sans-serif;
-            font-size: 0.95rem;
+            font-family: 'Raleway', sans-serif;
+            font-size: 1rem;
             transition: border-color 0.3s ease;
         }
 
@@ -348,7 +499,7 @@
         }
 
         .form-textarea {
-            min-height: 100px;
+            min-height: 120px;
             resize: vertical;
         }
 
@@ -379,88 +530,79 @@
         }
 
         .lightbox-content {
-            max-width: 90%;
-            max-height: 90%;
+            max-width: 95%;
+            max-height: 95%;
             position: relative;
         }
 
         .lightbox-img {
             max-width: 100%;
-            max-height: 90vh;
+            max-height: 95vh;
             object-fit: contain;
         }
 
         .lightbox-close {
             position: absolute;
-            top: -2.5rem;
+            top: -3rem;
             right: 0;
             background: none;
             border: none;
             color: white;
-            font-size: 2rem;
+            font-size: 3rem;
             cursor: pointer;
             padding: 0.5rem;
+            line-height: 1;
         }
 
         .empty-state {
             text-align: center;
-            padding: 4rem 2rem;
+            padding: 5rem 2rem;
             color: var(--text-secondary);
         }
 
         .empty-state-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
         }
 
         .file-upload {
             display: none;
         }
 
-        .upload-btn {
-            display: inline-block;
-            padding: 0.6rem 1.4rem;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            color: var(--text-primary);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.875rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .upload-btn:hover {
-            background: var(--accent);
-            color: var(--bg-primary);
-            border-color: var(--accent);
-        }
-
         @media (max-width: 768px) {
             .header {
-                padding: 1rem;
+                padding: 1rem 1.5rem;
             }
 
             .logo {
-                font-size: 1.25rem;
+                font-size: 1.5rem;
             }
 
             .album-title {
-                font-size: 2rem;
+                font-size: 2.5rem;
             }
 
-            .photo-grid {
-                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-                gap: 1rem;
+            .slide-wrapper {
+                height: 50vh;
+                min-height: 400px;
+            }
+
+            .nav-btn {
+                padding: 0.75rem 1rem;
+                font-size: 1.5rem;
             }
 
             .modal-content {
-                padding: 1.5rem;
+                padding: 2rem;
             }
 
             .btn {
-                padding: 0.5rem 1rem;
-                font-size: 0.8rem;
+                padding: 0.6rem 1.2rem;
+                font-size: 0.75rem;
+            }
+
+            .custom-select {
+                min-width: 250px;
             }
         }
     </style>
@@ -476,13 +618,20 @@
     </header>
 
     <div class="container">
-        <div class="album-header" id="albumHeader">
-            <h1 class="album-title" id="albumTitle">My Collection</h1>
+        <div class="album-selector-wrapper">
+            <div class="custom-select">
+                <div class="select-display" onclick="toggleSelect()">
+                    <span id="selectedAlbum">Select Album</span>
+                </div>
+                <div class="select-options" id="selectOptions"></div>
+            </div>
+        </div>
+
+        <div class="album-info">
+            <h1 class="album-title" id="albumTitle"></h1>
             <p class="album-subtitle" id="albumSubtitle"></p>
             <p class="album-description" id="albumDescription"></p>
         </div>
-
-        <div class="albums-nav" id="albumsNav"></div>
 
         <div class="admin-controls" id="adminControls">
             <button class="btn btn-primary" onclick="showCreateAlbumModal()">Create Album</button>
@@ -490,10 +639,17 @@
             <button class="btn" onclick="deleteCurrentAlbum()">Delete Album</button>
             <button class="btn" onclick="toggleFavoriteAlbum()">Set as Favorite</button>
             <button class="btn btn-primary" onclick="document.getElementById('photoUpload').click()">Add Photos</button>
+            <button class="btn btn-primary" onclick="exportAlbums()">Export Gallery</button>
             <input type="file" id="photoUpload" class="file-upload" accept="image/*" multiple onchange="handlePhotoUpload(event)">
         </div>
 
-        <div class="photo-grid" id="photoGrid"></div>
+        <div class="slideshow-container" id="slideshowContainer">
+            <div class="slide-wrapper" id="slideWrapper"></div>
+            <button class="nav-btn prev" onclick="changeSlide(-1)">‹</button>
+            <button class="nav-btn next" onclick="changeSlide(1)">›</button>
+            <div class="slide-counter" id="slideCounter"></div>
+            <div class="thumbnail-strip" id="thumbnailStrip"></div>
+        </div>
     </div>
 
     <!-- Login Modal -->
@@ -547,7 +703,12 @@
     </div>
 
     <script>
-        // Encryption function using SHA-256
+        // DATA_PLACEHOLDER - Albums data will be embedded here
+        let ALBUMS_DATA = [{"id":1,"title":"My Collection","subtitle":"A curated selection","description":"Welcome to my photo gallery","photos":[],"isFavorite":true}];
+        
+        // PASSWORD_HASH_PLACEHOLDER
+        const STORED_PASSWORD_HASH = "0979f26609b496b1e58207a0acaf4819b8bdf72efbb57004136dba0acd469810";
+
         async function hashPassword(password) {
             const encoder = new TextEncoder();
             const data = encoder.encode(password);
@@ -557,121 +718,167 @@
                 .join('');
         }
 
-        // Admin credentials (password hash for "HisMasterpiece")
         const ADMIN_USERNAME = 'ricajyn';
-        const ADMIN_PASSWORD_HASH = 'e8c5c0c5e5f5d5e5f5c5e5d5c5e5f5d5e5c5e5d5c5e5f5d5e5c5e5d5c5e5f5d5'; // Placeholder, will be set on first run
-
-        // Initialize password hash
-        (async function initPasswordHash() {
-            const stored = localStorage.getItem('adminPasswordHash');
-            if (!stored) {
-                const hash = await hashPassword('HisMasterpiece');
-                localStorage.setItem('adminPasswordHash', hash);
-            }
-        })();
-
-        // Data structure
+        
         let albums = [];
         let currentAlbumId = null;
+        let currentSlideIndex = 0;
         let isAdmin = false;
         let editingAlbumId = null;
 
-        // Initialize
         function init() {
-            loadData();
+            albums = JSON.parse(JSON.stringify(ALBUMS_DATA));
+            
+            const favoriteAlbum = albums.find(a => a.isFavorite);
+            currentAlbumId = favoriteAlbum ? favoriteAlbum.id : (albums.length > 0 ? albums[0].id : null);
+            
             checkTheme();
-            displayAlbums();
+            displayAlbumSelector();
             displayCurrentAlbum();
         }
 
-        // Load data from localStorage
-        function loadData() {
-            const stored = localStorage.getItem('photoAlbums');
-            if (stored) {
-                albums = JSON.parse(stored);
-            } else {
-                // Create default album
-                albums = [{
-                    id: Date.now(),
-                    title: 'My Collection',
-                    subtitle: 'A curated selection',
-                    description: 'Welcome to my photo gallery',
-                    photos: [],
-                    isFavorite: true
-                }];
-                saveData();
-            }
-            
-            // Set current album to favorite or first album
-            const favoriteAlbum = albums.find(a => a.isFavorite);
-            currentAlbumId = favoriteAlbum ? favoriteAlbum.id : albums[0].id;
-        }
-
-        // Save data to localStorage
-        function saveData() {
-            localStorage.setItem('photoAlbums', JSON.stringify(albums));
-        }
-
-        // Display albums navigation
-        function displayAlbums() {
-            const nav = document.getElementById('albumsNav');
-            nav.innerHTML = '';
+        function displayAlbumSelector() {
+            const options = document.getElementById('selectOptions');
+            const display = document.getElementById('selectedAlbum');
+            options.innerHTML = '';
             
             albums.forEach(album => {
-                const tab = document.createElement('div');
-                tab.className = 'album-tab' + (album.id === currentAlbumId ? ' active' : '');
-                tab.textContent = album.title + (album.isFavorite ? ' ★' : '');
-                tab.onclick = () => switchAlbum(album.id);
-                nav.appendChild(tab);
+                const option = document.createElement('div');
+                option.className = 'select-option' + (album.id === currentAlbumId ? ' active' : '');
+                option.textContent = album.title + (album.isFavorite ? ' ★' : '');
+                option.onclick = () => selectAlbum(album.id);
+                options.appendChild(option);
             });
+
+            const currentAlbum = albums.find(a => a.id === currentAlbumId);
+            if (currentAlbum) {
+                display.textContent = currentAlbum.title + (currentAlbum.isFavorite ? ' ★' : '');
+            }
         }
 
-        // Switch album
-        function switchAlbum(albumId) {
+        function toggleSelect() {
+            const options = document.getElementById('selectOptions');
+            const display = document.querySelector('.select-display');
+            options.classList.toggle('show');
+            display.classList.toggle('open');
+        }
+
+        function selectAlbum(albumId) {
             currentAlbumId = albumId;
-            displayAlbums();
+            currentSlideIndex = 0;
+            toggleSelect();
+            displayAlbumSelector();
             displayCurrentAlbum();
         }
 
-        // Display current album
         function displayCurrentAlbum() {
             const album = albums.find(a => a.id === currentAlbumId);
-            if (!album) return;
+            if (!album) {
+                document.getElementById('albumTitle').textContent = '';
+                document.getElementById('albumSubtitle').textContent = '';
+                document.getElementById('albumDescription').textContent = '';
+                document.getElementById('slideWrapper').innerHTML = '<div class="empty-state"><div class="empty-state-icon">📷</div><p>No album selected</p></div>';
+                return;
+            }
 
             document.getElementById('albumTitle').textContent = album.title;
             document.getElementById('albumSubtitle').textContent = album.subtitle || '';
             document.getElementById('albumDescription').textContent = album.description || '';
 
-            const grid = document.getElementById('photoGrid');
-            grid.innerHTML = '';
-
             if (album.photos.length === 0) {
-                grid.innerHTML = `
+                document.getElementById('slideWrapper').innerHTML = `
                     <div class="empty-state">
                         <div class="empty-state-icon">📷</div>
-                        <p>No photos yet</p>
-                        ${isAdmin ? '<p style="margin-top: 1rem; font-size: 0.875rem;">Click "Add Photos" to get started</p>' : ''}
+                        <p>No photos in this album</p>
+                        ${isAdmin ? '<p style="margin-top: 1rem;">Click "Add Photos" to get started</p>' : ''}
                     </div>
                 `;
+                document.getElementById('thumbnailStrip').innerHTML = '';
+                document.getElementById('slideCounter').style.display = 'none';
                 return;
             }
 
+            displaySlideshow(album);
+        }
+
+        function displaySlideshow(album) {
+            const wrapper = document.getElementById('slideWrapper');
+            wrapper.innerHTML = '';
+
             album.photos.forEach((photo, index) => {
-                const item = document.createElement('div');
-                item.className = 'photo-item';
-                item.innerHTML = `
+                const slide = document.createElement('div');
+                slide.className = 'slide' + (index === currentSlideIndex ? ' active' : '');
+                slide.innerHTML = `
                     <img src="${photo}" alt="Photo ${index + 1}" onclick="openLightbox('${photo}')">
-                    <div class="photo-controls">
-                        ${index > 0 ? `<button class="photo-btn" onclick="movePhoto(${index}, -1)" title="Move left">←</button>` : ''}
-                        ${index < album.photos.length - 1 ? `<button class="photo-btn" onclick="movePhoto(${index}, 1)" title="Move right">→</button>` : ''}
-                        <button class="photo-btn" onclick="deletePhoto(${index})" title="Delete">×</button>
+                    <div class="slide-controls">
+                        ${index > 0 ? `<button class="slide-btn" onclick="movePhoto(${index}, -1)">Move Left</button>` : ''}
+                        ${index < album.photos.length - 1 ? `<button class="slide-btn" onclick="movePhoto(${index}, 1)">Move Right</button>` : ''}
+                        <button class="slide-btn" onclick="deletePhoto(${index})">Delete</button>
                     </div>
                 `;
-                grid.appendChild(item);
+                wrapper.appendChild(slide);
+            });
+
+            updateSlideCounter();
+            displayThumbnails(album);
+        }
+
+        function displayThumbnails(album) {
+            const strip = document.getElementById('thumbnailStrip');
+            strip.innerHTML = '';
+
+            album.photos.forEach((photo, index) => {
+                const thumb = document.createElement('div');
+                thumb.className = 'thumbnail' + (index === currentSlideIndex ? ' active' : '');
+                thumb.innerHTML = `<img src="${photo}" alt="Thumbnail ${index + 1}">`;
+                thumb.onclick = () => goToSlide(index);
+                strip.appendChild(thumb);
             });
         }
 
-        // Login
+        function changeSlide(direction) {
+            const album = albums.find(a => a.id === currentAlbumId);
+            if (!album || album.photos.length === 0) return;
+
+            currentSlideIndex += direction;
+            if (currentSlideIndex < 0) currentSlideIndex = album.photos.length - 1;
+            if (currentSlideIndex >= album.photos.length) currentSlideIndex = 0;
+
+            showSlide();
+        }
+
+        function goToSlide(index) {
+            currentSlideIndex = index;
+            showSlide();
+        }
+
+        function showSlide() {
+            const slides = document.querySelectorAll('.slide');
+            const thumbnails = document.querySelectorAll('.thumbnail');
+            
+            slides.forEach((slide, index) => {
+                slide.classList.toggle('active', index === currentSlideIndex);
+            });
+
+            thumbnails.forEach((thumb, index) => {
+                thumb.classList.toggle('active', index === currentSlideIndex);
+            });
+
+            updateSlideCounter();
+        }
+
+        function updateSlideCounter() {
+            const album = albums.find(a => a.id === currentAlbumId);
+            const counter = document.getElementById('slideCounter');
+            
+            if (album && album.photos.length > 0) {
+                counter.textContent = `${currentSlideIndex + 1} / ${album.photos.length}`;
+                counter.style.display = 'block';
+            } else {
+                counter.style.display = 'none';
+            }
+        }
+
         async function login() {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
@@ -682,9 +889,8 @@
             }
 
             const hash = await hashPassword(password);
-            const storedHash = localStorage.getItem('adminPasswordHash');
 
-            if (hash === storedHash) {
+            if (hash === STORED_PASSWORD_HASH) {
                 isAdmin = true;
                 document.getElementById('loginBtn').style.display = 'none';
                 document.getElementById('logoutBtn').style.display = 'block';
@@ -697,7 +903,6 @@
             }
         }
 
-        // Logout
         function logout() {
             isAdmin = false;
             document.getElementById('loginBtn').style.display = 'block';
@@ -705,12 +910,10 @@
             document.getElementById('adminControls').classList.remove('visible');
         }
 
-        // Show login modal
         function showLoginModal() {
             document.getElementById('loginModal').classList.add('active');
         }
 
-        // Show create album modal
         function showCreateAlbumModal() {
             editingAlbumId = null;
             document.getElementById('albumModalTitle').textContent = 'Create Album';
@@ -720,7 +923,6 @@
             document.getElementById('albumModal').classList.add('active');
         }
 
-        // Show edit album modal
         function showEditAlbumModal() {
             const album = albums.find(a => a.id === currentAlbumId);
             if (!album) return;
@@ -733,7 +935,6 @@
             document.getElementById('albumModal').classList.add('active');
         }
 
-        // Save album
         function saveAlbum() {
             const title = document.getElementById('albumTitleInput').value.trim();
             if (!title) {
@@ -745,7 +946,6 @@
             const description = document.getElementById('albumDescriptionInput').value.trim();
 
             if (editingAlbumId) {
-                // Edit existing album
                 const album = albums.find(a => a.id === editingAlbumId);
                 if (album) {
                     album.title = title;
@@ -753,24 +953,23 @@
                     album.description = description;
                 }
             } else {
-                // Create new album
-                albums.push({
+                const newAlbum = {
                     id: Date.now(),
                     title,
                     subtitle,
                     description,
                     photos: [],
                     isFavorite: false
-                });
+                };
+                albums.push(newAlbum);
+                currentAlbumId = newAlbum.id;
             }
 
-            saveData();
-            displayAlbums();
+            displayAlbumSelector();
             displayCurrentAlbum();
             closeModal('albumModal');
         }
 
-        // Delete current album
         function deleteCurrentAlbum() {
             if (albums.length === 1) {
                 alert('Cannot delete the last album');
@@ -780,24 +979,21 @@
             if (confirm('Are you sure you want to delete this album?')) {
                 albums = albums.filter(a => a.id !== currentAlbumId);
                 currentAlbumId = albums[0].id;
-                saveData();
-                displayAlbums();
+                currentSlideIndex = 0;
+                displayAlbumSelector();
                 displayCurrentAlbum();
             }
         }
 
-        // Toggle favorite album
         function toggleFavoriteAlbum() {
             albums.forEach(a => a.isFavorite = false);
             const album = albums.find(a => a.id === currentAlbumId);
             if (album) {
                 album.isFavorite = true;
             }
-            saveData();
-            displayAlbums();
+            displayAlbumSelector();
         }
 
-        // Handle photo upload
         function handlePhotoUpload(event) {
             const files = event.target.files;
             if (!files.length) return;
@@ -805,12 +1001,15 @@
             const album = albums.find(a => a.id === currentAlbumId);
             if (!album) return;
 
+            let processed = 0;
             Array.from(files).forEach(file => {
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     album.photos.push(e.target.result);
-                    saveData();
-                    displayCurrentAlbum();
+                    processed++;
+                    if (processed === files.length) {
+                        displayCurrentAlbum();
+                    }
                 };
                 reader.readAsDataURL(file);
             });
@@ -818,7 +1017,6 @@
             event.target.value = '';
         }
 
-        // Move photo
         function movePhoto(index, direction) {
             const album = albums.find(a => a.id === currentAlbumId);
             if (!album) return;
@@ -827,39 +1025,61 @@
             if (newIndex < 0 || newIndex >= album.photos.length) return;
 
             [album.photos[index], album.photos[newIndex]] = [album.photos[newIndex], album.photos[index]];
-            saveData();
+            
+            if (currentSlideIndex === index) {
+                currentSlideIndex = newIndex;
+            } else if (currentSlideIndex === newIndex) {
+                currentSlideIndex = index;
+            }
+            
             displayCurrentAlbum();
         }
 
-        // Delete photo
         function deletePhoto(index) {
             if (confirm('Delete this photo?')) {
                 const album = albums.find(a => a.id === currentAlbumId);
                 if (!album) return;
 
                 album.photos.splice(index, 1);
-                saveData();
+                
+                if (currentSlideIndex >= album.photos.length) {
+                    currentSlideIndex = Math.max(0, album.photos.length - 1);
+                }
+                
                 displayCurrentAlbum();
             }
         }
 
-        // Open lightbox
+        function exportAlbums() {
+            const htmlContent = document.documentElement.outerHTML
+                .replace(/let ALBUMS_DATA = \[.*?\];/s, `let ALBUMS_DATA = ${JSON.stringify(albums)};`);
+            
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'index.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            alert('Gallery exported! Replace your GitHub Pages index.html with this file.');
+        }
+
         function openLightbox(src) {
             document.getElementById('lightboxImg').src = src;
             document.getElementById('lightbox').classList.add('active');
         }
 
-        // Close lightbox
         function closeLightbox() {
             document.getElementById('lightbox').classList.remove('active');
         }
 
-        // Close modal
         function closeModal(modalId) {
             document.getElementById(modalId).classList.remove('active');
         }
 
-        // Theme toggle
         function toggleTheme() {
             const html = document.documentElement;
             const currentTheme = html.getAttribute('data-theme');
@@ -868,22 +1088,29 @@
             localStorage.setItem('theme', newTheme);
         }
 
-        // Check theme
         function checkTheme() {
             const savedTheme = localStorage.getItem('theme') || 'light';
             document.documentElement.setAttribute('data-theme', savedTheme);
         }
 
-        // Close modals on escape key
+        document.addEventListener('click', (e) => {
+            const select = document.querySelector('.custom-select');
+            if (!select.contains(e.target)) {
+                document.getElementById('selectOptions').classList.remove('show');
+                document.querySelector('.select-display').classList.remove('open');
+            }
+        });
+
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 closeModal('loginModal');
                 closeModal('albumModal');
                 closeLightbox();
             }
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+            if (e.key === 'ArrowRight') changeSlide(1);
         });
 
-        // Initialize on load
         window.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
