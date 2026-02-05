@@ -140,6 +140,7 @@
         .custom-select {
             position: relative;
             min-width: 300px;
+            z-index: 100;
         }
 
         .select-display {
@@ -152,6 +153,8 @@
             text-align: center;
             transition: all 0.3s ease;
             letter-spacing: 0.5px;
+            position: relative;
+            z-index: 101;
         }
 
         .select-display:hover {
@@ -167,6 +170,7 @@
             font-size: 0.75rem;
             color: var(--text-secondary);
             transition: transform 0.3s ease;
+            pointer-events: none;
         }
 
         .select-display.open::after {
@@ -183,7 +187,7 @@
             max-height: 300px;
             overflow-y: auto;
             display: none;
-            z-index: 100;
+            z-index: 102;
             box-shadow: 0 10px 30px var(--shadow);
         }
 
@@ -197,6 +201,8 @@
             transition: background 0.2s ease;
             text-align: center;
             border-bottom: 1px solid var(--border);
+            position: relative;
+            z-index: 103;
         }
 
         .select-option:last-child {
@@ -332,17 +338,6 @@
             to {
                 opacity: 1;
                 transform: translateX(0);
-            }
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
             }
         }
 
@@ -604,6 +599,24 @@
             display: none;
         }
 
+        .notification-modal .modal-content {
+            max-width: 450px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .notification-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .notification-message {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+        }
+
         @media (max-width: 768px) {
             .header {
                 padding: 1rem 1.5rem;
@@ -673,8 +686,9 @@
             <button class="btn" onclick="showEditAlbumModal()">Edit Album</button>
             <button class="btn" onclick="deleteCurrentAlbum()">Delete Album</button>
             <button class="btn" onclick="toggleFavoriteAlbum()">Set as Favorite</button>
-            <button class="btn btn-primary" onclick="showManagePhotosModal()">Manage Photos</button>
-            <button class="btn btn-primary" onclick="exportAlbums()">Export Gallery</button>
+            <button class="btn btn-primary" onclick="document.getElementById('photoUpload').click()">Add Photos</button>
+            <button class="btn btn-primary" onclick="exportData()">Save Changes</button>
+            <input type="file" id="photoUpload" class="file-upload" accept="image/*" multiple onchange="handlePhotoUpload(event)">
         </div>
 
         <div class="slideshow-container" id="slideshowContainer">
@@ -728,6 +742,15 @@
         </div>
     </div>
 
+    <!-- Notification Modal -->
+    <div class="modal notification-modal" id="notificationModal">
+        <div class="modal-content">
+            <div class="notification-icon" id="notificationIcon">ℹ️</div>
+            <div class="notification-message" id="notificationMessage"></div>
+            <button class="btn btn-primary" onclick="closeModal('notificationModal')" style="width: 100%;">OK</button>
+        </div>
+    </div>
+
     <!-- Lightbox -->
     <div class="lightbox" id="lightbox" onclick="closeLightbox()">
         <div class="lightbox-content" onclick="event.stopPropagation()">
@@ -737,20 +760,18 @@
     </div>
 
     <script>
-        // DATA_PLACEHOLDER - Albums data will be embedded here
-        // Structure: { folderName: string, title: string, subtitle: string, description: string, photos: string[], isFavorite: boolean }
+        // ALBUMS_DATA_START
         let ALBUMS_DATA = [
             {
                 folderName: "My-Collection",
                 title: "My Collection",
                 subtitle: "A curated selection",
                 description: "Welcome to my photo gallery",
-                photos: [],
                 isFavorite: true
             }
         ];
+        // ALBUMS_DATA_END
         
-        // PASSWORD_HASH_PLACEHOLDER
         const STORED_PASSWORD_HASH = "0979f26609b496b1e58207a0acaf4819b8bdf72efbb57004136dba0acd469810";
 
         async function hashPassword(password) {
@@ -769,10 +790,13 @@
         let currentSlideIndex = 0;
         let isAdmin = false;
         let editingAlbumIndex = null;
-        let slideDirection = 1; // 1 for forward, -1 for backward
+        let slideDirection = 1;
 
-        function init() {
+        async function init() {
             albums = JSON.parse(JSON.stringify(ALBUMS_DATA));
+            
+            // Auto-load photos from folders
+            await loadPhotosFromFolders();
             
             const favoriteIndex = albums.findIndex(a => a.isFavorite);
             currentAlbumIndex = favoriteIndex >= 0 ? favoriteIndex : 0;
@@ -782,8 +806,42 @@
             displayCurrentAlbum();
         }
 
+        async function loadPhotosFromFolders() {
+            for (let album of albums) {
+                try {
+                    const response = await fetch(`images/${album.folderName}/`);
+                    if (response.ok) {
+                        const text = await response.text();
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(text, 'text/html');
+                        const links = doc.querySelectorAll('a');
+                        const photos = [];
+                        
+                        links.forEach(link => {
+                            const href = link.getAttribute('href');
+                            if (href && /\.(jpg|jpeg|png|gif|webp)$/i.test(href)) {
+                                photos.push(href);
+                            }
+                        });
+                        
+                        if (photos.length > 0) {
+                            album.photos = photos;
+                        }
+                    }
+                } catch (error) {
+                    console.log(`Could not auto-load photos for ${album.folderName}`);
+                }
+            }
+        }
+
         function createFolderName(title) {
             return title.replace(/[^a-zA-Z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+        }
+
+        function showNotification(message, icon = 'ℹ️') {
+            document.getElementById('notificationIcon').textContent = icon;
+            document.getElementById('notificationMessage').textContent = message;
+            document.getElementById('notificationModal').classList.add('active');
         }
 
         function displayAlbumSelector() {
@@ -841,12 +899,12 @@
             document.getElementById('albumSubtitle').textContent = album.subtitle || '';
             document.getElementById('albumDescription').textContent = album.description || '';
 
-            if (album.photos.length === 0) {
+            if (!album.photos || album.photos.length === 0) {
                 document.getElementById('slideWrapper').innerHTML = `
                     <div class="empty-state">
                         <div class="empty-state-icon">📷</div>
                         <p>No photos in this album</p>
-                        ${isAdmin ? '<p style="margin-top: 1rem;">Click "Add Photos" to get started</p>' : ''}
+                        ${isAdmin ? '<p style="margin-top: 1rem;">Click "Add Photos" to upload images</p>' : ''}
                     </div>
                 `;
                 document.getElementById('thumbnailStrip').innerHTML = '';
@@ -866,7 +924,7 @@
                 const slide = document.createElement('div');
                 slide.className = 'slide' + (index === currentSlideIndex ? ' active' : '');
                 slide.innerHTML = `
-                    <img src="${photoPath}" alt="${photoName}" onclick="openLightbox('${photoPath}')">
+                    <img src="${photoPath}" alt="${photoName}" onclick="openLightbox('${photoPath}')" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'400\\' height=\\'300\\'%3E%3Crect fill=\\'%23ddd\\' width=\\'400\\' height=\\'300\\'/%3E%3Ctext x=\\'50%25\\' y=\\'50%25\\' text-anchor=\\'middle\\' dy=\\'.3em\\' fill=\\'%23999\\'%3EImage not found%3C/text%3E%3C/svg%3E'">
                     <div class="slide-controls">
                         ${index > 0 ? `<button class="slide-btn" onclick="event.stopPropagation(); movePhoto(${index}, -1)">Move Left</button>` : ''}
                         ${index < album.photos.length - 1 ? `<button class="slide-btn" onclick="event.stopPropagation(); movePhoto(${index}, 1)">Move Right</button>` : ''}
@@ -888,7 +946,7 @@
                 const photoPath = `images/${album.folderName}/${photoName}`;
                 const thumb = document.createElement('div');
                 thumb.className = 'thumbnail' + (index === currentSlideIndex ? ' active' : '');
-                thumb.innerHTML = `<img src="${photoPath}" alt="${photoName}">`;
+                thumb.innerHTML = `<img src="${photoPath}" alt="${photoName}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'120\\' height=\\'80\\'%3E%3Crect fill=\\'%23ddd\\' width=\\'120\\' height=\\'80\\'/%3E%3C/svg%3E'">`;
                 thumb.onclick = () => goToSlide(index);
                 strip.appendChild(thumb);
             });
@@ -896,7 +954,7 @@
 
         function changeSlide(direction) {
             const album = albums[currentAlbumIndex];
-            if (!album || album.photos.length === 0) return;
+            if (!album || !album.photos || album.photos.length === 0) return;
 
             slideDirection = direction;
             currentSlideIndex += direction;
@@ -935,7 +993,6 @@
 
             updateSlideCounter();
             
-            // Scroll thumbnail into view
             const activeThumb = document.querySelector('.thumbnail.active');
             if (activeThumb) {
                 activeThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
@@ -946,7 +1003,7 @@
             const album = albums[currentAlbumIndex];
             const counter = document.getElementById('slideCounter');
             
-            if (album && album.photos.length > 0) {
+            if (album && album.photos && album.photos.length > 0) {
                 counter.textContent = `${currentSlideIndex + 1} / ${album.photos.length}`;
                 counter.style.display = 'block';
             } else {
@@ -959,7 +1016,7 @@
             const password = document.getElementById('password').value;
 
             if (username !== ADMIN_USERNAME) {
-                alert('Invalid credentials');
+                showNotification('Invalid username or password', '❌');
                 return;
             }
 
@@ -973,8 +1030,9 @@
                 closeModal('loginModal');
                 document.getElementById('username').value = '';
                 document.getElementById('password').value = '';
+                showNotification('Welcome back, Admin!', '✅');
             } else {
-                alert('Invalid credentials');
+                showNotification('Invalid username or password', '❌');
             }
         }
 
@@ -983,6 +1041,7 @@
             document.getElementById('loginBtn').style.display = 'block';
             document.getElementById('logoutBtn').style.display = 'none';
             document.getElementById('adminControls').classList.remove('visible');
+            showNotification('Logged out successfully', '👋');
         }
 
         function showLoginModal() {
@@ -1013,7 +1072,7 @@
         function saveAlbum() {
             const title = document.getElementById('albumTitleInput').value.trim();
             if (!title) {
-                alert('Title is required');
+                showNotification('Album title is required', '⚠️');
                 return;
             }
 
@@ -1024,16 +1083,12 @@
             if (editingAlbumIndex !== null) {
                 const album = albums[editingAlbumIndex];
                 if (album) {
-                    const oldFolderName = album.folderName;
                     album.title = title;
                     album.subtitle = subtitle;
                     album.description = description;
                     album.folderName = folderName;
-                    
-                    if (oldFolderName !== folderName) {
-                        alert(`Album folder renamed from "${oldFolderName}" to "${folderName}". Remember to rename the folder in GitHub!`);
-                    }
                 }
+                showNotification('Album updated successfully!', '✅');
             } else {
                 const newAlbum = {
                     folderName,
@@ -1045,8 +1100,7 @@
                 };
                 albums.push(newAlbum);
                 currentAlbumIndex = albums.length - 1;
-                
-                alert(`Create a folder: images/${folderName}/ in your GitHub repository and add photos there.`);
+                showNotification(`Album created! Remember to create the folder: images/${folderName}/`, '✅');
             }
 
             displayAlbumSelector();
@@ -1056,17 +1110,22 @@
 
         function deleteCurrentAlbum() {
             if (albums.length === 1) {
-                alert('Cannot delete the last album');
+                showNotification('Cannot delete the last album', '⚠️');
                 return;
             }
 
             const album = albums[currentAlbumIndex];
-            if (confirm(`Delete album "${album.title}"? Remember to also delete the images/${album.folderName}/ folder from GitHub.`)) {
+            
+            // Create a custom confirmation modal
+            const confirmMsg = `Delete album "${album.title}"?\n\nThis will remove it from the gallery. The images/${album.folderName}/ folder will remain in GitHub.`;
+            
+            if (confirm(confirmMsg)) {
                 albums.splice(currentAlbumIndex, 1);
                 currentAlbumIndex = 0;
                 currentSlideIndex = 0;
                 displayAlbumSelector();
                 displayCurrentAlbum();
+                showNotification('Album deleted successfully', '✅');
             }
         }
 
@@ -1075,35 +1134,49 @@
             const album = albums[currentAlbumIndex];
             if (album) {
                 album.isFavorite = true;
+                showNotification(`"${album.title}" is now the default album`, '⭐');
             }
             displayAlbumSelector();
         }
 
         function handlePhotoUpload(event) {
-            alert('To add photos:\n\n1. Create folder: images/' + albums[currentAlbumIndex].folderName + '/\n2. Upload your images to this folder\n3. Add the filenames to the album in the exported JSON\n\nOr use the "Manage Photos" button to add filenames manually.');
-            event.target.value = '';
-        }
+            const files = event.target.files;
+            if (!files.length) return;
 
-        function showManagePhotosModal() {
             const album = albums[currentAlbumIndex];
             if (!album) return;
-            
-            const photosList = album.photos.length > 0 ? album.photos.join('\n') : '';
-            const newList = prompt(
-                `Manage photos for "${album.title}"\n\nEnter one filename per line (e.g., photo1.jpg, photo2.jpg):\n\nCurrent photos in images/${album.folderName}/:`,
-                photosList
-            );
-            
-            if (newList !== null) {
-                album.photos = newList.split('\n').map(p => p.trim()).filter(p => p);
-                currentSlideIndex = 0;
-                displayCurrentAlbum();
-            }
+
+            if (!album.photos) album.photos = [];
+
+            let processed = 0;
+            const totalFiles = files.length;
+
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const fileName = file.name;
+                    album.photos.push(fileName);
+                    
+                    // Store as base64 for temporary viewing
+                    // In real usage, these would be uploaded to GitHub
+                    const img = new Image();
+                    img.src = e.target.result;
+                    
+                    processed++;
+                    if (processed === totalFiles) {
+                        displayCurrentAlbum();
+                        showNotification(`${totalFiles} photo(s) added! Remember to click "Save Changes" and upload these files to images/${album.folderName}/ in GitHub.`, '✅');
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+
+            event.target.value = '';
         }
 
         function movePhoto(index, direction) {
             const album = albums[currentAlbumIndex];
-            if (!album) return;
+            if (!album || !album.photos) return;
 
             const newIndex = index + direction;
             if (newIndex < 0 || newIndex >= album.photos.length) return;
@@ -1121,9 +1194,9 @@
 
         function deletePhoto(index) {
             const album = albums[currentAlbumIndex];
-            if (!album) return;
+            if (!album || !album.photos) return;
             
-            if (confirm(`Delete "${album.photos[index]}"?\n\nNote: This only removes it from the gallery. You should also delete the file from images/${album.folderName}/ in GitHub.`)) {
+            if (confirm(`Delete "${album.photos[index]}"?\n\nYou should also delete this file from images/${album.folderName}/ in GitHub.`)) {
                 album.photos.splice(index, 1);
                 
                 if (currentSlideIndex >= album.photos.length) {
@@ -1131,25 +1204,16 @@
                 }
                 
                 displayCurrentAlbum();
+                showNotification('Photo removed from gallery', '✅');
             }
         }
 
-        function exportAlbums() {
-            // Create JSON file with album data
+        function exportData() {
             const albumsJSON = JSON.stringify(albums, null, 2);
-            const jsonBlob = new Blob([albumsJSON], { type: 'application/json' });
-            const jsonUrl = URL.createObjectURL(jsonBlob);
-            const jsonLink = document.createElement('a');
-            jsonLink.href = jsonUrl;
-            jsonLink.download = 'albums-data.json';
-            document.body.appendChild(jsonLink);
-            jsonLink.click();
-            document.body.removeChild(jsonLink);
-            URL.revokeObjectURL(jsonUrl);
             
-            // Create updated HTML file
             const htmlContent = document.documentElement.outerHTML
-                .replace(/let ALBUMS_DATA = \[[\s\S]*?\];/m, `let ALBUMS_DATA = ${albumsJSON};`);
+                .replace(/\/\/ ALBUMS_DATA_START[\s\S]*?\/\/ ALBUMS_DATA_END/m, 
+                    `// ALBUMS_DATA_START\n        let ALBUMS_DATA = ${albumsJSON};\n        // ALBUMS_DATA_END`);
             
             const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
             const htmlUrl = URL.createObjectURL(htmlBlob);
@@ -1161,7 +1225,7 @@
             document.body.removeChild(htmlLink);
             URL.revokeObjectURL(htmlUrl);
             
-            alert('Exported!\n\n1. index.html - Upload this to replace your current index.html\n2. albums-data.json - Backup of your album structure\n\nMake sure your images/ folder structure matches the album folders!');
+            showNotification('Gallery data saved! Upload the downloaded index.html to your GitHub repository to save your changes.', '💾');
         }
 
         function openLightbox(src) {
@@ -1206,6 +1270,7 @@
             if (e.key === 'Escape') {
                 closeModal('loginModal');
                 closeModal('albumModal');
+                closeModal('notificationModal');
                 closeLightbox();
             }
             if (e.key === 'ArrowLeft') changeSlide(-1);
