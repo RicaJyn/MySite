@@ -1,246 +1,233 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Photo Album</title>
-
-<style>
-:root {
-  --bg: #ffffff;
-  --text: #111;
-  --card: #f3f3f3;
-  --accent: #444;
-}
-
-[data-theme="dark"] {
-  --bg: #121212;
-  --text: #f5f5f5;
-  --card: #1e1e1e;
-  --accent: #aaa;
-}
-
-body {
-  margin: 0;
-  font-family: system-ui, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-}
-
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-}
-
-button {
-  background: var(--card);
-  color: var(--text);
-  border: none;
-  padding: 0.6rem 1rem;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-button:hover {
-  opacity: 0.85;
-}
-
-.album-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 1rem;
-  padding: 1rem;
-}
-
-.album {
-  background: var(--card);
-  border-radius: 12px;
-  padding: 0.8rem;
-  text-align: center;
-  cursor: pointer;
-}
-
-.album img {
-  width: 100%;
-  border-radius: 8px;
-  height: 120px;
-  object-fit: cover;
-}
-
-.hidden { display: none; }
-
-.modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.modal-content {
-  background: var(--bg);
-  padding: 1.5rem;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 400px;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ricajyn | Photo Collection</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root { --bg: #ffffff; --text: #1a1a1a; --card: #f4f4f5; }
+        .dark { --bg: #09090b; --text: #fafafa; --card: #18181b; }
+        body { background-color: var(--bg); color: var(--text); transition: all 0.3s ease; }
+        .glass { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        .album-card { background-color: var(--card); border-radius: 12px; overflow: hidden; transition: transform 0.2s; }
+        .album-card:hover { transform: translateY(-4px); }
+        .hidden { display: none; }
+    </style>
 </head>
+<body class="min-h-screen font-sans">
 
-<body>
+    <nav class="p-6 flex justify-between items-center sticky top-0 z-50 glass">
+        <h1 class="text-xl font-bold tracking-tighter">RICAJYN <span class="text-blue-500">.</span></h1>
+        <div class="flex items-center gap-4">
+            <button id="themeToggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800">
+                <i data-lucide="sun" id="sunIcon"></i>
+                <i data-lucide="moon" id="moonIcon" class="hidden"></i>
+            </button>
+            <button id="loginBtn" class="text-sm font-medium border px-4 py-2 rounded-lg hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition">Admin Login</button>
+            <button id="logoutBtn" class="hidden text-sm font-medium bg-red-500 text-white px-4 py-2 rounded-lg">Logout</button>
+        </div>
+    </nav>
 
-<header>
-  <h2>📸 My Album</h2>
-  <div>
-    <button onclick="toggleTheme()">🌗</button>
-    <button onclick="openLogin()">Admin</button>
-  </div>
-</header>
+    <main class="max-w-6xl mx-auto p-6">
+        <div id="adminPanel" class="hidden mb-10 p-6 border-2 border-dashed border-blue-500 rounded-xl bg-blue-50 dark:bg-blue-950/20">
+            <h2 class="text-blue-500 font-bold mb-4 flex items-center gap-2"><i data-lucide="shield-check"></i> Admin Mode Active</h2>
+            <div class="flex flex-wrap gap-3">
+                <button onclick="createNewAlbum()" class="bg-blue-600 text-white px-4 py-2 rounded-md flex items-center gap-2"><i data-lucide="plus-square"></i> New Album</button>
+                <button onclick="exportData()" class="bg-green-600 text-white px-4 py-2 rounded-md flex items-center gap-2"><i data-lucide="download"></i> Save Changes (Export)</button>
+            </div>
+        </div>
 
-<h3 style="padding-left:1rem;">⭐ Favorite Album</h3>
-<div id="favoriteAlbum" class="album-grid"></div>
+        <section id="featuredSection" class="mb-16">
+            <div id="featuredDisplay">
+                </div>
+        </section>
 
-<h3 style="padding-left:1rem;">Other Albums</h3>
-<div id="albums" class="album-grid"></div>
+        <section>
+            <h3 class="text-2xl font-bold mb-8">Other Collections</h3>
+            <div id="albumGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                </div>
+        </section>
+    </main>
 
-<!-- LOGIN MODAL -->
-<div id="loginModal" class="modal hidden" hidden>
-  <div class="modal-content">
-    <h3>Admin Login</h3>
-    <input id="user" placeholder="Username" style="width:100%;margin-bottom:0.5rem;">
-    <input id="pass" type="password" placeholder="Password" style="width:100%;margin-bottom:0.5rem;">
-    <button onclick="login()">Login</button>
-    <button onclick="closeLogin()">Cancel</button>
-  </div>
-</div>
+    <div id="loginModal" class="fixed inset-0 bg-black/50 flex items-center justify-center hidden z-[100]">
+        <div class="bg-white dark:bg-zinc-900 p-8 rounded-2xl w-full max-w-md shadow-2xl">
+            <h2 class="text-2xl font-bold mb-6">Admin Access</h2>
+            <input type="text" id="username" placeholder="Username" class="w-full p-3 mb-4 rounded-lg border dark:bg-zinc-800 dark:border-zinc-700">
+            <input type="password" id="password" placeholder="Password" class="w-full p-3 mb-6 rounded-lg border dark:bg-zinc-800 dark:border-zinc-700">
+            <div class="flex gap-3">
+                <button id="closeLogin" class="flex-1 py-3 rounded-lg border">Cancel</button>
+                <button id="authBtn" class="flex-1 py-3 rounded-lg bg-blue-600 text-white font-bold">Login</button>
+            </div>
+        </div>
+    </div>
 
-<script>
-/* ==============================
-   CONFIG (ENCRYPTED CREDENTIALS)
-================================*/
-const ADMIN_USER = "ricajyn";
-const ADMIN_PASS_HASH =
-"9bb08b44e90a6f19fa88f877ccffbd4c193c7097b5c23c0d44a18c39e91c3b0d";
+    <script>
+        // --- DATA STORAGE ---
+        // To update your photos, you will eventually replace this object.
+        let galleryData = {
+            favoriteAlbumId: 1,
+            albums: [
+                {
+                    id: 1,
+                    title: "Architecture Minimal",
+                    subtitle: "2024 Series",
+                    description: "A collection focusing on the geometry of urban structures.",
+                    photos: [
+                        { id: 101, url: "https://images.unsplash.com/photo-1449156001935-d2863fb72610?q=80&w=800", caption: "Structure 01" },
+                        { id: 102, url: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800", caption: "Glass & Steel" }
+                    ]
+                },
+                {
+                    id: 2,
+                    title: "Nature's Silence",
+                    subtitle: "Forestry",
+                    description: "Quiet moments captured in the deep woods.",
+                    photos: [
+                        { id: 201, url: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=800", caption: "Evergreen" }
+                    ]
+                }
+            ]
+        };
 
-/* ==============================
-   STATE
-================================*/
-let isAdmin = false;
-let albums = JSON.parse(localStorage.getItem("albums")) || [];
+        // SHA-256 Hash for "HisMasterpiece"
+        const AUTH = {
+            user: "ricajyn",
+            passHash: "1675239a73801f993d0f0190a6e343606f362624564c4897f25950854378877c" 
+        };
 
-/* ==============================
-   THEME
-================================*/
-function toggleTheme() {
-  document.body.dataset.theme =
-    document.body.dataset.theme === "dark" ? "" : "dark";
-}
+        let isAdmin = false;
 
-/* ==============================
-   LOGIN
-================================*/
-async function sha256(text) {
-  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
-  return [...new Uint8Array(buf)].map(x => x.toString(16).padStart(2, '0')).join('');
-}
+        // --- CORE FUNCTIONS ---
 
-async function login() {
-  const u = user.value;
-  const p = pass.value;
-  const hash = await sha256(p);
+        async function hashPassword(string) {
+            const utf8 = new TextEncoder().encode(string);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', utf8);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
 
-  if (u === ADMIN_USER && hash === ADMIN_PASS_HASH) {
-    isAdmin = true;
-    alert("Admin logged in");
-    closeLogin();
-    render();
-  } else {
-    alert("Invalid credentials");
-  }
-}
+        function renderGallery() {
+            const featured = galleryData.albums.find(a => a.id === galleryData.favoriteAlbumId);
+            const others = galleryData.albums.filter(a => a.id !== galleryData.favoriteAlbumId);
 
-function openLogin() {
-  loginModal.classList.remove("hidden");
-}
-function closeLogin() {
-  loginModal.classList.add("hidden");
-}
+            // Render Featured
+            const featuredEl = document.getElementById('featuredDisplay');
+            featuredEl.innerHTML = `
+                <div class="relative rounded-3xl overflow-hidden h-[60vh] mb-6 group">
+                    <img src="${featured.photos[0]?.url || ''}" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-10 text-white">
+                        <span class="text-blue-400 font-bold tracking-widest uppercase text-xs mb-2">Featured Album</span>
+                        <h2 class="text-5xl font-extrabold mb-2">${featured.title}</h2>
+                        <p class="text-gray-300 text-lg max-w-2xl">${featured.description}</p>
+                        ${isAdmin ? `<button onclick="editAlbum(${featured.id})" class="mt-4 w-fit bg-white/20 hover:bg-white/40 px-4 py-2 rounded-lg backdrop-blur">Edit Album Content</button>` : ''}
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    ${featured.photos.map(p => `<img src="${p.url}" class="h-48 w-full object-cover rounded-xl">`).join('')}
+                </div>
+            `;
 
-/* ==============================
-   ALBUM RENDERING
-================================*/
-function render() {
-  favoriteAlbum.innerHTML = "";
-  albumsDiv.innerHTML = "";
+            // Render Others
+            const gridEl = document.getElementById('albumGrid');
+            gridEl.innerHTML = others.map(album => `
+                <div class="album-card p-4">
+                    <img src="${album.photos[0]?.url || ''}" class="w-full h-48 object-cover rounded-lg mb-4">
+                    <h4 class="font-bold text-xl">${album.title}</h4>
+                    <p class="text-sm opacity-60 mb-4">${album.subtitle || ''}</p>
+                    <div class="flex gap-2">
+                        <button onclick="setFavorite(${album.id})" class="text-xs border px-3 py-1 rounded-full hover:bg-blue-500 hover:text-white transition">View / Focus</button>
+                        ${isAdmin ? `<button onclick="deleteAlbum(${album.id})" class="text-xs border border-red-500 text-red-500 px-3 py-1 rounded-full">Delete</button>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
 
-  const fav = albums.find(a => a.favorite);
-  if (fav) favoriteAlbum.appendChild(albumCard(fav));
+        // --- EVENT HANDLERS ---
 
-  albums.filter(a => !a.favorite).forEach(a => {
-    albumsDiv.appendChild(albumCard(a));
-  });
+        document.getElementById('loginBtn').addEventListener('click', () => {
+            document.getElementById('loginModal').classList.remove('hidden');
+        });
 
-  if (isAdmin) adminControls();
-}
+        document.getElementById('closeLogin').addEventListener('click', () => {
+            document.getElementById('loginModal').classList.add('hidden');
+        });
 
-function albumCard(album) {
-  const div = document.createElement("div");
-  div.className = "album";
-  div.innerHTML = `
-    <img src="${album.cover || ''}">
-    <strong>${album.name}</strong>
-  `;
-  div.onclick = () => openAlbum(album.id);
-  return div;
-}
+        document.getElementById('authBtn').addEventListener('click', async () => {
+            const u = document.getElementById('username').value;
+            const p = document.getElementById('password').value;
+            const pHash = await hashPassword(p);
 
-/* ==============================
-   ADMIN CONTROLS
-================================*/
-function adminControls() {
-  if (!document.getElementById("adminBar")) {
-    const bar = document.createElement("div");
-    bar.id = "adminBar";
-    bar.style.padding = "1rem";
-    bar.innerHTML = `
-      <button onclick="newAlbum()">➕ New Album</button>
-    `;
-    document.body.insertBefore(bar, albums);
-  }
-}
+            if (u === AUTH.user && pHash === AUTH.passHash) {
+                isAdmin = true;
+                document.getElementById('adminPanel').classList.remove('hidden');
+                document.getElementById('loginBtn').classList.add('hidden');
+                document.getElementById('logoutBtn').classList.remove('hidden');
+                document.getElementById('loginModal').classList.add('hidden');
+                renderGallery();
+            } else {
+                alert("Unauthorized access denied.");
+            }
+        });
 
-function newAlbum() {
-  const name = prompt("Album name?");
-  if (!name) return;
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            location.reload();
+        });
 
-  albums.push({
-    id: Date.now(),
-    name,
-    photos: [],
-    cover: "",
-    favorite: albums.length === 0
-  });
+        // --- ADMIN FEATURES ---
 
-  save();
-}
+        function setFavorite(id) {
+            galleryData.favoriteAlbumId = id;
+            renderGallery();
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
 
-/* ==============================
-   SAVE
-================================*/
-function save() {
-  localStorage.setItem("albums", JSON.stringify(albums));
-  render();
-}
+        function createNewAlbum() {
+            const title = prompt("Album Title:");
+            if (!title) return;
+            const newAlbum = {
+                id: Date.now(),
+                title: title,
+                subtitle: "New Collection",
+                description: "",
+                photos: []
+            };
+            galleryData.albums.push(newAlbum);
+            renderGallery();
+        }
 
-/* INIT */
-const albumsDiv = document.getElementById("albums");
-render();
-</script>
+        function deleteAlbum(id) {
+            if(confirm("Delete this album?")) {
+                galleryData.albums = galleryData.albums.filter(a => a.id !== id);
+                if(galleryData.favoriteAlbumId === id) galleryData.favoriteAlbumId = galleryData.albums[0]?.id;
+                renderGallery();
+            }
+        }
 
+        function exportData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(galleryData, null, 2));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", "gallery_data.json");
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+            alert("Configuration exported. To save permanently, replace the 'galleryData' object in your index.html with the contents of this file.");
+        }
+
+        // --- UI INITIALIZATION ---
+
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+            document.getElementById('sunIcon').classList.toggle('hidden');
+            document.getElementById('moonIcon').classList.toggle('hidden');
+        });
+
+        // Initialize Icons and Gallery
+        lucide.createIcons();
+        renderGallery();
+    </script>
 </body>
 </html>
-
-
