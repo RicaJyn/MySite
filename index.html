@@ -1,8 +1,10 @@
-<html lang="en" data-theme="dark"><head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Photo Gallery</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;family=Raleway:wght@300;400;500&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-primary: #ffffff;
@@ -138,7 +140,7 @@
         .custom-select {
             position: relative;
             min-width: 300px;
-            z-index: 100;
+            z-index: 2000;
         }
 
         .select-display {
@@ -185,7 +187,7 @@
             max-height: 300px;
             overflow-y: auto;
             display: none;
-            z-index: 102;
+            z-index: 3000;
             box-shadow: 0 10px 30px var(--shadow);
         }
 
@@ -658,8 +660,8 @@
         <div class="logo">Gallery</div>
         <div class="header-controls">
             <button class="theme-toggle" onclick="toggleTheme()">◐</button>
-            <button class="btn" id="loginBtn" onclick="showLoginModal()" style="display: none;">Admin</button>
-            <button class="btn" id="logoutBtn" onclick="logout()" style="display: block;">Logout</button>
+            <button class="btn" id="loginBtn" onclick="showLoginModal()">Admin</button>
+            <button class="btn" id="logoutBtn" onclick="logout()" style="display: none;">Logout</button>
         </div>
     </header>
 
@@ -667,55 +669,34 @@
         <div class="album-selector-wrapper">
             <div class="custom-select">
                 <div class="select-display" onclick="toggleSelect(event)">
-                    <span id="selectedAlbum">My Collection ★</span>
+                    <span id="selectedAlbum">Select Album</span>
                 </div>
-                <div class="select-options" id="selectOptions"><div class="select-option active">My Collection ★</div></div>
+                <div class="select-options" id="selectOptions"></div>
             </div>
         </div>
 
         <div class="album-info">
-            <h1 class="album-title" id="albumTitle">My Collection</h1>
-            <p class="album-subtitle" id="albumSubtitle">A curated selection</p>
-            <p class="album-description" id="albumDescription">Welcome to my photo gallery</p>
+            <h1 class="album-title" id="albumTitle"></h1>
+            <p class="album-subtitle" id="albumSubtitle"></p>
+            <p class="album-description" id="albumDescription"></p>
         </div>
 
-        <div class="admin-controls visible" id="adminControls">
+        <div class="admin-controls" id="adminControls">
             <button class="btn btn-primary" onclick="showCreateAlbumModal()">Create Album</button>
             <button class="btn" onclick="showEditAlbumModal()">Edit Album</button>
             <button class="btn" onclick="deleteCurrentAlbum()">Delete Album</button>
             <button class="btn" onclick="toggleFavoriteAlbum()">Set as Favorite</button>
             <button class="btn btn-primary" onclick="document.getElementById('photoUpload').click()">Add Photos</button>
             <button class="btn btn-primary" onclick="exportData()">Save Changes</button>
-            <input type="file" id="photoUpload" class="file-upload" accept="image/*" multiple="" onchange="handlePhotoUpload(event)">
+            <input type="file" id="photoUpload" class="file-upload" accept="image/*" multiple onchange="handlePhotoUpload(event)">
         </div>
 
         <div class="slideshow-container" id="slideshowContainer">
-            <div class="slide-wrapper" id="slideWrapper"><div class="slide active">
-                    <img src="images/My-Collection/facebook.png" alt="facebook.png" onclick="openLightbox('images/My-Collection/facebook.png')" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\'%3E%3Crect fill=\'%23ddd\' width=\'400\' height=\'300\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%23999\'%3EImage not found%3C/text%3E%3C/svg%3E'">
-                    <div class="slide-controls">
-                        
-                        <button class="slide-btn" onclick="event.stopPropagation(); movePhoto(0, 1)">Move Right</button>
-                        <button class="slide-btn" onclick="event.stopPropagation(); deletePhoto(0)">Delete</button>
-                    </div>
-                </div><div class="slide">
-                    <img src="images/My-Collection/Slimmers_icon.png" alt="Slimmers_icon.png" onclick="openLightbox('images/My-Collection/Slimmers_icon.png')" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\'%3E%3Crect fill=\'%23ddd\' width=\'400\' height=\'300\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%23999\'%3EImage not found%3C/text%3E%3C/svg%3E'">
-                    <div class="slide-controls">
-                        <button class="slide-btn" onclick="event.stopPropagation(); movePhoto(1, -1)">Move Left</button>
-                        <button class="slide-btn" onclick="event.stopPropagation(); movePhoto(1, 1)">Move Right</button>
-                        <button class="slide-btn" onclick="event.stopPropagation(); deletePhoto(1)">Delete</button>
-                    </div>
-                </div><div class="slide">
-                    <img src="images/My-Collection/Bob_F-T_624317.webp" alt="Bob_F-T_624317.webp" onclick="openLightbox('images/My-Collection/Bob_F-T_624317.webp')" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\'%3E%3Crect fill=\'%23ddd\' width=\'400\' height=\'300\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%23999\'%3EImage not found%3C/text%3E%3C/svg%3E'">
-                    <div class="slide-controls">
-                        <button class="slide-btn" onclick="event.stopPropagation(); movePhoto(2, -1)">Move Left</button>
-                        
-                        <button class="slide-btn" onclick="event.stopPropagation(); deletePhoto(2)">Delete</button>
-                    </div>
-                </div></div>
+            <div class="slide-wrapper" id="slideWrapper"></div>
             <button class="nav-btn prev" onclick="changeSlide(-1)">‹</button>
             <button class="nav-btn next" onclick="changeSlide(1)">›</button>
-            <div class="slide-counter" id="slideCounter" style="display: block;">1 / 3</div>
-            <div class="thumbnail-strip" id="thumbnailStrip"><div class="thumbnail active"><img src="images/My-Collection/facebook.png" alt="facebook.png" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'120\' height=\'80\'%3E%3Crect fill=\'%23ddd\' width=\'120\' height=\'80\'/%3E%3C/svg%3E'"></div><div class="thumbnail"><img src="images/My-Collection/Slimmers_icon.png" alt="Slimmers_icon.png" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'120\' height=\'80\'%3E%3Crect fill=\'%23ddd\' width=\'120\' height=\'80\'/%3E%3C/svg%3E'"></div><div class="thumbnail"><img src="images/My-Collection/Bob_F-T_624317.webp" alt="Bob_F-T_624317.webp" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'120\' height=\'80\'%3E%3Crect fill=\'%23ddd\' width=\'120\' height=\'80\'/%3E%3C/svg%3E'"></div></div>
+            <div class="slide-counter" id="slideCounter"></div>
+            <div class="thumbnail-strip" id="thumbnailStrip"></div>
         </div>
     </div>
 
@@ -764,8 +745,8 @@
     <!-- Notification Modal -->
     <div class="modal notification-modal" id="notificationModal">
         <div class="modal-content">
-            <div class="notification-icon" id="notificationIcon">✅</div>
-            <div class="notification-message" id="notificationMessage">3 photo(s) added! Remember to click "Save Changes" and upload these files to images/My-Collection/ in GitHub.</div>
+            <div class="notification-icon" id="notificationIcon">ℹ️</div>
+            <div class="notification-message" id="notificationMessage"></div>
             <button class="btn btn-primary" onclick="closeModal('notificationModal')" style="width: 100%;">OK</button>
         </div>
     </div>
@@ -781,19 +762,14 @@
     <script>
         // ALBUMS_DATA_START
         let ALBUMS_DATA = [
-  {
-    "folderName": "My-Collection",
-    "title": "My Collection",
-    "subtitle": "A curated selection",
-    "description": "Welcome to my photo gallery",
-    "isFavorite": true,
-    "photos": [
-      "facebook.png",
-      "Slimmers_icon.png",
-      "Bob_F-T_624317.webp"
-    ]
-  }
-];
+            {
+                folderName: "My-Collection",
+                title: "My Collection",
+                subtitle: "A curated selection",
+                description: "Welcome to my photo gallery",
+                isFavorite: true
+            }
+        ];
         // ALBUMS_DATA_END
         
         const STORED_PASSWORD_HASH = "0979f26609b496b1e58207a0acaf4819b8bdf72efbb57004136dba0acd469810";
@@ -815,6 +791,8 @@
         let isAdmin = false;
         let editingAlbumIndex = null;
         let slideDirection = 1;
+        let lightboxIndex = 0;
+
                 
         function resetToUserMode() {
             isAdmin = false;
@@ -954,15 +932,22 @@
             album.photos.forEach((photoName, index) => {
                 const photoPath = `images/${album.folderName}/${photoName}`;
                 const slide = document.createElement('div');
-                slide.className = 'slide' + (index === currentSlideIndex ? ' active' : '');
-                slide.innerHTML = `
-                    <img src="${photoPath}" alt="${photoName}" onclick="openLightbox('${photoPath}')" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'400\\' height=\\'300\\'%3E%3Crect fill=\\'%23ddd\\' width=\\'400\\' height=\\'300\\'/%3E%3Ctext x=\\'50%25\\' y=\\'50%25\\' text-anchor=\\'middle\\' dy=\\'.3em\\' fill=\\'%23999\\'%3EImage not found%3C/text%3E%3C/svg%3E'">
-                    <div class="slide-controls">
-                        ${index > 0 ? `<button class="slide-btn" onclick="event.stopPropagation(); movePhoto(${index}, -1)">Move Left</button>` : ''}
-                        ${index < album.photos.length - 1 ? `<button class="slide-btn" onclick="event.stopPropagation(); movePhoto(${index}, 1)">Move Right</button>` : ''}
-                        <button class="slide-btn" onclick="event.stopPropagation(); deletePhoto(${index})">Delete</button>
-                    </div>
-                `;
+                const img = slide.querySelector('img');
+
+                addSwipeSupport(img,
+                    () => changeSlide(1),
+                    () => changeSlide(-1)
+                );
+
+                // slide.className = 'slide' + (index === currentSlideIndex ? ' active' : '');
+                // slide.innerHTML = `
+                //     <img src="${photoPath}" alt="${photoName}" onclick="openLightbox('${photoPath}')" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'400\\' height=\\'300\\'%3E%3Crect fill=\\'%23ddd\\' width=\\'400\\' height=\\'300\\'/%3E%3Ctext x=\\'50%25\\' y=\\'50%25\\' text-anchor=\\'middle\\' dy=\\'.3em\\' fill=\\'%23999\\'%3EImage not found%3C/text%3E%3C/svg%3E'">
+                //     <div class="slide-controls">
+                //         ${index > 0 ? `<button class="slide-btn" onclick="event.stopPropagation(); movePhoto(${index}, -1)">Move Left</button>` : ''}
+                //         ${index < album.photos.length - 1 ? `<button class="slide-btn" onclick="event.stopPropagation(); movePhoto(${index}, 1)">Move Right</button>` : ''}
+                //         <button class="slide-btn" onclick="event.stopPropagation(); deletePhoto(${index})">Delete</button>
+                //     </div>
+                // `;
                 wrapper.appendChild(slide);
             });
 
@@ -1261,9 +1246,34 @@
         }
 
         function openLightbox(src) {
+            const album = albums[currentAlbumIndex];
+            lightboxIndex = album.photos.findIndex(p => src.includes(p));
+
             document.getElementById('lightboxImg').src = src;
             document.getElementById('lightbox').classList.add('active');
+
+            addSwipeSupport(
+                document.getElementById('lightboxImg'),
+                () => navigateLightbox(1),
+                () => navigateLightbox(-1)
+            );
         }
+
+        function navigateLightbox(direction) {
+            const album = albums[currentAlbumIndex];
+            if (!album || !album.photos.length) return;
+
+            lightboxIndex += direction;
+            if (lightboxIndex < 0) lightboxIndex = album.photos.length - 1;
+            if (lightboxIndex >= album.photos.length) lightboxIndex = 0;
+
+            document.getElementById('lightboxImg').src =
+                `images/${album.folderName}/${album.photos[lightboxIndex]}`;
+
+            currentSlideIndex = lightboxIndex;
+            showSlide();
+        }
+
 
         function closeLightbox() {
             document.getElementById('lightbox').classList.remove('active');
@@ -1309,8 +1319,32 @@
             if (e.key === 'ArrowRight') changeSlide(1);
         });
 
+        function addSwipeSupport(element, onSwipeLeft, onSwipeRight) {
+            let startX = 0;
+            let isDown = false;
+
+            element.addEventListener('pointerdown', e => {
+                isDown = true;
+                startX = e.clientX;
+                element.setPointerCapture(e.pointerId);
+            });
+
+            element.addEventListener('pointerup', e => {
+                if (!isDown) return;
+                const diff = e.clientX - startX;
+                isDown = false;
+
+                if (Math.abs(diff) > 50) {
+                    diff < 0 ? onSwipeLeft() : onSwipeRight();
+                }
+            });
+
+            element.addEventListener('pointercancel', () => {
+                isDown = false;
+            });
+        }
+
         window.addEventListener('DOMContentLoaded', init);
     </script>
-
-
-</body></html>
+</body>
+</html>
