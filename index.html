@@ -263,8 +263,8 @@
         /* Main current slide */
         .slide-main {
             position: relative;
-            width: 60%;
-            max-width: 800px;
+            width: 100%;
+            max-width: 600px;
             height: 600px;
             z-index: 10;
             overflow: hidden;
@@ -383,7 +383,7 @@
         .caption-image-container {
             position: relative;
             width: 100%;
-            max-height: 600px;
+            max-height: 90%;
             overflow: hidden;
             border-radius: 8px 8px 0 0;
         }
@@ -395,15 +395,20 @@
         }
 
         .caption-text-container {
-            padding: 2rem;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            padding: 2rem; 
         }
 
         .caption-text {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: var(--text-primary);
+            position: absolute;
             margin-bottom: 1.5rem;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            padding: 3rem 2rem 2rem;
+            color: white;
+            pointer-events: none;
+            z-index: 15; 
+            line-height: 1.8; 
         }
 
         .caption-edit-area {
@@ -789,12 +794,12 @@
             }
 
             .slideshow-wrapper {
-                height: 350px;
+                height: 600px;
             }
 
             .slide-main {
                 width: 100%;
-                height: 350px;
+                height: 600px;
             }
 
             .slide-preview-left,
@@ -980,15 +985,7 @@
                 <img id="captionImage" src="" alt="Photo">
             </div>
             <div class="caption-text-container">
-                <div id="captionDisplayText" class="caption-text"></div>
-                <div id="captionEditContainer" style="display: none;">
-                    <textarea class="caption-edit-area" id="captionEditText" placeholder="Add a caption for this photo..."></textarea>
-                    <div class="caption-actions">
-                        <button class="btn" onclick="cancelCaptionEdit()">Cancel</button>
-                        <button class="btn btn-primary" onclick="saveCaptionEdit()">Save Caption</button>
-                    </div>
-                </div>
-                <button class="btn" id="editCaptionBtn" onclick="startCaptionEdit()" style="margin-top: 1rem;">Edit Caption</button>
+                <div id="captionDisplayText" class="caption-text"></div> 
             </div>
         </div>
     </div>
@@ -1384,9 +1381,7 @@ You should also delete this file from images/My-Collection/ in GitHub.</p>
 
             document.getElementById('captionImage').src = `images/${album.folderName}/${photoName}`;
             document.getElementById('captionDisplayText').textContent = caption || 'No caption yet.';
-            document.getElementById('captionDisplayText').style.display = 'block';
-            document.getElementById('captionEditContainer').style.display = 'none';
-            document.getElementById('editCaptionBtn').style.display = isEditMode ? 'none' : 'block';
+            document.getElementById('captionDisplayText').style.display = 'block'; 
 
             document.getElementById('captionModal').classList.add('active');
         }
@@ -1658,61 +1653,23 @@ You should also delete this file from images/My-Collection/ in GitHub.</p>
         }
 
         function exportData() {
-            // First, ensure we're in user mode for the export
-            const wasEditMode = isEditMode;
-            const wasLoggedIn = isLoggedIn;
+            const albumsJSON = JSON.stringify(albums, null, 2);
             
-            // Temporarily switch to user mode
-            if (isEditMode) {
-                isEditMode = false;
-                document.getElementById('editControls').style.display = 'none';
-                document.getElementById('photoGrid').style.display = 'none';
-            }
-            
-            if (isLoggedIn) {
-                isLoggedIn = false;
-                updateUIForLoginState();
-            }
-            
-            // Wait a moment for DOM to update
-            setTimeout(() => {
-                const albumsJSON = JSON.stringify(albums, null, 2);
-                
-                let htmlContent = document.documentElement.outerHTML;
-                
-                // Replace the albums data
-                htmlContent = htmlContent.replace(/\/\/ ALBUMS_DATA_START[\s\S]*?\/\/ ALBUMS_DATA_END/m, 
+            const htmlContent = document.documentElement.outerHTML
+                .replace(/\/\/ ALBUMS_DATA_START[\s\S]*?\/\/ ALBUMS_DATA_END/m, 
                     `// ALBUMS_DATA_START\n        let ALBUMS_DATA = ${albumsJSON};\n        // ALBUMS_DATA_END`);
-                
-                // Ensure theme is reset to light (or keep current user preference)
-                const currentTheme = localStorage.getItem('theme') || 'light';
-                htmlContent = htmlContent.replace(/data-theme="[^"]*"/, `data-theme="${currentTheme}"`);
-                
-                // Create and download
-                const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
-                const htmlUrl = URL.createObjectURL(htmlBlob);
-                const htmlLink = document.createElement('a');
-                htmlLink.href = htmlUrl;
-                htmlLink.download = 'index.html';
-                document.body.appendChild(htmlLink);
-                htmlLink.click();
-                document.body.removeChild(htmlLink);
-                URL.revokeObjectURL(htmlUrl);
-                
-                // Restore admin state after export
-                if (wasLoggedIn) {
-                    isLoggedIn = true;
-                    updateUIForLoginState();
-                }
-                
-                if (wasEditMode) {
-                    isEditMode = true;
-                    document.getElementById('editControls').style.display = 'block';
-                    document.getElementById('photoGrid').style.display = 'grid';
-                }
-                
-                showNotification('Gallery data saved! Upload the downloaded index.html to your GitHub repository to save your changes.', '💾');
-            }, 100);
+            
+            const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
+            const htmlUrl = URL.createObjectURL(htmlBlob);
+            const htmlLink = document.createElement('a');
+            htmlLink.href = htmlUrl;
+            htmlLink.download = 'index.html';
+            document.body.appendChild(htmlLink);
+            htmlLink.click();
+            document.body.removeChild(htmlLink);
+            URL.revokeObjectURL(htmlUrl);
+            
+            showNotification('Gallery data saved! Upload the downloaded index.html to your GitHub repository to save your changes.', '💾');
         }
 
         function closeModal(modalId) {
@@ -1783,7 +1740,6 @@ You should also delete this file from images/My-Collection/ in GitHub.</p>
 
         window.addEventListener('DOMContentLoaded', init);
     </script>
-
 
 
 </body></html>
