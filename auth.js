@@ -1,0 +1,2 @@
+const STORED_PASSWORD_HASH = "fcd4df796f398a490f849bfc3b956e75dac0e3f21bd1a8542c581eff31b4df16";
+const ADMIN_USERNAME = "ricajyn";
