@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en" data-theme="light"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Photo Gallery</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;family=Raleway:wght@300;400;500&amp;display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-primary: #ffffff;
@@ -811,10 +809,12 @@
     <div class="header">
         <div class="header-selector">
             <div class="header-select-display" onclick="toggleHeaderSelect()">
-                <span id="headerSelectedAlbum">Select Album</span>
+                <span id="headerSelectedAlbum">⭐ Sample Album</span>
             </div>
             <div class="header-select-options" id="headerSelectOptions">
-                <!-- Options populated by JS -->
+                <div class="header-select-option active" onclick="selectAlbum(0)">
+                    ⭐ Sample Album
+                </div>
             </div>
         </div>
 
@@ -826,26 +826,26 @@
     </div>
 
     <!-- Main Slideshow Container (Now First/Highlighted) -->
-    <div class="slideshow-container" id="slideshowContainer">
+    <div class="slideshow-container" id="slideshowContainer" style="display: block;">
         <div class="slideshow-wrapper">
             <!-- Previous image preview (left shadow) -->
             <div class="slide-preview-left" onclick="changeSlide(-1)">
-                <img id="previewLeftImg" src="" alt="Previous">
+                <img id="previewLeftImg" src="images/sample-album/Slimmers_icon.png" alt="Previous">
             </div>
 
             <!-- Main current slide -->
             <div class="slide-main" onclick="openPhotoCaption()">
-                <img id="mainSlideImg" src="" alt="Current Photo">
+                <img id="mainSlideImg" src="images/sample-album/facebook.png" alt="Current Photo">
                 <!-- Fixed overlay with title and subtitle -->
                 <div class="slide-overlay">
-                    <div class="slide-title" id="slideTitle">Album Title</div>
-                    <div class="slide-subtitle" id="slideSubtitle">Album Subtitle</div>
+                    <div class="slide-title" id="slideTitle">Sample Album</div>
+                    <div class="slide-subtitle" id="slideSubtitle">Your First Collection</div>
                 </div>
             </div>
 
             <!-- Next image preview (right shadow) -->
             <div class="slide-preview-right" onclick="changeSlide(1)">
-                <img id="previewRightImg" src="" alt="Next">
+                <img id="previewRightImg" src="images/sample-album/Bob_F-T_624317.webp" alt="Next">
             </div>
 
             <!-- Navigation arrows -->
@@ -857,7 +857,7 @@
     <!-- Main Container (Now Second) -->
     <div class="container" id="mainContainer">
         <!-- Edit Mode Controls -->
-        <div class="edit-mode-controls" id="editControls" style="display: none;">
+        <div class="edit-mode-controls" id="editControls" style="display: block;">
             <h3 style="margin-bottom: 1rem;">Edit Mode</h3>
             <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
                 <button class="btn" onclick="showCreateAlbumModal()">➕ Create Album</button>
@@ -866,15 +866,46 @@
                 <button class="btn" onclick="deleteCurrentAlbum()" style="border-color: #d9534f; color: #d9534f;">🗑️ Delete Album</button>
                 <label class="btn" style="margin: 0;">
                     📸 Add Photos
-                    <input type="file" multiple accept="image/*" onchange="handlePhotoUpload(event)" style="display: none;">
+                    <input type="file" multiple="" accept="image/*" onchange="handlePhotoUpload(event)" style="display: none;">
                 </label>
             </div>
         </div>
 
         <!-- Photo Grid (Edit Mode) -->
-        <div class="photo-grid" id="photoGrid" style="display: none;">
-            <!-- Photos populated by JS -->
-        </div>
+        <div class="photo-grid" id="photoGrid" style="display: grid;">
+                    <div class="photo-item">
+                        <img src="images/sample-album/facebook.png" alt="facebook.png">
+                        <div class="photo-controls">
+                            <button class="photo-control-btn" onclick="movePhoto(0, -1)" title="Move left">◄</button>
+                            <button class="photo-control-btn" onclick="editPhotoCaption(0)" title="Edit caption">✏️</button>
+                            <button class="photo-control-btn" onclick="movePhoto(0, 1)" title="Move right">►</button>
+                            <button class="photo-control-btn" onclick="deletePhoto(0)" title="Delete">🗑️</button>
+                        </div>
+                        <div class="photo-caption-label">No caption</div>
+                    </div>
+                
+                    <div class="photo-item">
+                        <img src="images/sample-album/Bob_F-T_624317.webp" alt="Bob_F-T_624317.webp">
+                        <div class="photo-controls">
+                            <button class="photo-control-btn" onclick="movePhoto(1, -1)" title="Move left">◄</button>
+                            <button class="photo-control-btn" onclick="editPhotoCaption(1)" title="Edit caption">✏️</button>
+                            <button class="photo-control-btn" onclick="movePhoto(1, 1)" title="Move right">►</button>
+                            <button class="photo-control-btn" onclick="deletePhoto(1)" title="Delete">🗑️</button>
+                        </div>
+                        <div class="photo-caption-label">No caption</div>
+                    </div>
+                
+                    <div class="photo-item">
+                        <img src="images/sample-album/Slimmers_icon.png" alt="Slimmers_icon.png">
+                        <div class="photo-controls">
+                            <button class="photo-control-btn" onclick="movePhoto(2, -1)" title="Move left">◄</button>
+                            <button class="photo-control-btn" onclick="editPhotoCaption(2)" title="Edit caption">✏️</button>
+                            <button class="photo-control-btn" onclick="movePhoto(2, 1)" title="Move right">►</button>
+                            <button class="photo-control-btn" onclick="deletePhoto(2)" title="Delete">🗑️</button>
+                        </div>
+                        <div class="photo-caption-label">No caption</div>
+                    </div>
+                </div>
     </div>
 
     <!-- Photo Caption Modal -->
@@ -921,7 +952,7 @@
     <!-- Notification Modal -->
     <div class="notification" id="notificationModal">
         <div class="notification-icon" id="notificationIcon">✅</div>
-        <div class="notification-text" id="notificationText"></div>
+        <div class="notification-text" id="notificationText">3 photo(s) added! Remember to click "Save Changes" and upload these files to images/sample-album/ in GitHub.</div>
     </div>
 
     <!-- Lightbox -->
@@ -942,15 +973,11 @@
     "title": "Sample Album",
     "subtitle": "Your First Collection",
     "photos": [
-      "photo1.jpg",
-      "photo2.jpg",
-      "photo3.jpg"
+      "facebook.png",
+      "Bob_F-T_624317.webp",
+      "Slimmers_icon.png"
     ],
-    "captions": {
-      "photo1.jpg": "This is a beautiful sunset captured during our trip.",
-      "photo2.jpg": "A moment of tranquility by the lake.",
-      "photo3.jpg": "Exploring the mountains and their majestic views."
-    },
+    "captions": {},
     "isFavorite": true
   }
 ];
@@ -1413,5 +1440,6 @@
 
         window.addEventListener('DOMContentLoaded', init);
     </script>
-</body>
-</html>
+
+
+</body></html>
