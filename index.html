@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en" data-theme="dark"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Photo Gallery</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;family=Raleway:wght@300;400;500&amp;display=swap" rel="stylesheet">
     <script src="auth.js"></script>
     <style>
         :root {
@@ -830,42 +828,44 @@
     <div class="header">
         <div class="header-selector">
             <div class="header-select-display" onclick="toggleHeaderSelect()">
-                <span id="headerSelectedAlbum">Select Album</span>
+                <span id="headerSelectedAlbum">⭐ My Collection</span>
             </div>
             <div class="header-select-options" id="headerSelectOptions">
-                <!-- Options populated by JS -->
+                <div class="header-select-option active" onclick="selectAlbum(0)">
+                    ⭐ My Collection
+                </div>
             </div>
         </div>
 
         <div class="header-controls">
             <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">🌙</button>
-            <span class="admin-badge" id="adminBadge">Admin</span>
-            <button class="btn" id="editModeBtn" onclick="showLoginModal()">Admin</button>
-            <button class="btn btn-primary" id="saveBtn" onclick="exportData()" style="display: none;">Save Changes</button>
+            <span class="admin-badge active" id="adminBadge">Admin</span>
+            <button class="btn" id="editModeBtn" onclick="showLoginModal()">View Mode</button>
+            <button class="btn btn-primary" id="saveBtn" onclick="exportData()" style="display: inline-block;">Save Changes</button>
         </div>
     </div>
 
     <!-- Main Slideshow Container (Now First/Highlighted) -->
-    <div class="slideshow-container" id="slideshowContainer">
+    <div class="slideshow-container" id="slideshowContainer" style="display: block;">
         <div class="slideshow-wrapper">
             <!-- Previous image preview (left shadow) -->
             <div class="slide-preview-left" onclick="changeSlide(-1)">
-                <img id="previewLeftImg" src="" alt="Previous">
+                <img id="previewLeftImg" src="images/my-collection/Bob_F-T_624317.webp" alt="Previous">
             </div>
 
             <!-- Main current slide -->
-            <div class="slide-main" onclick="openPhotoCaption()">
-                <img id="mainSlideImg" src="" alt="Current Photo">
+            <div class="slide-main" onclick="openPhotoCaption()" style="transform: translateX(0px); transition: transform 0.3s;">
+                <img id="mainSlideImg" src="images/my-collection/facebook.png" alt="Current Photo">
                 <!-- Fixed overlay with title and subtitle -->
                 <div class="slide-overlay">
-                    <div class="slide-title" id="slideTitle">Album Title</div>
-                    <div class="slide-subtitle" id="slideSubtitle">Album Subtitle</div>
+                    <div class="slide-title" id="slideTitle">My Collection</div>
+                    <div class="slide-subtitle" id="slideSubtitle">Your First Collection</div>
                 </div>
             </div>
 
             <!-- Next image preview (right shadow) -->
             <div class="slide-preview-right" onclick="changeSlide(1)">
-                <img id="previewRightImg" src="" alt="Next">
+                <img id="previewRightImg" src="images/my-collection/Slimmers_icon.png" alt="Next">
             </div>
 
             <!-- Navigation arrows -->
@@ -877,7 +877,7 @@
     <!-- Main Container (Now Second) -->
     <div class="container" id="mainContainer">
         <!-- Edit Mode Controls -->
-        <div class="edit-mode-controls" id="editControls" style="display: none;">
+        <div class="edit-mode-controls" id="editControls" style="display: block;">
             <h3 style="margin-bottom: 1rem;">Edit Mode</h3>
             <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
                 <button class="btn" onclick="showCreateAlbumModal()">➕ Create Album</button>
@@ -886,16 +886,47 @@
                 <button class="btn" onclick="deleteCurrentAlbum()" style="border-color: #d9534f; color: #d9534f;">🗑️ Delete Album</button>
                 <label class="btn" style="margin: 0;">
                     📸 Add Photos
-                    <input type="file" multiple accept="image/*" onchange="handlePhotoUpload(event)" style="display: none;">
+                    <input type="file" multiple="" accept="image/*" onchange="handlePhotoUpload(event)" style="display: none;">
                 </label>
                 <button class="btn" onclick="logout()" style="border-color: #f0ad4e; color: #f0ad4e;">🚪 Logout</button>
             </div>
         </div>
 
         <!-- Photo Grid (Edit Mode) -->
-        <div class="photo-grid" id="photoGrid" style="display: none;">
-            <!-- Photos populated by JS -->
-        </div>
+        <div class="photo-grid" id="photoGrid" style="display: grid;">
+                    <div class="photo-item">
+                        <img src="images/my-collection/facebook.png" alt="facebook.png">
+                        <div class="photo-controls">
+                            <button class="photo-control-btn" onclick="movePhoto(0, -1)" title="Move left">◄</button>
+                            <button class="photo-control-btn" onclick="editPhotoCaption(0)" title="Edit caption">✏️</button>
+                            <button class="photo-control-btn" onclick="movePhoto(0, 1)" title="Move right">►</button>
+                            <button class="photo-control-btn" onclick="deletePhoto(0)" title="Delete">🗑️</button>
+                        </div>
+                        <div class="photo-caption-label">No caption</div>
+                    </div>
+                
+                    <div class="photo-item">
+                        <img src="images/my-collection/Slimmers_icon.png" alt="Slimmers_icon.png">
+                        <div class="photo-controls">
+                            <button class="photo-control-btn" onclick="movePhoto(1, -1)" title="Move left">◄</button>
+                            <button class="photo-control-btn" onclick="editPhotoCaption(1)" title="Edit caption">✏️</button>
+                            <button class="photo-control-btn" onclick="movePhoto(1, 1)" title="Move right">►</button>
+                            <button class="photo-control-btn" onclick="deletePhoto(1)" title="Delete">🗑️</button>
+                        </div>
+                        <div class="photo-caption-label">No caption</div>
+                    </div>
+                
+                    <div class="photo-item">
+                        <img src="images/my-collection/Bob_F-T_624317.webp" alt="Bob_F-T_624317.webp">
+                        <div class="photo-controls">
+                            <button class="photo-control-btn" onclick="movePhoto(2, -1)" title="Move left">◄</button>
+                            <button class="photo-control-btn" onclick="editPhotoCaption(2)" title="Edit caption">✏️</button>
+                            <button class="photo-control-btn" onclick="movePhoto(2, 1)" title="Move right">►</button>
+                            <button class="photo-control-btn" onclick="deletePhoto(2)" title="Delete">🗑️</button>
+                        </div>
+                        <div class="photo-caption-label">No caption</div>
+                    </div>
+                </div>
     </div>
 
     <!-- Photo Caption Modal -->
@@ -943,7 +974,7 @@
     <div class="modal" id="albumModal">
         <div class="modal-content">
             <button class="close-modal" onclick="closeModal('albumModal')">×</button>
-            <h2 class="modal-header" id="albumModalTitle">Create Album</h2>
+            <h2 class="modal-header" id="albumModalTitle">Edit Album</h2>
             <div class="form-group">
                 <label for="albumTitleInput">Album Title *</label>
                 <input type="text" id="albumTitleInput" placeholder="e.g., Summer Vacation 2024">
@@ -961,15 +992,17 @@
 
     <!-- Notification Modal -->
     <div class="notification" id="notificationModal">
-        <div class="notification-icon" id="notificationIcon">✅</div>
-        <div class="notification-text" id="notificationText"></div>
+        <div class="notification-icon" id="notificationIcon">⭐</div>
+        <div class="notification-text" id="notificationText">"My Collection" is now the default album</div>
     </div>
 
     <!-- Confirmation Modal -->
     <div class="modal" id="confirmModal">
         <div class="modal-content">
-            <h2 class="modal-header" id="confirmTitle">Confirm Action</h2>
-            <p id="confirmMessage" style="text-align: center; margin: 2rem 0; line-height: 1.6;"></p>
+            <h2 class="modal-header" id="confirmTitle">Delete Photo</h2>
+            <p id="confirmMessage" style="text-align: center; margin: 2rem 0; line-height: 1.6;">Delete "photo3.jpg"?
+
+You should also delete this file from images/sample-album/ in GitHub.</p>
             <div class="modal-actions">
                 <button class="btn" onclick="closeModal('confirmModal')">Cancel</button>
                 <button class="btn btn-primary" id="confirmBtn" onclick="confirmAction()">Confirm</button>
@@ -991,19 +1024,15 @@
         // ALBUMS_DATA_START
         let ALBUMS_DATA = [
   {
-    "folderName": "My-Collection",
+    "folderName": "my-collection",
     "title": "My Collection",
     "subtitle": "Your First Collection",
     "photos": [
-      "photo1.jpg",
-      "photo2.jpg",
-      "photo3.jpg"
+      "facebook.png",
+      "Slimmers_icon.png",
+      "Bob_F-T_624317.webp"
     ],
-    "captions": {
-      "photo1.jpg": "This is a beautiful sunset captured during our trip.",
-      "photo2.jpg": "A moment of tranquility by the lake.",
-      "photo3.jpg": "Exploring the mountains and their majestic views."
-    },
+    "captions": {},
     "isFavorite": true
   }
 ];
@@ -1655,5 +1684,6 @@
 
         window.addEventListener('DOMContentLoaded', init);
     </script>
-</body>
-</html>
+
+
+</body></html>
