@@ -383,7 +383,7 @@
         .caption-image-container {
             position: relative;
             width: 100%;
-            max-height: 500px;
+            max-height: 600px;
             overflow: hidden;
             border-radius: 8px 8px 0 0;
         }
@@ -779,7 +779,7 @@
             }
 
             .container {
-                padding: 5rem 1rem 2rem;
+                padding: 7rem 2rem 2rem;
             }
 
             .slideshow-container {
@@ -1657,23 +1657,61 @@ You should also delete this file from images/My-Collection/ in GitHub.</p>
         }
 
         function exportData() {
-            const albumsJSON = JSON.stringify(albums, null, 2);
+            // First, ensure we're in user mode for the export
+            const wasEditMode = isEditMode;
+            const wasLoggedIn = isLoggedIn;
             
-            const htmlContent = document.documentElement.outerHTML
-                .replace(/\/\/ ALBUMS_DATA_START[\s\S]*?\/\/ ALBUMS_DATA_END/m, 
+            // Temporarily switch to user mode
+            if (isEditMode) {
+                isEditMode = false;
+                document.getElementById('editControls').style.display = 'none';
+                document.getElementById('photoGrid').style.display = 'none';
+            }
+            
+            if (isLoggedIn) {
+                isLoggedIn = false;
+                updateUIForLoginState();
+            }
+            
+            // Wait a moment for DOM to update
+            setTimeout(() => {
+                const albumsJSON = JSON.stringify(albums, null, 2);
+                
+                let htmlContent = document.documentElement.outerHTML;
+                
+                // Replace the albums data
+                htmlContent = htmlContent.replace(/\/\/ ALBUMS_DATA_START[\s\S]*?\/\/ ALBUMS_DATA_END/m, 
                     `// ALBUMS_DATA_START\n        let ALBUMS_DATA = ${albumsJSON};\n        // ALBUMS_DATA_END`);
-            
-            const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
-            const htmlUrl = URL.createObjectURL(htmlBlob);
-            const htmlLink = document.createElement('a');
-            htmlLink.href = htmlUrl;
-            htmlLink.download = 'index.html';
-            document.body.appendChild(htmlLink);
-            htmlLink.click();
-            document.body.removeChild(htmlLink);
-            URL.revokeObjectURL(htmlUrl);
-            
-            showNotification('Gallery data saved! Upload the downloaded index.html to your GitHub repository to save your changes.', '💾');
+                
+                // Ensure theme is reset to light (or keep current user preference)
+                const currentTheme = localStorage.getItem('theme') || 'light';
+                htmlContent = htmlContent.replace(/data-theme="[^"]*"/, `data-theme="${currentTheme}"`);
+                
+                // Create and download
+                const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
+                const htmlUrl = URL.createObjectURL(htmlBlob);
+                const htmlLink = document.createElement('a');
+                htmlLink.href = htmlUrl;
+                htmlLink.download = 'index.html';
+                document.body.appendChild(htmlLink);
+                htmlLink.click();
+                document.body.removeChild(htmlLink);
+                URL.revokeObjectURL(htmlUrl);
+                
+                // Restore admin state after export
+                if (wasLoggedIn) {
+                    isLoggedIn = true;
+                    updateUIForLoginState();
+                }
+                
+                if (wasEditMode) {
+                    isEditMode = true;
+                    document.getElementById('editControls').style.display = 'block';
+                    document.getElementById('photoGrid').style.display = 'grid';
+                }
+                
+                showNotification('Gallery data saved! Upload the downloaded index.html to your GitHub repository to save your changes.', '💾');
+            }, 100);
         }
 
         function closeModal(modalId) {
