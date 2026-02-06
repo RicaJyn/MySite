@@ -910,7 +910,7 @@
 
         <div class="header-controls">
             <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">🌙</button>
-            <button class="btn btn-primary" id="editModeBtn" onclick="showLoginModal()">View Mode</button>
+            <button class="btn btn-primary" id="editModeBtn" onclick="showLoginModal()">Admin</button>
         </div>
     </div>
 
@@ -947,7 +947,7 @@
         </div>
         
         <!-- Edit Mode Controls -->
-        <div class="edit-mode-controls" id="editControls" style="display: block;">
+        <div class="edit-mode-controls" id="editControls" style="display: none;">
             <h3 style="margin-bottom: 1rem;">Edit Mode</h3>
             <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
                 <button class="btn" onclick="showCreateAlbumModal()">➕ Create Album</button>
@@ -964,7 +964,7 @@
         </div>
 
         <!-- Photo Grid (Edit Mode) -->
-        <div class="photo-grid" id="photoGrid" style="display: grid;">
+        <div class="photo-grid" id="photoGrid" style="display: none;">
                     <div class="photo-item">
                         <img src="images/sample-test/photo.jpg" alt="photo.jpg">
                         <div class="photo-controls">
@@ -1116,11 +1116,19 @@ You should also delete this file from images/My-Collection/ in GitHub.</p>
         }
 
         function init() {
+            // FORCE DEFAULT USER MODE
+            isLoggedIn = false;
+            isEditMode = false;
+
+            document.getElementById('editControls').style.display = 'none';
+            document.getElementById('photoGrid').style.display = 'none';
+
+            updateUIForLoginState();
+
             checkTheme();
             const favoriteIndex = albums.findIndex(a => a.isFavorite);
             currentAlbumIndex = favoriteIndex >= 0 ? favoriteIndex : 0;
-            
-            // Auto-load photos from GitHub folders
+
             loadPhotosFromFolders().then(() => {
                 displayHeaderSelector();
                 displayCurrentAlbum();
