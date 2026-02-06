@@ -1,8 +1,10 @@
-<html lang="en" data-theme="dark"><head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Photo Gallery</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;family=Raleway:wght@300;400;500&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
     <script src="auth.js"></script>
     <style>
         :root {
@@ -144,22 +146,8 @@
 
         .header-controls {
             display: flex;
-            gap: 1.5rem;
+            gap: 1rem;
             align-items: center;
-        }
-
-        .admin-badge {
-            background: var(--accent);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            display: none;
-        }
-
-        .admin-badge.active {
-            display: block;
         }
 
         .btn {
@@ -211,17 +199,17 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 2rem 2rem 4rem;
+            padding: 10rem 2rem 4rem;
         }
 
-        /* Slideshow Container - Now the highlight */
+        /* Slideshow Container - Inside container */
         .slideshow-container {
             position: relative;
             width: 100%;
-            max-width: 1400px;
-            margin: 6rem auto 4rem;
-            padding: 0 2rem;
-            min-height: 600px;
+            max-width: 100%;
+            margin: 0 0 4rem 0;
+            padding: 0;
+            min-height: 500px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -230,7 +218,7 @@
         .slideshow-wrapper {
             position: relative;
             width: 100%;
-            height: 600px;
+            height: 500px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -278,8 +266,8 @@
         .slide-main {
             position: relative;
             width: 60%;
-            max-width: 800px;
-            height: 600px;
+            max-width: 700px;
+            height: 500px;
             z-index: 10;
             overflow: hidden;
             cursor: pointer;
@@ -763,30 +751,51 @@
         /* Responsive */
         @media (max-width: 768px) {
             .header {
-                padding: 1rem 1.5rem;
-                flex-direction: column;
-                gap: 1rem;
+                padding: 1rem;
+                flex-direction: row;
+                gap: 0.5rem;
             }
 
             .header-selector {
-                min-width: 100%;
+                min-width: auto;
+                flex: 1;
+            }
+
+            .header-select-display {
+                padding: 0.6rem 2rem 0.6rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            .header-controls {
+                gap: 0.5rem;
+            }
+
+            .btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.75rem;
+            }
+
+            .theme-toggle {
+                font-size: 1.2rem;
+                padding: 0.3rem;
             }
 
             .container {
-                padding: 2rem 1rem 2rem;
+                padding: 5rem 1rem 2rem;
             }
 
             .slideshow-container {
-                margin: 5rem auto 3rem;
+                margin: 0 0 2rem 0;
+                min-height: 350px;
             }
 
             .slideshow-wrapper {
-                height: 400px;
+                height: 350px;
             }
 
             .slide-main {
                 width: 100%;
-                height: 400px;
+                height: 350px;
             }
 
             .slide-preview-left,
@@ -795,16 +804,51 @@
             }
 
             .slide-title {
-                font-size: 1.8rem;
+                font-size: 1.5rem;
             }
 
             .slide-subtitle {
-                font-size: 0.95rem;
+                font-size: 0.9rem;
+            }
+
+            .slide-overlay {
+                padding: 2rem 1rem 1rem;
+            }
+
+            .slide-nav {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+
+            .slide-nav.prev {
+                left: 0.5rem;
+            }
+
+            .slide-nav.next {
+                right: 0.5rem;
+            }
+
+            .edit-mode-controls {
+                padding: 1rem;
+            }
+
+            .edit-mode-controls h3 {
+                font-size: 1.1rem;
             }
 
             .photo-grid {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-                gap: 1rem;
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 0.75rem;
+            }
+
+            .modal-content {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+
+            .modal-header {
+                font-size: 1.5rem;
             }
         }
 
@@ -828,56 +872,53 @@
     <div class="header">
         <div class="header-selector">
             <div class="header-select-display" onclick="toggleHeaderSelect()">
-                <span id="headerSelectedAlbum">⭐ My Collection</span>
+                <span id="headerSelectedAlbum">Select Album</span>
             </div>
             <div class="header-select-options" id="headerSelectOptions">
-                <div class="header-select-option active" onclick="selectAlbum(0)">
-                    ⭐ My Collection
-                </div>
+                <!-- Options populated by JS -->
             </div>
         </div>
 
         <div class="header-controls">
             <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">🌙</button>
-            <span class="admin-badge active" id="adminBadge">Admin</span>
-            <button class="btn" id="editModeBtn" onclick="showLoginModal()">View Mode</button>
-            <button class="btn btn-primary" id="saveBtn" onclick="exportData()" style="display: inline-block;">Save Changes</button>
-        </div>
-    </div>
-
-    <!-- Main Slideshow Container (Now First/Highlighted) -->
-    <div class="slideshow-container" id="slideshowContainer" style="display: block;">
-        <div class="slideshow-wrapper">
-            <!-- Previous image preview (left shadow) -->
-            <div class="slide-preview-left" onclick="changeSlide(-1)">
-                <img id="previewLeftImg" src="images/my-collection/Bob_F-T_624317.webp" alt="Previous">
-            </div>
-
-            <!-- Main current slide -->
-            <div class="slide-main" onclick="openPhotoCaption()" style="transform: translateX(0px); transition: transform 0.3s;">
-                <img id="mainSlideImg" src="images/my-collection/facebook.png" alt="Current Photo">
-                <!-- Fixed overlay with title and subtitle -->
-                <div class="slide-overlay">
-                    <div class="slide-title" id="slideTitle">My Collection</div>
-                    <div class="slide-subtitle" id="slideSubtitle">Your First Collection</div>
-                </div>
-            </div>
-
-            <!-- Next image preview (right shadow) -->
-            <div class="slide-preview-right" onclick="changeSlide(1)">
-                <img id="previewRightImg" src="images/my-collection/Slimmers_icon.png" alt="Next">
-            </div>
-
-            <!-- Navigation arrows -->
-            <button class="slide-nav prev" onclick="changeSlide(-1)">‹</button>
-            <button class="slide-nav next" onclick="changeSlide(1)">›</button>
+            <button class="btn btn-primary" id="editModeBtn" onclick="showLoginModal()">Admin</button>
         </div>
     </div>
 
     <!-- Main Container (Now Second) -->
     <div class="container" id="mainContainer">
+        
+        <!-- Main Slideshow Container (Now First/Highlighted) -->
+        <div class="slideshow-container" id="slideshowContainer">
+            <div class="slideshow-wrapper">
+                <!-- Previous image preview (left shadow) -->
+                <div class="slide-preview-left" onclick="changeSlide(-1)">
+                    <img id="previewLeftImg" src="" alt="Previous">
+                </div>
+
+                <!-- Main current slide -->
+                <div class="slide-main" onclick="openPhotoCaption()">
+                    <img id="mainSlideImg" src="" alt="Current Photo">
+                    <!-- Fixed overlay with title and subtitle -->
+                    <div class="slide-overlay">
+                        <div class="slide-title" id="slideTitle">Album Title</div>
+                        <div class="slide-subtitle" id="slideSubtitle">Album Subtitle</div>
+                    </div>
+                </div>
+
+                <!-- Next image preview (right shadow) -->
+                <div class="slide-preview-right" onclick="changeSlide(1)">
+                    <img id="previewRightImg" src="" alt="Next">
+                </div>
+
+                <!-- Navigation arrows -->
+                <button class="slide-nav prev" onclick="changeSlide(-1)">‹</button>
+                <button class="slide-nav next" onclick="changeSlide(1)">›</button>
+            </div>
+        </div>
+        
         <!-- Edit Mode Controls -->
-        <div class="edit-mode-controls" id="editControls" style="display: block;">
+        <div class="edit-mode-controls" id="editControls" style="display: none;">
             <h3 style="margin-bottom: 1rem;">Edit Mode</h3>
             <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
                 <button class="btn" onclick="showCreateAlbumModal()">➕ Create Album</button>
@@ -886,47 +927,17 @@
                 <button class="btn" onclick="deleteCurrentAlbum()" style="border-color: #d9534f; color: #d9534f;">🗑️ Delete Album</button>
                 <label class="btn" style="margin: 0;">
                     📸 Add Photos
-                    <input type="file" multiple="" accept="image/*" onchange="handlePhotoUpload(event)" style="display: none;">
+                    <input type="file" multiple accept="image/*" onchange="handlePhotoUpload(event)" style="display: none;">
                 </label>
+                <button class="btn btn-primary" onclick="exportData()">💾 Save Changes</button>
                 <button class="btn" onclick="logout()" style="border-color: #f0ad4e; color: #f0ad4e;">🚪 Logout</button>
             </div>
         </div>
 
         <!-- Photo Grid (Edit Mode) -->
-        <div class="photo-grid" id="photoGrid" style="display: grid;">
-                    <div class="photo-item">
-                        <img src="images/my-collection/facebook.png" alt="facebook.png">
-                        <div class="photo-controls">
-                            <button class="photo-control-btn" onclick="movePhoto(0, -1)" title="Move left">◄</button>
-                            <button class="photo-control-btn" onclick="editPhotoCaption(0)" title="Edit caption">✏️</button>
-                            <button class="photo-control-btn" onclick="movePhoto(0, 1)" title="Move right">►</button>
-                            <button class="photo-control-btn" onclick="deletePhoto(0)" title="Delete">🗑️</button>
-                        </div>
-                        <div class="photo-caption-label">No caption</div>
-                    </div>
-                
-                    <div class="photo-item">
-                        <img src="images/my-collection/Slimmers_icon.png" alt="Slimmers_icon.png">
-                        <div class="photo-controls">
-                            <button class="photo-control-btn" onclick="movePhoto(1, -1)" title="Move left">◄</button>
-                            <button class="photo-control-btn" onclick="editPhotoCaption(1)" title="Edit caption">✏️</button>
-                            <button class="photo-control-btn" onclick="movePhoto(1, 1)" title="Move right">►</button>
-                            <button class="photo-control-btn" onclick="deletePhoto(1)" title="Delete">🗑️</button>
-                        </div>
-                        <div class="photo-caption-label">No caption</div>
-                    </div>
-                
-                    <div class="photo-item">
-                        <img src="images/my-collection/Bob_F-T_624317.webp" alt="Bob_F-T_624317.webp">
-                        <div class="photo-controls">
-                            <button class="photo-control-btn" onclick="movePhoto(2, -1)" title="Move left">◄</button>
-                            <button class="photo-control-btn" onclick="editPhotoCaption(2)" title="Edit caption">✏️</button>
-                            <button class="photo-control-btn" onclick="movePhoto(2, 1)" title="Move right">►</button>
-                            <button class="photo-control-btn" onclick="deletePhoto(2)" title="Delete">🗑️</button>
-                        </div>
-                        <div class="photo-caption-label">No caption</div>
-                    </div>
-                </div>
+        <div class="photo-grid" id="photoGrid" style="display: none;">
+            <!-- Photos populated by JS -->
+        </div>
     </div>
 
     <!-- Photo Caption Modal -->
@@ -974,7 +985,7 @@
     <div class="modal" id="albumModal">
         <div class="modal-content">
             <button class="close-modal" onclick="closeModal('albumModal')">×</button>
-            <h2 class="modal-header" id="albumModalTitle">Edit Album</h2>
+            <h2 class="modal-header" id="albumModalTitle">Create Album</h2>
             <div class="form-group">
                 <label for="albumTitleInput">Album Title *</label>
                 <input type="text" id="albumTitleInput" placeholder="e.g., Summer Vacation 2024">
@@ -992,17 +1003,15 @@
 
     <!-- Notification Modal -->
     <div class="notification" id="notificationModal">
-        <div class="notification-icon" id="notificationIcon">⭐</div>
-        <div class="notification-text" id="notificationText">"My Collection" is now the default album</div>
+        <div class="notification-icon" id="notificationIcon">✅</div>
+        <div class="notification-text" id="notificationText"></div>
     </div>
 
     <!-- Confirmation Modal -->
     <div class="modal" id="confirmModal">
         <div class="modal-content">
-            <h2 class="modal-header" id="confirmTitle">Delete Photo</h2>
-            <p id="confirmMessage" style="text-align: center; margin: 2rem 0; line-height: 1.6;">Delete "photo3.jpg"?
-
-You should also delete this file from images/sample-album/ in GitHub.</p>
+            <h2 class="modal-header" id="confirmTitle">Confirm Action</h2>
+            <p id="confirmMessage" style="text-align: center; margin: 2rem 0; line-height: 1.6;"></p>
             <div class="modal-actions">
                 <button class="btn" onclick="closeModal('confirmModal')">Cancel</button>
                 <button class="btn btn-primary" id="confirmBtn" onclick="confirmAction()">Confirm</button>
@@ -1024,15 +1033,19 @@ You should also delete this file from images/sample-album/ in GitHub.</p>
         // ALBUMS_DATA_START
         let ALBUMS_DATA = [
   {
-    "folderName": "my-collection",
+    "folderName": "My-Collection",
     "title": "My Collection",
     "subtitle": "Your First Collection",
     "photos": [
-      "facebook.png",
-      "Slimmers_icon.png",
-      "Bob_F-T_624317.webp"
+      "photo1.jpg",
+      "photo2.jpg",
+      "photo3.jpg"
     ],
-    "captions": {},
+    "captions": {
+      "photo1.jpg": "This is a beautiful sunset captured during our trip.",
+      "photo2.jpg": "A moment of tranquility by the lake.",
+      "photo3.jpg": "Exploring the mountains and their majestic views."
+    },
     "isFavorite": true
   }
 ];
@@ -1068,10 +1081,42 @@ You should also delete this file from images/sample-album/ in GitHub.</p>
             checkTheme();
             const favoriteIndex = albums.findIndex(a => a.isFavorite);
             currentAlbumIndex = favoriteIndex >= 0 ? favoriteIndex : 0;
-            displayHeaderSelector();
-            displayCurrentAlbum();
-            checkLoginStatus();
-            setupDragGestures();
+            
+            // Auto-load photos from GitHub folders
+            loadPhotosFromFolders().then(() => {
+                displayHeaderSelector();
+                displayCurrentAlbum();
+                setupDragGestures();
+            });
+        }
+
+        // Auto-load photos from GitHub folders
+        async function loadPhotosFromFolders() {
+            for (let album of albums) {
+                try {
+                    const response = await fetch(`images/${album.folderName}/`);
+                    if (response.ok) {
+                        const text = await response.text();
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(text, 'text/html');
+                        const links = doc.querySelectorAll('a');
+                        const photos = [];
+                        
+                        links.forEach(link => {
+                            const href = link.getAttribute('href');
+                            if (href && /\.(jpg|jpeg|png|gif|webp)$/i.test(href)) {
+                                photos.push(href);
+                            }
+                        });
+                        
+                        if (photos.length > 0) {
+                            album.photos = photos;
+                        }
+                    }
+                } catch (error) {
+                    console.log(`Could not auto-load photos for ${album.folderName}`);
+                }
+            }
         }
 
         function showConfirmModal(title, message, callback) {
@@ -1087,14 +1132,6 @@ You should also delete this file from images/sample-album/ in GitHub.</p>
                 confirmCallback = null;
             }
             closeModal('confirmModal');
-        }
-
-        function checkLoginStatus() {
-            const savedLogin = sessionStorage.getItem('isLoggedIn');
-            if (savedLogin === 'true') {
-                isLoggedIn = true;
-                updateUIForLoginState();
-            }
         }
 
         function setupDragGestures() {
@@ -1172,7 +1209,6 @@ You should also delete this file from images/sample-album/ in GitHub.</p>
 
             if (hash === STORED_PASSWORD_HASH) {
                 isLoggedIn = true;
-                sessionStorage.setItem('isLoggedIn', 'true');
                 closeModal('loginModal');
                 updateUIForLoginState();
                 toggleEditMode();
@@ -1187,7 +1223,6 @@ You should also delete this file from images/sample-album/ in GitHub.</p>
         function logout() {
             isLoggedIn = false;
             isEditMode = false;
-            sessionStorage.removeItem('isLoggedIn');
             updateUIForLoginState();
             document.getElementById('editControls').style.display = 'none';
             document.getElementById('photoGrid').style.display = 'none';
@@ -1195,18 +1230,14 @@ You should also delete this file from images/sample-album/ in GitHub.</p>
         }
 
         function updateUIForLoginState() {
-            const adminBadge = document.getElementById('adminBadge');
             const editModeBtn = document.getElementById('editModeBtn');
-            const saveBtn = document.getElementById('saveBtn');
 
             if (isLoggedIn) {
-                adminBadge.classList.add('active');
                 editModeBtn.textContent = isEditMode ? 'View Mode' : 'Edit Mode';
-                saveBtn.style.display = 'inline-block';
+                editModeBtn.classList.add('btn-primary');
             } else {
-                adminBadge.classList.remove('active');
                 editModeBtn.textContent = 'Admin';
-                saveBtn.style.display = 'none';
+                editModeBtn.classList.add('btn-primary');
             }
         }
 
@@ -1684,6 +1715,5 @@ You should also delete this file from images/sample-album/ in GitHub.</p>
 
         window.addEventListener('DOMContentLoaded', init);
     </script>
-
-
-</body></html>
+</body>
+</html>
