@@ -1,8 +1,11 @@
-<html lang="en" data-theme="light"><head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Photo Gallery</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;family=Raleway:wght@300;400;500&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="auth.js"></script>
     <style>
         :root {
             --bg-primary: #ffffff;
@@ -147,6 +150,20 @@
             align-items: center;
         }
 
+        .admin-badge {
+            background: var(--accent);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: none;
+        }
+
+        .admin-badge.active {
+            display: block;
+        }
+
         .btn {
             padding: 0.7rem 1.8rem;
             background: transparent;
@@ -196,7 +213,7 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 7rem 2rem 4rem;
+            padding: 2rem 2rem 4rem;
         }
 
         /* Slideshow Container - Now the highlight */
@@ -204,7 +221,7 @@
             position: relative;
             width: 100%;
             max-width: 1400px;
-            margin: 0 auto 4rem;
+            margin: 6rem auto 4rem;
             padding: 0 2rem;
             min-height: 600px;
             display: flex;
@@ -758,7 +775,11 @@
             }
 
             .container {
-                padding: 9rem 1rem 2rem;
+                padding: 2rem 1rem 2rem;
+            }
+
+            .slideshow-container {
+                margin: 5rem auto 3rem;
             }
 
             .slideshow-wrapper {
@@ -809,43 +830,42 @@
     <div class="header">
         <div class="header-selector">
             <div class="header-select-display" onclick="toggleHeaderSelect()">
-                <span id="headerSelectedAlbum">⭐ Sample Album</span>
+                <span id="headerSelectedAlbum">Select Album</span>
             </div>
             <div class="header-select-options" id="headerSelectOptions">
-                <div class="header-select-option active" onclick="selectAlbum(0)">
-                    ⭐ Sample Album
-                </div>
+                <!-- Options populated by JS -->
             </div>
         </div>
 
         <div class="header-controls">
             <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">🌙</button>
-            <button class="btn" onclick="toggleEditMode()">Edit Mode</button>
-            <button class="btn btn-primary" onclick="exportData()">Save Changes</button>
+            <span class="admin-badge" id="adminBadge">Admin</span>
+            <button class="btn" id="editModeBtn" onclick="showLoginModal()">Admin</button>
+            <button class="btn btn-primary" id="saveBtn" onclick="exportData()" style="display: none;">Save Changes</button>
         </div>
     </div>
 
     <!-- Main Slideshow Container (Now First/Highlighted) -->
-    <div class="slideshow-container" id="slideshowContainer" style="display: block;">
+    <div class="slideshow-container" id="slideshowContainer">
         <div class="slideshow-wrapper">
             <!-- Previous image preview (left shadow) -->
             <div class="slide-preview-left" onclick="changeSlide(-1)">
-                <img id="previewLeftImg" src="images/sample-album/Slimmers_icon.png" alt="Previous">
+                <img id="previewLeftImg" src="" alt="Previous">
             </div>
 
             <!-- Main current slide -->
             <div class="slide-main" onclick="openPhotoCaption()">
-                <img id="mainSlideImg" src="images/sample-album/facebook.png" alt="Current Photo">
+                <img id="mainSlideImg" src="" alt="Current Photo">
                 <!-- Fixed overlay with title and subtitle -->
                 <div class="slide-overlay">
-                    <div class="slide-title" id="slideTitle">Sample Album</div>
-                    <div class="slide-subtitle" id="slideSubtitle">Your First Collection</div>
+                    <div class="slide-title" id="slideTitle">Album Title</div>
+                    <div class="slide-subtitle" id="slideSubtitle">Album Subtitle</div>
                 </div>
             </div>
 
             <!-- Next image preview (right shadow) -->
             <div class="slide-preview-right" onclick="changeSlide(1)">
-                <img id="previewRightImg" src="images/sample-album/Bob_F-T_624317.webp" alt="Next">
+                <img id="previewRightImg" src="" alt="Next">
             </div>
 
             <!-- Navigation arrows -->
@@ -857,7 +877,7 @@
     <!-- Main Container (Now Second) -->
     <div class="container" id="mainContainer">
         <!-- Edit Mode Controls -->
-        <div class="edit-mode-controls" id="editControls" style="display: block;">
+        <div class="edit-mode-controls" id="editControls" style="display: none;">
             <h3 style="margin-bottom: 1rem;">Edit Mode</h3>
             <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
                 <button class="btn" onclick="showCreateAlbumModal()">➕ Create Album</button>
@@ -866,46 +886,16 @@
                 <button class="btn" onclick="deleteCurrentAlbum()" style="border-color: #d9534f; color: #d9534f;">🗑️ Delete Album</button>
                 <label class="btn" style="margin: 0;">
                     📸 Add Photos
-                    <input type="file" multiple="" accept="image/*" onchange="handlePhotoUpload(event)" style="display: none;">
+                    <input type="file" multiple accept="image/*" onchange="handlePhotoUpload(event)" style="display: none;">
                 </label>
+                <button class="btn" onclick="logout()" style="border-color: #f0ad4e; color: #f0ad4e;">🚪 Logout</button>
             </div>
         </div>
 
         <!-- Photo Grid (Edit Mode) -->
-        <div class="photo-grid" id="photoGrid" style="display: grid;">
-                    <div class="photo-item">
-                        <img src="images/sample-album/facebook.png" alt="facebook.png">
-                        <div class="photo-controls">
-                            <button class="photo-control-btn" onclick="movePhoto(0, -1)" title="Move left">◄</button>
-                            <button class="photo-control-btn" onclick="editPhotoCaption(0)" title="Edit caption">✏️</button>
-                            <button class="photo-control-btn" onclick="movePhoto(0, 1)" title="Move right">►</button>
-                            <button class="photo-control-btn" onclick="deletePhoto(0)" title="Delete">🗑️</button>
-                        </div>
-                        <div class="photo-caption-label">No caption</div>
-                    </div>
-                
-                    <div class="photo-item">
-                        <img src="images/sample-album/Bob_F-T_624317.webp" alt="Bob_F-T_624317.webp">
-                        <div class="photo-controls">
-                            <button class="photo-control-btn" onclick="movePhoto(1, -1)" title="Move left">◄</button>
-                            <button class="photo-control-btn" onclick="editPhotoCaption(1)" title="Edit caption">✏️</button>
-                            <button class="photo-control-btn" onclick="movePhoto(1, 1)" title="Move right">►</button>
-                            <button class="photo-control-btn" onclick="deletePhoto(1)" title="Delete">🗑️</button>
-                        </div>
-                        <div class="photo-caption-label">No caption</div>
-                    </div>
-                
-                    <div class="photo-item">
-                        <img src="images/sample-album/Slimmers_icon.png" alt="Slimmers_icon.png">
-                        <div class="photo-controls">
-                            <button class="photo-control-btn" onclick="movePhoto(2, -1)" title="Move left">◄</button>
-                            <button class="photo-control-btn" onclick="editPhotoCaption(2)" title="Edit caption">✏️</button>
-                            <button class="photo-control-btn" onclick="movePhoto(2, 1)" title="Move right">►</button>
-                            <button class="photo-control-btn" onclick="deletePhoto(2)" title="Delete">🗑️</button>
-                        </div>
-                        <div class="photo-caption-label">No caption</div>
-                    </div>
-                </div>
+        <div class="photo-grid" id="photoGrid" style="display: none;">
+            <!-- Photos populated by JS -->
+        </div>
     </div>
 
     <!-- Photo Caption Modal -->
@@ -925,6 +915,26 @@
                     </div>
                 </div>
                 <button class="btn" id="editCaptionBtn" onclick="startCaptionEdit()" style="margin-top: 1rem;">Edit Caption</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('loginModal')">×</button>
+            <h2 class="modal-header">Admin Login</h2>
+            <div class="form-group">
+                <label for="usernameInput">Username</label>
+                <input type="text" id="usernameInput" placeholder="Enter username">
+            </div>
+            <div class="form-group">
+                <label for="passwordInput">Password</label>
+                <input type="password" id="passwordInput" placeholder="Enter password">
+            </div>
+            <div class="modal-actions">
+                <button class="btn" onclick="closeModal('loginModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="login()">Login</button>
             </div>
         </div>
     </div>
@@ -952,7 +962,19 @@
     <!-- Notification Modal -->
     <div class="notification" id="notificationModal">
         <div class="notification-icon" id="notificationIcon">✅</div>
-        <div class="notification-text" id="notificationText">3 photo(s) added! Remember to click "Save Changes" and upload these files to images/sample-album/ in GitHub.</div>
+        <div class="notification-text" id="notificationText"></div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal" id="confirmModal">
+        <div class="modal-content">
+            <h2 class="modal-header" id="confirmTitle">Confirm Action</h2>
+            <p id="confirmMessage" style="text-align: center; margin: 2rem 0; line-height: 1.6;"></p>
+            <div class="modal-actions">
+                <button class="btn" onclick="closeModal('confirmModal')">Cancel</button>
+                <button class="btn btn-primary" id="confirmBtn" onclick="confirmAction()">Confirm</button>
+            </div>
+        </div>
     </div>
 
     <!-- Lightbox -->
@@ -973,11 +995,15 @@
     "title": "Sample Album",
     "subtitle": "Your First Collection",
     "photos": [
-      "facebook.png",
-      "Bob_F-T_624317.webp",
-      "Slimmers_icon.png"
+      "photo1.jpg",
+      "photo2.jpg",
+      "photo3.jpg"
     ],
-    "captions": {},
+    "captions": {
+      "photo1.jpg": "This is a beautiful sunset captured during our trip.",
+      "photo2.jpg": "A moment of tranquility by the lake.",
+      "photo3.jpg": "Exploring the mountains and their majestic views."
+    },
     "isFavorite": true
   }
 ];
@@ -989,6 +1015,25 @@
         let editingAlbumIndex = null;
         let isEditMode = false;
         let currentCaptionPhotoIndex = 0;
+        let isLoggedIn = false;
+        let slideDirection = 1;
+        let confirmCallback = null;
+
+        // Drag/Swipe variables
+        let isDragging = false;
+        let startX = 0;
+        let currentTranslate = 0;
+        let dragThreshold = 50;
+
+        // Password encryption using SHA-256
+        async function hashPassword(password) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(password);
+            const hash = await crypto.subtle.digest('SHA-256', data);
+            return Array.from(new Uint8Array(hash))
+                .map(b => b.toString(16).padStart(2, '0'))
+                .join('');
+        }
 
         function init() {
             checkTheme();
@@ -996,6 +1041,144 @@
             currentAlbumIndex = favoriteIndex >= 0 ? favoriteIndex : 0;
             displayHeaderSelector();
             displayCurrentAlbum();
+            checkLoginStatus();
+            setupDragGestures();
+        }
+
+        function showConfirmModal(title, message, callback) {
+            document.getElementById('confirmTitle').textContent = title;
+            document.getElementById('confirmMessage').textContent = message;
+            confirmCallback = callback;
+            document.getElementById('confirmModal').classList.add('active');
+        }
+
+        function confirmAction() {
+            if (confirmCallback) {
+                confirmCallback();
+                confirmCallback = null;
+            }
+            closeModal('confirmModal');
+        }
+
+        function checkLoginStatus() {
+            const savedLogin = sessionStorage.getItem('isLoggedIn');
+            if (savedLogin === 'true') {
+                isLoggedIn = true;
+                updateUIForLoginState();
+            }
+        }
+
+        function setupDragGestures() {
+            const slideMain = document.querySelector('.slide-main');
+            if (!slideMain) return;
+
+            const getPositionX = (e) => {
+                return e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+            };
+
+            const startDrag = (e) => {
+                if (isEditMode) return; // Disable drag in edit mode
+                isDragging = true;
+                startX = getPositionX(e);
+                slideMain.style.transition = 'none';
+            };
+
+            const moveDrag = (e) => {
+                if (!isDragging) return;
+                const currentX = getPositionX(e);
+                const diff = currentX - startX;
+                currentTranslate = diff;
+                slideMain.style.transform = `translateX(${diff}px)`;
+            };
+
+            const endDrag = (e) => {
+                if (!isDragging) return;
+                isDragging = false;
+                slideMain.style.transition = 'transform 0.3s ease';
+
+                if (Math.abs(currentTranslate) > dragThreshold) {
+                    if (currentTranslate > 0) {
+                        changeSlide(-1); // Swipe right -> previous
+                    } else {
+                        changeSlide(1); // Swipe left -> next
+                    }
+                } else {
+                    slideMain.style.transform = 'translateX(0)';
+                }
+                currentTranslate = 0;
+            };
+
+            // Mouse events
+            slideMain.addEventListener('mousedown', startDrag);
+            slideMain.addEventListener('mousemove', moveDrag);
+            slideMain.addEventListener('mouseup', endDrag);
+            slideMain.addEventListener('mouseleave', endDrag);
+
+            // Touch events
+            slideMain.addEventListener('touchstart', startDrag, { passive: true });
+            slideMain.addEventListener('touchmove', moveDrag, { passive: true });
+            slideMain.addEventListener('touchend', endDrag);
+        }
+
+        function showLoginModal() {
+            if (isLoggedIn) {
+                toggleEditMode();
+            } else {
+                document.getElementById('loginModal').classList.add('active');
+                document.getElementById('usernameInput').value = '';
+                document.getElementById('passwordInput').value = '';
+            }
+        }
+
+        async function login() {
+            const username = document.getElementById('usernameInput').value;
+            const password = document.getElementById('passwordInput').value;
+
+            if (username !== ADMIN_USERNAME) {
+                showNotification('Invalid username or password', '❌');
+                return;
+            }
+
+            const hash = await hashPassword(password);
+
+            if (hash === STORED_PASSWORD_HASH) {
+                isLoggedIn = true;
+                sessionStorage.setItem('isLoggedIn', 'true');
+                closeModal('loginModal');
+                updateUIForLoginState();
+                toggleEditMode();
+                document.getElementById('usernameInput').value = '';
+                document.getElementById('passwordInput').value = '';
+                showNotification('Welcome back, Admin!', '✅');
+            } else {
+                showNotification('Invalid username or password', '❌');
+            }
+        }
+
+        function logout() {
+            isLoggedIn = false;
+            isEditMode = false;
+            sessionStorage.removeItem('isLoggedIn');
+            updateUIForLoginState();
+            document.getElementById('editControls').style.display = 'none';
+            document.getElementById('photoGrid').style.display = 'none';
+            showNotification('Logged out successfully', '👋');
+        }
+
+        function updateUIForLoginState() {
+            const adminBadge = document.getElementById('adminBadge');
+            const editModeBtn = document.getElementById('editModeBtn');
+            const saveBtn = document.getElementById('saveBtn');
+
+            if (isLoggedIn) {
+                adminBadge.classList.add('active');
+                editModeBtn.textContent = isEditMode ? 'View Mode' : 'Edit Mode';
+                saveBtn.style.display = 'inline-block';
+            } else {
+                adminBadge.classList.remove('active');
+                editModeBtn.textContent = 'Admin';
+                saveBtn.style.display = 'none';
+            }
         }
 
         function toggleHeaderSelect() {
@@ -1044,6 +1227,11 @@
             // Update slideshow
             updateSlideshow();
 
+            // Re-setup drag gestures after DOM update
+            setTimeout(() => {
+                setupDragGestures();
+            }, 100);
+
             // Update photo grid (edit mode)
             if (isEditMode) {
                 displayPhotoGrid();
@@ -1067,6 +1255,13 @@
             const mainImg = document.getElementById('mainSlideImg');
             mainImg.src = `images/${album.folderName}/${album.photos[currentSlideIndex]}`;
 
+            // Reset transform
+            const slideMain = document.querySelector('.slide-main');
+            if (slideMain) {
+                slideMain.style.transform = 'translateX(0)';
+                slideMain.style.transition = 'transform 0.3s ease';
+            }
+
             // Update preview images
             const prevImg = document.getElementById('previewLeftImg');
             const nextImg = document.getElementById('previewRightImg');
@@ -1082,6 +1277,7 @@
             const album = albums[currentAlbumIndex];
             if (!album || !album.photos || album.photos.length === 0) return;
 
+            slideDirection = direction;
             currentSlideIndex = (currentSlideIndex + direction + album.photos.length) % album.photos.length;
             updateSlideshow();
         }
@@ -1140,9 +1336,17 @@
         }
 
         function toggleEditMode() {
+            if (!isLoggedIn) {
+                showLoginModal();
+                return;
+            }
+
             isEditMode = !isEditMode;
             document.getElementById('editControls').style.display = isEditMode ? 'block' : 'none';
             document.getElementById('photoGrid').style.display = isEditMode ? 'grid' : 'none';
+            
+            const editModeBtn = document.getElementById('editModeBtn');
+            editModeBtn.textContent = isEditMode ? 'View Mode' : 'Edit Mode';
             
             if (isEditMode) {
                 displayPhotoGrid();
@@ -1268,17 +1472,16 @@
             }
 
             const album = albums[currentAlbumIndex];
+            const message = `Delete album "${album.title}"?\n\nThis will remove it from the gallery. The images/${album.folderName}/ folder will remain in GitHub.`;
             
-            const confirmMsg = `Delete album "${album.title}"?\n\nThis will remove it from the gallery. The images/${album.folderName}/ folder will remain in GitHub.`;
-            
-            if (confirm(confirmMsg)) {
+            showConfirmModal('Delete Album', message, () => {
                 albums.splice(currentAlbumIndex, 1);
                 currentAlbumIndex = 0;
                 currentSlideIndex = 0;
                 displayHeaderSelector();
                 displayCurrentAlbum();
                 showNotification('Album deleted successfully', '✅');
-            }
+            });
         }
 
         function toggleFavoriteAlbum() {
@@ -1345,7 +1548,9 @@
             if (!album || !album.photos) return;
             
             const photoName = album.photos[index];
-            if (confirm(`Delete "${photoName}"?\n\nYou should also delete this file from images/${album.folderName}/ in GitHub.`)) {
+            const message = `Delete "${photoName}"?\n\nYou should also delete this file from images/${album.folderName}/ in GitHub.`;
+            
+            showConfirmModal('Delete Photo', message, () => {
                 album.photos.splice(index, 1);
                 
                 // Remove caption if exists
@@ -1359,7 +1564,7 @@
                 
                 displayCurrentAlbum();
                 showNotification('Photo removed from gallery', '✅');
-            }
+            });
         }
 
         function exportData() {
@@ -1423,8 +1628,10 @@
 
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
+                closeModal('loginModal');
                 closeModal('albumModal');
                 closeModal('notificationModal');
+                closeModal('confirmModal');
                 closeLightbox();
                 closeCaptionModal();
             }
@@ -1436,10 +1643,17 @@
                 if(document.getElementById('lightbox').classList.contains('active')) navigateLightbox(1);
                 else if(!document.getElementById('captionModal').classList.contains('active')) changeSlide(1);
             }
+            // Enter key to login
+            if (e.key === 'Enter' && document.getElementById('loginModal').classList.contains('active')) {
+                login();
+            }
+            // Enter key to confirm action
+            if (e.key === 'Enter' && document.getElementById('confirmModal').classList.contains('active')) {
+                confirmAction();
+            }
         });
 
         window.addEventListener('DOMContentLoaded', init);
     </script>
-
-
-</body></html>
+</body>
+</html>
