@@ -803,12 +803,12 @@
             }
 
             .slideshow-wrapper {
-                height: 500px;
+                height: 450px;
             }
 
             .slide-main {
                 width: 100%;
-                height: 325px;
+                height: 340px;
             }
 
             .slide-preview-left,
@@ -895,11 +895,15 @@
     <div class="header">
         <div class="header-selector">
             <div class="header-select-display" onclick="toggleHeaderSelect()">
-                <span id="headerSelectedAlbum">⭐ My Collection</span>
+                <span id="headerSelectedAlbum">Sample Test</span>
             </div>
             <div class="header-select-options" id="headerSelectOptions">
-                <div class="header-select-option active" onclick="selectAlbum(0)">
+                <div class="header-select-option " onclick="selectAlbum(0)">
                     ⭐ My Collection
+                </div>
+            
+                <div class="header-select-option active" onclick="selectAlbum(1)">
+                    Sample Test
                 </div>
             </div>
         </div>
@@ -918,22 +922,22 @@
             <div class="slideshow-wrapper">
                 <!-- Previous image preview (left shadow) -->
                 <div class="slide-preview-left" onclick="changeSlide(-1)">
-                    <img id="previewLeftImg" src="images/My-Collection/Slimmers_icon.png" alt="Previous">
+                    <img id="previewLeftImg" src="images/sample-test/photo.jpg" alt="Previous">
                 </div>
 
                 <!-- Main current slide -->
                 <div class="slide-main" onclick="openPhotoCaption()" style="transform: translateX(0px); transition: transform 0.3s;">
-                    <img id="mainSlideImg" src="images/My-Collection/facebook.png" alt="Current Photo">
+                    <img id="mainSlideImg" src="images/sample-test/photo.jpg" alt="Current Photo">
                     <!-- Fixed overlay with title and subtitle -->
                     <div class="slide-overlay">
-                        <div class="slide-title" id="slideTitle">My Collection</div>
-                        <div class="slide-subtitle" id="slideSubtitle">Your First Collection</div>
+                        <div class="slide-title" id="slideTitle">Sample Test</div>
+                        <div class="slide-subtitle" id="slideSubtitle"></div>
                     </div>
                 </div>
 
                 <!-- Next image preview (right shadow) -->
                 <div class="slide-preview-right" onclick="changeSlide(1)">
-                    <img id="previewRightImg" src="images/My-Collection/Bob_F-T_624317.webp" alt="Next">
+                    <img id="previewRightImg" src="images/sample-test/photo.jpg" alt="Next">
                 </div>
 
                 <!-- Navigation arrows -->
@@ -962,34 +966,12 @@
         <!-- Photo Grid (Edit Mode) -->
         <div class="photo-grid" id="photoGrid" style="display: grid;">
                     <div class="photo-item">
-                        <img src="images/My-Collection/facebook.png" alt="facebook.png">
+                        <img src="images/sample-test/photo.jpg" alt="photo.jpg">
                         <div class="photo-controls">
                             <button class="photo-control-btn" onclick="movePhoto(0, -1)" title="Move left">◄</button>
                             <button class="photo-control-btn" onclick="editPhotoCaption(0)" title="Edit caption">✏️</button>
                             <button class="photo-control-btn" onclick="movePhoto(0, 1)" title="Move right">►</button>
                             <button class="photo-control-btn" onclick="deletePhoto(0)" title="Delete">🗑️</button>
-                        </div>
-                        <div class="photo-caption-label">No caption</div>
-                    </div>
-                
-                    <div class="photo-item">
-                        <img src="images/My-Collection/Bob_F-T_624317.webp" alt="Bob_F-T_624317.webp">
-                        <div class="photo-controls">
-                            <button class="photo-control-btn" onclick="movePhoto(1, -1)" title="Move left">◄</button>
-                            <button class="photo-control-btn" onclick="editPhotoCaption(1)" title="Edit caption">✏️</button>
-                            <button class="photo-control-btn" onclick="movePhoto(1, 1)" title="Move right">►</button>
-                            <button class="photo-control-btn" onclick="deletePhoto(1)" title="Delete">🗑️</button>
-                        </div>
-                        <div class="photo-caption-label">No caption</div>
-                    </div>
-                
-                    <div class="photo-item">
-                        <img src="images/My-Collection/Slimmers_icon.png" alt="Slimmers_icon.png">
-                        <div class="photo-controls">
-                            <button class="photo-control-btn" onclick="movePhoto(2, -1)" title="Move left">◄</button>
-                            <button class="photo-control-btn" onclick="editPhotoCaption(2)" title="Edit caption">✏️</button>
-                            <button class="photo-control-btn" onclick="movePhoto(2, 1)" title="Move right">►</button>
-                            <button class="photo-control-btn" onclick="deletePhoto(2)" title="Delete">🗑️</button>
                         </div>
                         <div class="photo-caption-label">No caption</div>
                     </div>
@@ -1052,7 +1034,7 @@
     <!-- Notification Modal -->
     <div class="notification" id="notificationModal">
         <div class="notification-icon" id="notificationIcon">✅</div>
-        <div class="notification-text" id="notificationText">Welcome back, Admin!</div>
+        <div class="notification-text" id="notificationText">1 photo(s) added! Remember to click "Save Changes" and upload these files to images/sample-test/ in GitHub.</div>
     </div>
 
     <!-- Confirmation Modal -->
@@ -1093,6 +1075,16 @@ You should also delete this file from images/My-Collection/ in GitHub.</p>
     ],
     "captions": {},
     "isFavorite": true
+  },
+  {
+    "folderName": "sample-test",
+    "title": "Sample Test",
+    "subtitle": "",
+    "photos": [
+      "photo.jpg"
+    ],
+    "captions": {},
+    "isFavorite": false
   }
 ];
         // ALBUMS_DATA_END
@@ -1679,8 +1671,8 @@ You should also delete this file from images/My-Collection/ in GitHub.</p>
             let htmlContent = document.documentElement.outerHTML;
             
             // Force the exported variables to be logged out
-            htmlContent = htmlContent.replace(/let isLoggedIn = true;/g, 'let isLoggedIn = false;');
-            htmlContent = htmlContent.replace(/let isEditMode = true;/g, 'let isEditMode = false;');
+            htmlContent = htmlContent.replace(/let isLoggedIn = false;/g, 'let isLoggedIn = false;');
+            htmlContent = htmlContent.replace(/let isEditMode = false;/g, 'let isEditMode = false;');
             
             // Update the Data block
             htmlContent = htmlContent.replace(/\/\/ ALBUMS_DATA_START[\s\S]*?\/\/ ALBUMS_DATA_END/m, 
@@ -1809,6 +1801,7 @@ You should also delete this file from images/My-Collection/ in GitHub.</p>
             setupModalSwipes();
         });
     </script>
+
 
 
 </body></html>
