@@ -372,46 +372,52 @@
         .caption-content {
             background: var(--bg-primary);
             border-radius: 8px;
-            max-width: 900px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
+            max-width: 95vw; /* Increased for better mobile use */
+            width: 1000px;
+            max-height: 95vh;
+            overflow: hidden; /* Prevent double scrollbars */
             position: relative;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            display: flex;
+            flex-direction: column;
         }
 
         .caption-image-container {
             position: relative;
             width: 100%;
-            max-height: 100%;
+            flex-grow: 1;
+            background: #000; /* Black bars if image is narrow */
+            display: flex;
+            align-items: center;
+            justify-content: center;
             overflow: hidden;
-            border-radius: 8px 8px 0 0;
         }
 
         .caption-image-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            max-width: 100%;
+            max-height: 80vh; /* Leave room for text */
+            object-fit: contain; /* CRITICAL: Prevents cropping */
         }
 
+        /* CAPTION TEXT OVERLAY (Shadowed instead of solid) */
         .caption-text-container {
             position: absolute;
-            margin-bottom: 1.5rem;
+            bottom: 0;
             left: 0;
             right: 0;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            padding: 3rem 2rem 2rem;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.4) 70%, transparent 100%);
+            padding: 4rem 2rem 2rem;
             color: white;
             pointer-events: none;
-            z-index: 15;  
+            z-index: 15;
         }
 
-        .caption-text {  
+        .caption-text {
             font-size: 1.1rem;
-            line-height: 1.8;
-            color: var(--text-primary);
-            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            color: #ffffff; /* Forced white for contrast against shadow */
+            text-align: center;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
         }
 
         .caption-edit-area {
@@ -856,6 +862,16 @@
 
             .modal-header {
                 font-size: 1.5rem;
+            }
+            .caption-content {
+                height: auto;
+                max-height: 90vh;
+            }
+            .caption-text {
+                font-size: 0.95rem;
+            }
+            .caption-text-container {
+                padding: 2rem 1rem 1rem;
             }
         }
 
@@ -1656,11 +1672,19 @@ You should also delete this file from images/My-Collection/ in GitHub.</p>
         }
 
         function exportData() {
+            // Create a deep copy of current state to modify for export
             const albumsJSON = JSON.stringify(albums, null, 2);
             
-            const htmlContent = document.documentElement.outerHTML
-                .replace(/\/\/ ALBUMS_DATA_START[\s\S]*?\/\/ ALBUMS_DATA_END/m, 
-                    `// ALBUMS_DATA_START\n        let ALBUMS_DATA = ${albumsJSON};\n        // ALBUMS_DATA_END`);
+            // Temporarily set logged in states to false for the string replacement
+            let htmlContent = document.documentElement.outerHTML;
+            
+            // Force the exported variables to be logged out
+            htmlContent = htmlContent.replace(/let isLoggedIn = true;/g, 'let isLoggedIn = false;');
+            htmlContent = htmlContent.replace(/let isEditMode = true;/g, 'let isEditMode = false;');
+            
+            // Update the Data block
+            htmlContent = htmlContent.replace(/\/\/ ALBUMS_DATA_START[\s\S]*?\/\/ ALBUMS_DATA_END/m, 
+                `// ALBUMS_DATA_START\n        let ALBUMS_DATA = ${albumsJSON};\n        // ALBUMS_DATA_END`);
             
             const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
             const htmlUrl = URL.createObjectURL(htmlBlob);
@@ -1672,7 +1696,46 @@ You should also delete this file from images/My-Collection/ in GitHub.</p>
             document.body.removeChild(htmlLink);
             URL.revokeObjectURL(htmlUrl);
             
-            showNotification('Gallery data saved! Upload the downloaded index.html to your GitHub repository to save your changes.', '💾');
+            showNotification('Gallery data saved! Logout forced for security.', '💾');
+        }
+
+        function setupModalSwipes() {
+            const modalImg = document.getElementById('captionImage');
+            let modalStartX = 0;
+
+            modalImg.addEventListener('touchstart', (e) => {
+                modalStartX = e.touches[0].clientX;
+            }, { passive: true });
+
+            modalImg.addEventListener('touchend', (e) => {
+                const endX = e.changedTouches[0].clientX;
+                const diff = modalStartX - endX;
+
+                if (Math.abs(diff) > 50) { // Threshold
+                    if (diff > 0) {
+                        // Swipe Left -> Next
+                        modalNavigate(1);
+                    } else {
+                        // Swipe Right -> Prev
+                        modalNavigate(-1);
+                    }
+                }
+            });
+        }
+        // Helper to change image inside the modal
+        function modalNavigate(direction) {
+            const album = albums[currentAlbumIndex];
+            currentSlideIndex = (currentSlideIndex + direction + album.photos.length) % album.photos.length;
+            currentCaptionPhotoIndex = currentSlideIndex;
+            
+            const photoName = album.photos[currentCaptionPhotoIndex];
+            const caption = album.captions[photoName] || '';
+
+            document.getElementById('captionImage').src = `images/${album.folderName}/${photoName}`;
+            document.getElementById('captionDisplayText').textContent = caption || 'No caption yet.';
+            
+            // Also update main slideshow in background so they stay synced
+            updateSlideshow();
         }
 
         function closeModal(modalId) {
@@ -1741,7 +1804,10 @@ You should also delete this file from images/My-Collection/ in GitHub.</p>
             }
         });
 
-        window.addEventListener('DOMContentLoaded', init);
+        window.addEventListener('DOMContentLoaded', () => {
+            init();
+            setupModalSwipes();
+        });
     </script>
 
 
