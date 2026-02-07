@@ -1246,6 +1246,22 @@
             display.classList.toggle('open');
         }
 
+        
+        function displayHeaderSelector() {
+            const container = document.getElementById('headerSelectOptions');
+            const display = document.getElementById('headerSelectedAlbum');
+            
+            container.innerHTML = albums.map((album, index) => `
+                <div class="header-select-option ${index === currentAlbumIndex ? 'active' : ''}" 
+                     onclick="selectAlbum(${index})">
+                    ${album.isFavorite ? '⭐ ' : ''}${album.title}
+                </div>
+            `).join('');
+
+            const currentAlbum = albums[currentAlbumIndex];
+            display.textContent = (currentAlbum.isFavorite ? '⭐ ' : '') + currentAlbum.title;
+        }
+
         function selectAlbum(index) {
             currentAlbumIndex = index;
             currentSlideIndex = 0;
@@ -1255,6 +1271,30 @@
             renderPhotoGrid();
         }
 
+        
+        function displayCurrentAlbum() {
+            const album = albums[currentAlbumIndex];
+            if (!album) return;
+
+            // Initialize captions object if it doesn't exist
+            if (!album.captions) {
+                album.captions = {};
+            }
+
+            // Update slideshow
+            updateSlideshow();
+
+            // Re-setup drag gestures after DOM update
+            setTimeout(() => {
+                setupDragGestures();
+            }, 100);
+
+            // Update photo grid (edit mode)
+            if (isEditMode) {
+                displayPhotoGrid();
+            }
+        }
+        
         function isVideoFile(filename) {
             return filename.toLowerCase().endsWith('.mp4');
         }
