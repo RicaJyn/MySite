@@ -1,8 +1,8 @@
-<html lang="en" data-theme="dark"><head>
+<html lang="en" data-theme="valentine"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Photo Gallery</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;family=Raleway:wght@300;400;500&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
     <script src="auth.js"></script>
     <style>
         :root {
@@ -287,21 +287,18 @@
             padding: 0.7rem 1.8rem;
             background: transparent;
             border: 1px solid var(--border);
+            border-radius: 6px;
             color: var(--text-primary);
             font-family: 'Raleway', sans-serif;
-            font-size: 0.875rem;
-            font-weight: 500;
+            font-size: 0.9rem;
             cursor: pointer;
             transition: all 0.3s ease;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            border-radius: 4px;
+            font-weight: 500;
         }
 
         .btn:hover {
-            background: var(--accent);
-            color: white;
             border-color: var(--accent);
+            background: var(--bg-secondary);
         }
 
         .btn-primary {
@@ -316,127 +313,99 @@
         }
 
         .theme-toggle {
-            background: none;
-            border: none;
-            color: var(--text-primary);
-            cursor: pointer;
-            font-size: 1.5rem;
-            padding: 0.5rem;
-            transition: transform 0.3s ease;
-            position: relative;
-        }
-
-        .theme-toggle:hover {
-            transform: rotate(180deg) scale(1.1);
-        }
-
-        [data-theme="valentine"] .theme-toggle {
-            animation: heartbeat 1.5s ease-in-out infinite;
-        }
-
-        @keyframes heartbeat {
-            0%, 100% {
-                transform: scale(1);
-            }
-            10%, 30% {
-                transform: scale(1.1);
-            }
-            20%, 40% {
-                transform: scale(1);
-            }
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 12rem 2rem 2rem;
-        }
-
-        /* Slideshow Container - Inside container */
-        .slideshow-container {
-            position: relative;
-            width: 100%;
-            max-width: 100%;
-            margin: 0 0 2rem 0;
-            padding: 0;
-            min-height: 600px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
             display: flex;
             align-items: center;
             justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--accent);
+            background: var(--accent);
+        }
+
+        .container {
+            padding: 10rem 3rem 3rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Slideshow */
+        .slideshow-container {
+            margin: 0 0 3rem 0;
+            min-height: 500px;
         }
 
         .slideshow-wrapper {
             position: relative;
-            width: 100%;
-            height: 600px;
             display: flex;
             align-items: center;
             justify-content: center;
-            perspective: 1500px;
+            gap: 2rem;
+            height: 600px;
         }
 
-        /* Previous image (left shadow) */
         .slide-preview-left,
         .slide-preview-right {
-            position: absolute;
-            width: 45%;
-            height: 600px;
+            width: 200px;
+            height: 450px;
+            border-radius: 12px;
             overflow: hidden;
-            cursor: pointer;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             opacity: 0.3;
-            filter: blur(2px) brightness(0.6);
-            z-index: 1;
-        }
-
-        .slide-preview-left {
-            left: 0;
-            transform: translateX(-15%) rotateY(15deg) scale(0.85);
-        }
-
-        .slide-preview-right {
-            right: 0;
-            transform: translateX(15%) rotateY(-15deg) scale(0.85);
+            filter: blur(2px);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
         }
 
         .slide-preview-left:hover,
         .slide-preview-right:hover {
-            opacity: 0.5;
-            filter: blur(1px) brightness(0.7);
+            opacity: 0.6;
+            filter: blur(1px);
         }
 
         .slide-preview-left img,
-        .slide-preview-right img {
+        .slide-preview-right img,
+        .slide-preview-left video,
+        .slide-preview-right video {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
-        /* Main current slide */
         .slide-main {
-            position: relative;
-            width: 100%;
-            max-width: 600px;
-            height: 600px;
-            z-index: 10;
+            width: 650px;
+            height: 500px;
+            border-radius: 16px;
             overflow: hidden;
+            box-shadow: 0 20px 60px var(--shadow);
+            position: relative;
             cursor: pointer;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             transition: transform 0.3s ease;
+            border: 2px solid var(--border);
         }
 
         .slide-main:hover {
             transform: scale(1.02);
         }
 
-        .slide-main img {
+        .slide-main img,
+        .slide-main video {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
         }
 
-        /* Fixed title and subtitle overlay on image */
         .slide-overlay {
             position: absolute;
             bottom: 0;
@@ -446,25 +415,20 @@
             padding: 3rem 2rem 2rem;
             color: white;
             pointer-events: none;
-            z-index: 15;
         }
 
         .slide-title {
             font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 700;
             margin-bottom: 0.5rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
 
         .slide-subtitle {
-            font-size: 1.1rem;
-            font-weight: 300;
+            font-size: 1rem;
             opacity: 0.9;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
         }
 
-        /* Navigation arrows */
         .slide-nav {
             position: absolute;
             top: 50%;
@@ -476,22 +440,18 @@
             border-radius: 50%;
             font-size: 1.5rem;
             cursor: pointer;
-            z-index: 20;
             transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-primary);
+            z-index: 10;
         }
 
         [data-theme="dark"] .slide-nav {
             background: rgba(50, 50, 50, 0.9);
+            color: white;
         }
 
         .slide-nav:hover {
             background: var(--accent);
             color: white;
-            transform: translateY(-50%) scale(1.1);
         }
 
         .slide-nav.prev {
@@ -502,7 +462,107 @@
             right: 1rem;
         }
 
-        /* Photo caption modal */
+        /* Edit Mode Controls */
+        .edit-mode-controls {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        /* Photo Grid */
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .photo-item {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .photo-item:hover {
+            border-color: var(--accent);
+            box-shadow: 0 5px 20px var(--shadow);
+        }
+
+        .photo-item img,
+        .photo-item video {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .photo-item video {
+            background: #000;
+        }
+
+        .photo-controls {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .photo-item:hover .photo-controls {
+            opacity: 1;
+        }
+
+        .photo-control-btn {
+            background: white;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .photo-control-btn:hover {
+            background: var(--accent);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .photo-caption-label {
+            padding: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-align: center;
+            border-top: 1px solid var(--border);
+        }
+
+        .media-type-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        /* Caption Modal */
         .caption-modal {
             position: fixed;
             top: 0;
@@ -523,72 +583,42 @@
 
         .caption-content {
             background: var(--bg-primary);
-            border-radius: 8px;
-            max-width: 95vw; /* Increased for better mobile use */
-            width: 1000px;
-            max-height: 95vh;
-            overflow: hidden; /* Prevent double scrollbars */
+            border-radius: 12px;
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
             position: relative;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
             display: flex;
             flex-direction: column;
         }
 
         .caption-image-container {
-            position: relative;
             width: 100%;
-            flex-grow: 1;
-            background: #000; /* Black bars if image is narrow */
+            max-height: 70vh;
+            background: #000;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
+            border-radius: 12px 12px 0 0;
         }
 
-        .caption-image-container img {
+        .caption-image-container img,
+        .caption-image-container video {
             max-width: 100%;
-            max-height: 80vh; /* Leave room for text */
-            object-fit: contain; /* CRITICAL: Prevents cropping */
+            max-height: 70vh;
+            object-fit: contain;
+            display: block;
         }
 
-        /* CAPTION TEXT OVERLAY (Shadowed instead of solid) */
         .caption-text-container {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.4) 70%, transparent 100%);
-            padding: 4rem 2rem 2rem;
-            color: white;
-            pointer-events: none;
-            z-index: 15;
+            padding: 2rem;
         }
 
         .caption-text {
             font-size: 1.1rem;
-            line-height: 1.6;
-            color: #ffffff; /* Forced white for contrast against shadow */
-            text-align: center;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
-        }
-
-        .caption-edit-area {
-            width: 100%;
-            min-height: 100px;
-            padding: 1rem;
-            border: 2px solid var(--border);
-            border-radius: 4px;
-            font-family: 'Raleway', sans-serif;
-            font-size: 1rem;
-            background: var(--bg-secondary);
+            line-height: 1.8;
             color: var(--text-primary);
-            resize: vertical;
-        }
-
-        .caption-actions {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
         }
 
         .close-caption {
@@ -598,117 +628,27 @@
             background: rgba(0, 0, 0, 0.6);
             color: white;
             border: none;
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            font-size: 1.5rem;
+            font-size: 2rem;
             cursor: pointer;
-            z-index: 10;
             transition: all 0.3s ease;
+            z-index: 10;
         }
 
         .close-caption:hover {
-            background: rgba(0, 0, 0, 0.8);
-            transform: rotate(90deg);
+            background: rgba(0, 0, 0, 0.9);
         }
 
-        /* Edit mode styles */
-        .edit-mode-controls {
-            background: var(--bg-secondary);
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin-bottom: 2rem;
-            text-align: center;
-        }
-
-        .photo-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .photo-item {
-            position: relative;
-            aspect-ratio: 1;
-            border-radius: 8px;
-            overflow: hidden;
-            border: 2px solid var(--border);
-            transition: all 0.3s ease;
-        }
-
-        .photo-item:hover {
-            border-color: var(--accent);
-            transform: translateY(-4px);
-            box-shadow: 0 10px 30px var(--shadow);
-        }
-
-        .photo-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .photo-controls {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 0.5rem;
-            display: flex;
-            gap: 0.5rem;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .photo-item:hover .photo-controls {
-            opacity: 1;
-        }
-
-        .photo-control-btn {
-            background: white;
-            border: none;
-            width: 32px;
-            height: 32px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.2s ease;
-        }
-
-        .photo-control-btn:hover {
-            background: var(--accent);
-            color: white;
-        }
-
-        .photo-caption-label {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 0.5rem;
-            font-size: 0.75rem;
-            text-align: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .photo-item:hover .photo-caption-label {
-            opacity: 1;
-        }
-
-        /* Modal styles */
+        /* Modal */
         .modal {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.7);
             display: none;
             align-items: center;
             justify-content: center;
@@ -856,7 +796,8 @@
             position: relative;
         }
 
-        .lightbox-content img {
+        .lightbox-content img,
+        .lightbox-content video {
             max-width: 100%;
             max-height: 90vh;
             object-fit: contain;
@@ -1061,7 +1002,7 @@
         </div>
 
         <div class="header-controls">
-            <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme" id="themeToggle">🌙</button>
+            <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme" id="themeToggle">💖</button>
             <button class="btn btn-primary" id="editModeBtn" onclick="showLoginModal()">Admin</button>
         </div>
     </div>
@@ -1111,7 +1052,11 @@
                 <button class="btn" onclick="deleteCurrentAlbum()" style="border-color: #d9534f; color: #d9534f;">🗑️ Delete Album</button>
                 <label class="btn" style="margin: 0;">
                     📸 Add Photos
-                    <input type="file" multiple="" accept="image/*" onchange="handlePhotoUpload(event)" style="display: none;">
+                    <input type="file" multiple accept="image/*" onchange="handlePhotoUpload(event)" style="display: none;">
+                </label>
+                <label class="btn" style="margin: 0;">
+                    🎥 Add Videos
+                    <input type="file" multiple accept="video/mp4" onchange="handleVideoUpload(event)" style="display: none;">
                 </label>
                 <button class="btn btn-primary" onclick="exportData()">💾 Save Changes</button>
                 <button class="btn" onclick="logout()" style="border-color: #f0ad4e; color: #f0ad4e;">🚪 Logout</button>
@@ -1138,7 +1083,8 @@
         <div class="caption-content">
             <button class="close-caption" onclick="closeCaptionModal()">×</button>
             <div class="caption-image-container">
-                <img id="captionImage" src="" alt="Photo">  
+                <img id="captionImage" src="" alt="Photo" style="display: none;">
+                <video id="captionVideo" controls style="display: none;"></video>
             </div>
             <div class="caption-text-container">
                 <div id="captionDisplayText" class="caption-text"></div> 
@@ -1181,148 +1127,527 @@
             </div>
             <div class="modal-actions">
                 <button class="btn" onclick="closeModal('albumModal')">Cancel</button>
-                <button class="btn btn-primary" onclick="saveAlbum()">Save Album</button>
+                <button class="btn btn-primary" id="albumModalAction" onclick="createAlbum()">Create</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Caption Edit Modal -->
+    <div class="modal" id="captionEditModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('captionEditModal')">×</button>
+            <h2 class="modal-header">Edit Caption</h2>
+            <div class="form-group">
+                <label for="captionEditInput">Caption</label>
+                <textarea id="captionEditInput" placeholder="Enter caption for this media..."></textarea>
+            </div>
+            <div class="modal-actions">
+                <button class="btn" onclick="closeModal('captionEditModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="saveCaption()">Save</button>
             </div>
         </div>
     </div>
 
     <!-- Notification Modal -->
     <div class="notification" id="notificationModal">
-        <div class="notification-icon" id="notificationIcon">✅</div>
-        <div class="notification-text" id="notificationText">1 photo(s) added! Remember to click "Save Changes" and upload these files to images/sample-test/ in GitHub.</div>
+        <div class="notification-icon" id="notificationIcon">✓</div>
+        <div class="notification-text" id="notificationText">Success!</div>
     </div>
 
-    <!-- Confirmation Modal -->
+    <!-- Confirm Modal -->
     <div class="modal" id="confirmModal">
         <div class="modal-content">
-            <h2 class="modal-header" id="confirmTitle">Delete Photo</h2>
-            <p id="confirmMessage" style="text-align: center; margin: 2rem 0; line-height: 1.6;">Delete "photo3.jpg"?
-
-You should also delete this file from images/My-Collection/ in GitHub.</p>
+            <button class="close-modal" onclick="closeModal('confirmModal')">×</button>
+            <h2 class="modal-header">Confirm Action</h2>
+            <p id="confirmText" style="text-align: center; margin: 1.5rem 0; font-size: 1.1rem;"></p>
             <div class="modal-actions">
                 <button class="btn" onclick="closeModal('confirmModal')">Cancel</button>
-                <button class="btn btn-primary" id="confirmBtn" onclick="confirmAction()">Confirm</button>
+                <button class="btn btn-primary" id="confirmButton" onclick="confirmAction()">Confirm</button>
             </div>
         </div>
     </div>
 
-    <!-- Lightbox -->
+    <!-- Lightbox (currently unused, but kept for potential future use) -->
     <div class="lightbox" id="lightbox">
         <button class="close-lightbox" onclick="closeLightbox()">×</button>
         <div class="lightbox-content">
-            <img id="lightboxImage" src="" alt="Lightbox">
+            <img id="lightboxImage" src="" alt="Full size">
             <button class="lightbox-nav prev" onclick="navigateLightbox(-1)">‹</button>
             <button class="lightbox-nav next" onclick="navigateLightbox(1)">›</button>
         </div>
     </div>
 
     <script>
-        // ALBUMS_DATA_START
-        let ALBUMS_DATA = [
-  {
-    "folderName": "My-Collection",
-    "title": "My Collection",
-    "subtitle": "Your First Collection",
-    "photos": [
-      "facebook.png",
-      "Bob_F-T_624317.webp",
-      "Slimmers_icon.png"
-    ],
-    "captions": {},
-    "isFavorite": true
-  },
-  {
-    "folderName": "sample-test",
-    "title": "Sample Test",
-    "subtitle": "",
-    "photos": [
-      "photo.jpg"
-    ],
-    "captions": {},
-    "isFavorite": false
-  }
-];
-        // ALBUMS_DATA_END
+        // Check authentication on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof checkAuth === 'function') {
+                checkAuth();
+            }
+        });
 
-        let albums = JSON.parse(JSON.stringify(ALBUMS_DATA));
-        let currentAlbumIndex = 0;
+        let albums = [
+    {
+        "title": "My Collection",
+        "subtitle": "My Personal Memories",
+        "folderName": "my-collection",
+        "photos": [],
+        "captions": {},
+        "isFavorite": true
+    },
+    {
+        "title": "Sample Test",
+        "subtitle": "",
+        "folderName": "sample-test",
+        "photos": [
+            "photo.jpg"
+        ],
+        "captions": {
+            "photo.jpg": ""
+        },
+        "isFavorite": false
+    }
+];
+
+        let currentAlbumIndex = 1;
         let currentSlideIndex = 0;
-        let editingAlbumIndex = null;
         let isEditMode = false;
         let currentCaptionPhotoIndex = 0;
-        let isLoggedIn = false;
-        let slideDirection = 1;
         let confirmCallback = null;
 
-        // Drag/Swipe variables
-        let isDragging = false;
-        let startX = 0;
-        let currentTranslate = 0;
-        let dragThreshold = 50;
-
-        // Password encryption using SHA-256
-        async function hashPassword(password) {
-            const encoder = new TextEncoder();
-            const data = encoder.encode(password);
-            const hash = await crypto.subtle.digest('SHA-256', data);
-            return Array.from(new Uint8Array(hash))
-                .map(b => b.toString(16).padStart(2, '0'))
-                .join('');
-        }
-
         function init() {
-            // FORCE DEFAULT USER MODE
-            isLoggedIn = false;
-            isEditMode = false;
-
-            document.getElementById('editControls').style.display = 'none';
-            document.getElementById('photoGrid').style.display = 'none';
-
-            updateUIForLoginState();
-
             checkTheme();
-            const favoriteIndex = albums.findIndex(a => a.isFavorite);
-            currentAlbumIndex = favoriteIndex >= 0 ? favoriteIndex : 0;
-
-            loadPhotosFromFolders().then(() => {
-                displayHeaderSelector();
-                displayCurrentAlbum();
-                setupDragGestures();
-            });
+            renderAlbumSelector();
+            updateSlideshow();
+            updateEditModeButton();
         }
 
-        // Auto-load photos from GitHub folders
-        async function loadPhotosFromFolders() {
-            for (let album of albums) {
-                try {
-                    const response = await fetch(`images/${album.folderName}/`);
-                    if (response.ok) {
-                        const text = await response.text();
-                        const parser = new DOMParser();
-                        const doc = parser.parseFromString(text, 'text/html');
-                        const links = doc.querySelectorAll('a');
-                        const photos = [];
-                        
-                        links.forEach(link => {
-                            const href = link.getAttribute('href');
-                            if (href && /\.(jpg|jpeg|png|gif|webp)$/i.test(href)) {
-                                photos.push(href);
-                            }
-                        });
-                        
-                        if (photos.length > 0) {
-                            album.photos = photos;
-                        }
-                    }
-                } catch (error) {
-                    console.log(`Could not auto-load photos for ${album.folderName}`);
-                }
+        function renderAlbumSelector() {
+            const optionsContainer = document.getElementById('headerSelectOptions');
+            const selectedDisplay = document.getElementById('headerSelectedAlbum');
+
+            optionsContainer.innerHTML = '';
+
+            albums.forEach((album, index) => {
+                const option = document.createElement('div');
+                option.className = 'header-select-option' + (index === currentAlbumIndex ? ' active' : '');
+                option.textContent = (album.isFavorite ? '⭐ ' : '') + album.title;
+                option.onclick = () => selectAlbum(index);
+                optionsContainer.appendChild(option);
+            });
+
+            const currentAlbum = albums[currentAlbumIndex];
+            selectedDisplay.textContent = currentAlbum.title;
+        }
+
+        function toggleHeaderSelect() {
+            const options = document.getElementById('headerSelectOptions');
+            const display = document.querySelector('.header-select-display');
+            options.classList.toggle('show');
+            display.classList.toggle('open');
+        }
+
+        function selectAlbum(index) {
+            currentAlbumIndex = index;
+            currentSlideIndex = 0;
+            toggleHeaderSelect();
+            renderAlbumSelector();
+            updateSlideshow();
+            renderPhotoGrid();
+        }
+
+        function isVideoFile(filename) {
+            return filename.toLowerCase().endsWith('.mp4');
+        }
+
+        function updateSlideshow() {
+            const album = albums[currentAlbumIndex];
+            
+            document.getElementById('slideTitle').textContent = album.title;
+            document.getElementById('slideSubtitle').textContent = album.subtitle;
+
+            if (album.photos.length === 0) {
+                document.getElementById('mainSlideImg').style.display = 'none';
+                document.getElementById('slideTitle').style.display = 'block';
+                return;
+            }
+
+            const currentMedia = album.photos[currentSlideIndex];
+            const prevIndex = (currentSlideIndex - 1 + album.photos.length) % album.photos.length;
+            const nextIndex = (currentSlideIndex + 1) % album.photos.length;
+
+            const prevMedia = album.photos[prevIndex];
+            const nextMedia = album.photos[nextIndex];
+
+            // Update main slide
+            const mainSlide = document.querySelector('.slide-main');
+            const existingMainImg = document.getElementById('mainSlideImg');
+            const existingMainVideo = document.getElementById('mainSlideVideo');
+            
+            if (existingMainImg) existingMainImg.remove();
+            if (existingMainVideo) existingMainVideo.remove();
+
+            if (isVideoFile(currentMedia)) {
+                const video = document.createElement('video');
+                video.id = 'mainSlideVideo';
+                video.src = `images/${album.folderName}/${currentMedia}`;
+                video.controls = true;
+                video.autoplay = true;
+                video.muted = true;
+                video.loop = true;
+                mainSlide.insertBefore(video, mainSlide.querySelector('.slide-overlay'));
+            } else {
+                const img = document.createElement('img');
+                img.id = 'mainSlideImg';
+                img.src = `images/${album.folderName}/${currentMedia}`;
+                img.alt = 'Current Photo';
+                mainSlide.insertBefore(img, mainSlide.querySelector('.slide-overlay'));
+            }
+
+            // Update preview left
+            const previewLeft = document.querySelector('.slide-preview-left');
+            previewLeft.innerHTML = '';
+            if (isVideoFile(prevMedia)) {
+                const video = document.createElement('video');
+                video.src = `images/${album.folderName}/${prevMedia}`;
+                video.muted = true;
+                previewLeft.appendChild(video);
+            } else {
+                const img = document.createElement('img');
+                img.id = 'previewLeftImg';
+                img.src = `images/${album.folderName}/${prevMedia}`;
+                img.alt = 'Previous';
+                previewLeft.appendChild(img);
+            }
+
+            // Update preview right
+            const previewRight = document.querySelector('.slide-preview-right');
+            previewRight.innerHTML = '';
+            if (isVideoFile(nextMedia)) {
+                const video = document.createElement('video');
+                video.src = `images/${album.folderName}/${nextMedia}`;
+                video.muted = true;
+                previewRight.appendChild(video);
+            } else {
+                const img = document.createElement('img');
+                img.id = 'previewRightImg';
+                img.src = `images/${album.folderName}/${nextMedia}`;
+                img.alt = 'Next';
+                previewRight.appendChild(img);
             }
         }
 
-        function showConfirmModal(title, message, callback) {
-            document.getElementById('confirmTitle').textContent = title;
-            document.getElementById('confirmMessage').textContent = message;
+        function changeSlide(direction) {
+            const album = albums[currentAlbumIndex];
+            if (album.photos.length === 0) return;
+            
+            currentSlideIndex = (currentSlideIndex + direction + album.photos.length) % album.photos.length;
+            updateSlideshow();
+        }
+
+        function showLoginModal() {
+            if (isEditMode) {
+                toggleEditMode();
+            } else {
+                document.getElementById('loginModal').classList.add('active');
+            }
+        }
+
+        function login() {
+            const username = document.getElementById('usernameInput').value;
+            const password = document.getElementById('passwordInput').value;
+
+            if (typeof validateCredentials === 'function') {
+                if (validateCredentials(username, password)) {
+                    closeModal('loginModal');
+                    toggleEditMode();
+                    showNotification('✓', 'Login successful!');
+                    document.getElementById('usernameInput').value = '';
+                    document.getElementById('passwordInput').value = '';
+                } else {
+                    showNotification('✗', 'Invalid credentials!');
+                }
+            } else {
+                alert('Authentication system not configured. Please ensure auth.js is loaded.');
+            }
+        }
+
+        function logout() {
+            toggleEditMode();
+            showNotification('✓', 'Logged out successfully!');
+        }
+
+        function toggleEditMode() {
+            isEditMode = !isEditMode;
+            
+            if (isEditMode) {
+                document.getElementById('editControls').style.display = 'block';
+                document.getElementById('photoGrid').style.display = 'grid';
+                document.getElementById('slideshowContainer').style.display = 'none';
+                renderPhotoGrid();
+            } else {
+                document.getElementById('editControls').style.display = 'none';
+                document.getElementById('photoGrid').style.display = 'none';
+                document.getElementById('slideshowContainer').style.display = 'block';
+                updateSlideshow();
+            }
+            
+            updateEditModeButton();
+        }
+
+        function updateEditModeButton() {
+            const btn = document.getElementById('editModeBtn');
+            if (isEditMode) {
+                btn.textContent = '👁️ View Mode';
+                btn.classList.remove('btn-primary');
+            } else {
+                btn.textContent = 'Admin';
+                btn.classList.add('btn-primary');
+            }
+        }
+
+        function showCreateAlbumModal() {
+            document.getElementById('albumModalTitle').textContent = 'Create Album';
+            document.getElementById('albumTitleInput').value = '';
+            document.getElementById('albumSubtitleInput').value = '';
+            document.getElementById('albumModalAction').textContent = 'Create';
+            document.getElementById('albumModalAction').onclick = createAlbum;
+            document.getElementById('albumModal').classList.add('active');
+        }
+
+        function showEditAlbumModal() {
+            const album = albums[currentAlbumIndex];
+            document.getElementById('albumModalTitle').textContent = 'Edit Album';
+            document.getElementById('albumTitleInput').value = album.title;
+            document.getElementById('albumSubtitleInput').value = album.subtitle;
+            document.getElementById('albumModalAction').textContent = 'Save';
+            document.getElementById('albumModalAction').onclick = editAlbum;
+            document.getElementById('albumModal').classList.add('active');
+        }
+
+        function createAlbum() {
+            const title = document.getElementById('albumTitleInput').value.trim();
+            if (!title) {
+                alert('Please enter an album title');
+                return;
+            }
+
+            const subtitle = document.getElementById('albumSubtitleInput').value.trim();
+            const folderName = title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+
+            albums.push({
+                title: title,
+                subtitle: subtitle,
+                folderName: folderName,
+                photos: [],
+                captions: {},
+                isFavorite: false
+            });
+
+            currentAlbumIndex = albums.length - 1;
+            closeModal('albumModal');
+            renderAlbumSelector();
+            renderPhotoGrid();
+            showNotification('✓', 'Album created successfully!');
+        }
+
+        function editAlbum() {
+            const title = document.getElementById('albumTitleInput').value.trim();
+            if (!title) {
+                alert('Please enter an album title');
+                return;
+            }
+
+            const subtitle = document.getElementById('albumSubtitleInput').value.trim();
+            
+            albums[currentAlbumIndex].title = title;
+            albums[currentAlbumIndex].subtitle = subtitle;
+
+            closeModal('albumModal');
+            renderAlbumSelector();
+            updateSlideshow();
+            showNotification('✓', 'Album updated successfully!');
+        }
+
+        function deleteCurrentAlbum() {
+            if (albums.length === 1) {
+                showNotification('✗', 'Cannot delete the only album!');
+                return;
+            }
+
+            showConfirm('Are you sure you want to delete this album?', () => {
+                albums.splice(currentAlbumIndex, 1);
+                currentAlbumIndex = Math.max(0, currentAlbumIndex - 1);
+                renderAlbumSelector();
+                updateSlideshow();
+                renderPhotoGrid();
+                showNotification('✓', 'Album deleted successfully!');
+            });
+        }
+
+        function toggleFavoriteAlbum() {
+            albums.forEach(album => album.isFavorite = false);
+            albums[currentAlbumIndex].isFavorite = true;
+            renderAlbumSelector();
+            showNotification('⭐', 'Default album set!');
+        }
+
+        function handlePhotoUpload(event) {
+            const files = Array.from(event.target.files);
+            const album = albums[currentAlbumIndex];
+            
+            files.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const fileName = file.name;
+                    album.photos.push(fileName);
+                    album.captions[fileName] = '';
+                    renderPhotoGrid();
+                    showNotification('✓', `Photo "${fileName}" added!`);
+                };
+                reader.readAsDataURL(file);
+            });
+            
+            event.target.value = '';
+        }
+
+        function handleVideoUpload(event) {
+            const files = Array.from(event.target.files);
+            const album = albums[currentAlbumIndex];
+            
+            files.forEach(file => {
+                if (!file.type.startsWith('video/mp4')) {
+                    showNotification('✗', 'Only MP4 videos are supported!');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const fileName = file.name;
+                    album.photos.push(fileName);
+                    album.captions[fileName] = '';
+                    renderPhotoGrid();
+                    showNotification('✓', `Video "${fileName}" added!`);
+                };
+                reader.readAsDataURL(file);
+            });
+            
+            event.target.value = '';
+        }
+
+        function renderPhotoGrid() {
+            const grid = document.getElementById('photoGrid');
+            const album = albums[currentAlbumIndex];
+            
+            grid.innerHTML = '';
+            
+            album.photos.forEach((media, index) => {
+                const item = document.createElement('div');
+                item.className = 'photo-item';
+                
+                const isVideo = isVideoFile(media);
+                
+                if (isVideo) {
+                    const video = document.createElement('video');
+                    video.src = `images/${album.folderName}/${media}`;
+                    video.muted = true;
+                    item.appendChild(video);
+                    
+                    const badge = document.createElement('div');
+                    badge.className = 'media-type-badge';
+                    badge.textContent = '🎥 VIDEO';
+                    item.appendChild(badge);
+                } else {
+                    const img = document.createElement('img');
+                    img.src = `images/${album.folderName}/${media}`;
+                    img.alt = media;
+                    item.appendChild(img);
+                }
+                
+                const controls = document.createElement('div');
+                controls.className = 'photo-controls';
+                controls.innerHTML = `
+                    <button class="photo-control-btn" onclick="movePhoto(${index}, -1)" title="Move left">◄</button>
+                    <button class="photo-control-btn" onclick="editPhotoCaption(${index})" title="Edit caption">✏️</button>
+                    <button class="photo-control-btn" onclick="movePhoto(${index}, 1)" title="Move right">►</button>
+                    <button class="photo-control-btn" onclick="deletePhoto(${index})" title="Delete">🗑️</button>
+                `;
+                item.appendChild(controls);
+                
+                const caption = album.captions[media] || 'No caption';
+                const captionLabel = document.createElement('div');
+                captionLabel.className = 'photo-caption-label';
+                captionLabel.textContent = caption;
+                item.appendChild(captionLabel);
+                
+                grid.appendChild(item);
+            });
+        }
+
+        function movePhoto(index, direction) {
+            const album = albums[currentAlbumIndex];
+            const newIndex = index + direction;
+            
+            if (newIndex < 0 || newIndex >= album.photos.length) return;
+            
+            [album.photos[index], album.photos[newIndex]] = [album.photos[newIndex], album.photos[index]];
+            renderPhotoGrid();
+        }
+
+        function deletePhoto(index) {
+            showConfirm('Delete this media file?', () => {
+                const album = albums[currentAlbumIndex];
+                const media = album.photos[index];
+                delete album.captions[media];
+                album.photos.splice(index, 1);
+                renderPhotoGrid();
+                updateSlideshow();
+                showNotification('✓', 'Media deleted!');
+            });
+        }
+
+        function editPhotoCaption(index) {
+            currentCaptionPhotoIndex = index;
+            const album = albums[currentAlbumIndex];
+            const media = album.photos[index];
+            const caption = album.captions[media] || '';
+            
+            document.getElementById('captionEditInput').value = caption;
+            document.getElementById('captionEditModal').classList.add('active');
+        }
+
+        function saveCaption() {
+            const album = albums[currentAlbumIndex];
+            const media = album.photos[currentCaptionPhotoIndex];
+            const caption = document.getElementById('captionEditInput').value.trim();
+            
+            album.captions[media] = caption;
+            closeModal('captionEditModal');
+            renderPhotoGrid();
+            showNotification('✓', 'Caption saved!');
+        }
+
+        function exportData() {
+            const dataStr = JSON.stringify(albums, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'albums-data.json';
+            link.click();
+            showNotification('💾', 'Data exported!');
+        }
+
+        function showNotification(icon, text) {
+            document.getElementById('notificationIcon').textContent = icon;
+            document.getElementById('notificationText').textContent = text;
+            document.getElementById('notificationModal').classList.add('active');
+            setTimeout(() => {
+                document.getElementById('notificationModal').classList.remove('active');
+            }, 2000);
+        }
+
+        function showConfirm(text, callback) {
+            document.getElementById('confirmText').textContent = text;
             confirmCallback = callback;
             document.getElementById('confirmModal').classList.add('active');
         }
@@ -1335,561 +1660,95 @@ You should also delete this file from images/My-Collection/ in GitHub.</p>
             closeModal('confirmModal');
         }
 
-        function setupDragGestures() {
-            const slideMain = document.querySelector('.slide-main');
-            if (!slideMain) return;
-
-            const getPositionX = (e) => {
-                return e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
-            };
-
-            const startDrag = (e) => {
-                if (isEditMode) return; // Disable drag in edit mode
-                isDragging = true;
-                startX = getPositionX(e);
-                slideMain.style.transition = 'none';
-            };
-
-            const moveDrag = (e) => {
-                if (!isDragging) return;
-                const currentX = getPositionX(e);
-                const diff = currentX - startX;
-                currentTranslate = diff;
-                slideMain.style.transform = `translateX(${diff}px)`;
-            };
-
-            const endDrag = (e) => {
-                if (!isDragging) return;
-                isDragging = false;
-                slideMain.style.transition = 'transform 0.3s ease';
-
-                if (Math.abs(currentTranslate) > dragThreshold) {
-                    if (currentTranslate > 0) {
-                        changeSlide(-1); // Swipe right -> previous
-                    } else {
-                        changeSlide(1); // Swipe left -> next
-                    }
-                } else {
-                    slideMain.style.transform = 'translateX(0)';
-                }
-                currentTranslate = 0;
-            };
-
-            // Mouse events
-            slideMain.addEventListener('mousedown', startDrag);
-            slideMain.addEventListener('mousemove', moveDrag);
-            slideMain.addEventListener('mouseup', endDrag);
-            slideMain.addEventListener('mouseleave', endDrag);
-
-            // Touch events
-            slideMain.addEventListener('touchstart', startDrag, { passive: true });
-            slideMain.addEventListener('touchmove', moveDrag, { passive: true });
-            slideMain.addEventListener('touchend', endDrag);
-        }
-
-        function showLoginModal() {
-            if (isLoggedIn) {
-                toggleEditMode();
-            } else {
-                document.getElementById('loginModal').classList.add('active');
-                document.getElementById('usernameInput').value = '';
-                document.getElementById('passwordInput').value = '';
-            }
-        }
-
-        async function login() {
-            const username = document.getElementById('usernameInput').value;
-            const password = document.getElementById('passwordInput').value;
-
-            if (username !== ADMIN_USERNAME) {
-                showNotification('Invalid username or password', '❌');
-                return;
-            }
-
-            const hash = await hashPassword(password);
-
-            if (hash === STORED_PASSWORD_HASH) {
-                isLoggedIn = true;
-                closeModal('loginModal');
-                updateUIForLoginState();
-                toggleEditMode();
-                document.getElementById('usernameInput').value = '';
-                document.getElementById('passwordInput').value = '';
-                showNotification('Welcome back, Admin!', '✅');
-            } else {
-                showNotification('Invalid username or password', '❌');
-            }
-        }
-
-        function logout() {
-            isLoggedIn = false;
-            isEditMode = false;
-            updateUIForLoginState();
-            document.getElementById('editControls').style.display = 'none';
-            document.getElementById('photoGrid').style.display = 'none';
-            showNotification('Logged out successfully', '👋');
-        }
-
-        function updateUIForLoginState() {
-            const editModeBtn = document.getElementById('editModeBtn');
-
-            if (isLoggedIn) {
-                editModeBtn.textContent = isEditMode ? 'View Mode' : 'Edit Mode';
-                editModeBtn.classList.add('btn-primary');
-            } else {
-                editModeBtn.textContent = 'Admin';
-                editModeBtn.classList.add('btn-primary');
-            }
-        }
-
-        function toggleHeaderSelect() {
-            const options = document.getElementById('headerSelectOptions');
-            const display = document.querySelector('.header-select-display');
-            options.classList.toggle('show');
-            display.classList.toggle('open');
-        }
-
-        function displayHeaderSelector() {
-            const container = document.getElementById('headerSelectOptions');
-            const display = document.getElementById('headerSelectedAlbum');
-            
-            container.innerHTML = albums.map((album, index) => `
-                <div class="header-select-option ${index === currentAlbumIndex ? 'active' : ''}" 
-                     onclick="selectAlbum(${index})">
-                    ${album.isFavorite ? '⭐ ' : ''}${album.title}
-                </div>
-            `).join('');
-
-            const currentAlbum = albums[currentAlbumIndex];
-            display.textContent = (currentAlbum.isFavorite ? '⭐ ' : '') + currentAlbum.title;
-        }
-
-        function selectAlbum(index) {
-            currentAlbumIndex = index;
-            currentSlideIndex = 0;
-            displayHeaderSelector();
-            displayCurrentAlbum();
-            
-            const options = document.getElementById('headerSelectOptions');
-            const display = document.querySelector('.header-select-display');
-            options.classList.remove('show');
-            display.classList.remove('open');
-        }
-
-        function displayCurrentAlbum() {
-            const album = albums[currentAlbumIndex];
-            if (!album) return;
-
-            // Initialize captions object if it doesn't exist
-            if (!album.captions) {
-                album.captions = {};
-            }
-
-            // Update slideshow
-            updateSlideshow();
-
-            // Re-setup drag gestures after DOM update
-            setTimeout(() => {
-                setupDragGestures();
-            }, 100);
-
-            // Update photo grid (edit mode)
-            if (isEditMode) {
-                displayPhotoGrid();
-            }
-        }
-
-        function updateSlideshow() {
-            const album = albums[currentAlbumIndex];
-            if (!album || !album.photos || album.photos.length === 0) {
-                document.getElementById('slideshowContainer').style.display = 'none';
-                return;
-            }
-
-            document.getElementById('slideshowContainer').style.display = 'block';
-
-            const totalPhotos = album.photos.length;
-            const prevIndex = (currentSlideIndex - 1 + totalPhotos) % totalPhotos;
-            const nextIndex = (currentSlideIndex + 1) % totalPhotos;
-
-            // Update main slide
-            const mainImg = document.getElementById('mainSlideImg');
-            mainImg.src = `images/${album.folderName}/${album.photos[currentSlideIndex]}`;
-
-            // Reset transform
-            const slideMain = document.querySelector('.slide-main');
-            if (slideMain) {
-                slideMain.style.transform = 'translateX(0)';
-                slideMain.style.transition = 'transform 0.3s ease';
-            }
-
-            // Update preview images
-            const prevImg = document.getElementById('previewLeftImg');
-            const nextImg = document.getElementById('previewRightImg');
-            prevImg.src = `images/${album.folderName}/${album.photos[prevIndex]}`;
-            nextImg.src = `images/${album.folderName}/${album.photos[nextIndex]}`;
-
-            // Update fixed title and subtitle overlay
-            document.getElementById('slideTitle').textContent = album.title;
-            document.getElementById('slideSubtitle').textContent = album.subtitle || '';
-        }
-
-        function changeSlide(direction) {
-            const album = albums[currentAlbumIndex];
-            if (!album || !album.photos || album.photos.length === 0) return;
-
-            slideDirection = direction;
-            currentSlideIndex = (currentSlideIndex + direction + album.photos.length) % album.photos.length;
-            updateSlideshow();
-        }
-
         function openPhotoCaption() {
-            if (isEditMode) return; // Don't open in edit mode
-            
             const album = albums[currentAlbumIndex];
-            if (!album || !album.photos || album.photos.length === 0) return;
-
+            if (album.photos.length === 0) return;
+            
             currentCaptionPhotoIndex = currentSlideIndex;
-            const photoName = album.photos[currentCaptionPhotoIndex];
-            const caption = album.captions[photoName] || '';
+            const media = album.photos[currentCaptionPhotoIndex];
+            const caption = album.captions[media] || '';
 
-            document.getElementById('captionImage').src = `images/${album.folderName}/${photoName}`;
+            const captionImage = document.getElementById('captionImage');
+            const captionVideo = document.getElementById('captionVideo');
+            
+            if (isVideoFile(media)) {
+                captionImage.style.display = 'none';
+                captionVideo.style.display = 'block';
+                captionVideo.src = `images/${album.folderName}/${media}`;
+                captionVideo.load();
+            } else {
+                captionVideo.style.display = 'none';
+                captionImage.style.display = 'block';
+                captionImage.src = `images/${album.folderName}/${media}`;
+            }
+            
             document.getElementById('captionDisplayText').textContent = caption || 'No caption yet.';
-            document.getElementById('captionDisplayText').style.display = 'block'; 
-
             document.getElementById('captionModal').classList.add('active');
         }
 
         function closeCaptionModal() {
+            const captionVideo = document.getElementById('captionVideo');
+            if (captionVideo) {
+                captionVideo.pause();
+                captionVideo.currentTime = 0;
+            }
             document.getElementById('captionModal').classList.remove('active');
         }
 
-        function startCaptionEdit() {
-            const album = albums[currentAlbumIndex];
-            const photoName = album.photos[currentCaptionPhotoIndex];
-            const caption = album.captions[photoName] || '';
-
-            document.getElementById('captionEditText').value = caption;
-            document.getElementById('captionDisplayText').style.display = 'none';
-            document.getElementById('captionEditContainer').style.display = 'block';
-            document.getElementById('editCaptionBtn').style.display = 'none';
-        }
-
-        function cancelCaptionEdit() {
-            document.getElementById('captionDisplayText').style.display = 'block';
-            document.getElementById('captionEditContainer').style.display = 'none';
-            document.getElementById('editCaptionBtn').style.display = 'block';
-        }
-
-        function saveCaptionEdit() {
-            const album = albums[currentAlbumIndex];
-            const photoName = album.photos[currentCaptionPhotoIndex];
-            const newCaption = document.getElementById('captionEditText').value.trim();
-
-            if (!album.captions) album.captions = {};
-            album.captions[photoName] = newCaption;
-
-            document.getElementById('captionDisplayText').textContent = newCaption || 'No caption yet.';
-            cancelCaptionEdit();
-            showNotification('Caption saved! Remember to click "Save Changes" to export.', '✅');
-        }
-
-        function toggleEditMode() {
-            if (!isLoggedIn) {
-                showLoginModal();
-                return;
-            }
-
-            isEditMode = !isEditMode;
-            document.getElementById('editControls').style.display = isEditMode ? 'block' : 'none';
-            document.getElementById('photoGrid').style.display = isEditMode ? 'grid' : 'none';
-            
-            const editModeBtn = document.getElementById('editModeBtn');
-            editModeBtn.textContent = isEditMode ? 'View Mode' : 'Edit Mode';
-            
-            if (isEditMode) {
-                displayPhotoGrid();
-            }
-        }
-
-        function displayPhotoGrid() {
-            const album = albums[currentAlbumIndex];
-            const grid = document.getElementById('photoGrid');
-            
-            if (!album || !album.photos || album.photos.length === 0) {
-                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-secondary);">No photos in this album. Add some photos to get started!</p>';
-                return;
-            }
-
-            grid.innerHTML = album.photos.map((photo, index) => {
-                const caption = album.captions && album.captions[photo] ? album.captions[photo] : 'No caption';
-                return `
-                    <div class="photo-item">
-                        <img src="images/${album.folderName}/${photo}" alt="${photo}">
-                        <div class="photo-controls">
-                            <button class="photo-control-btn" onclick="movePhoto(${index}, -1)" title="Move left">◄</button>
-                            <button class="photo-control-btn" onclick="editPhotoCaption(${index})" title="Edit caption">✏️</button>
-                            <button class="photo-control-btn" onclick="movePhoto(${index}, 1)" title="Move right">►</button>
-                            <button class="photo-control-btn" onclick="deletePhoto(${index})" title="Delete">🗑️</button>
-                        </div>
-                        <div class="photo-caption-label">${caption.substring(0, 50)}${caption.length > 50 ? '...' : ''}</div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function editPhotoCaption(index) {
-            currentCaptionPhotoIndex = index;
-            const album = albums[currentAlbumIndex];
-            const photoName = album.photos[index];
-            const caption = album.captions && album.captions[photoName] ? album.captions[photoName] : '';
-
-            document.getElementById('captionImage').src = `images/${album.folderName}/${photoName}`;
-            document.getElementById('captionEditText').value = caption;
-            document.getElementById('captionDisplayText').style.display = 'none';
-            document.getElementById('captionEditContainer').style.display = 'block';
-            document.getElementById('editCaptionBtn').style.display = 'none';
-
-            document.getElementById('captionModal').classList.add('active');
-        }
-
-        function showNotification(message, icon = '✅') {
-            document.getElementById('notificationText').textContent = message;
-            document.getElementById('notificationIcon').textContent = icon;
-            document.getElementById('notificationModal').classList.add('active');
-            setTimeout(() => {
-                document.getElementById('notificationModal').classList.remove('active');
-            }, 3000);
-        }
-
-        function createFolderName(title) {
-            return title.toLowerCase()
-                .replace(/[^a-z0-9]+/g, '-')
-                .replace(/^-|-$/g, '');
-        }
-
-        function showCreateAlbumModal() {
-            editingAlbumIndex = null;
-            document.getElementById('albumModalTitle').textContent = 'Create Album';
-            document.getElementById('albumTitleInput').value = '';
-            document.getElementById('albumSubtitleInput').value = '';
-            document.getElementById('albumModal').classList.add('active');
-        }
-
-        function showEditAlbumModal() {
-            const album = albums[currentAlbumIndex];
-            if (!album) return;
-
-            editingAlbumIndex = currentAlbumIndex;
-            document.getElementById('albumModalTitle').textContent = 'Edit Album';
-            document.getElementById('albumTitleInput').value = album.title;
-            document.getElementById('albumSubtitleInput').value = album.subtitle || '';
-            document.getElementById('albumModal').classList.add('active');
-        }
-
-        function saveAlbum() {
-            const title = document.getElementById('albumTitleInput').value.trim();
-            if (!title) {
-                showNotification('Album title is required', '⚠️');
-                return;
-            }
-
-            const subtitle = document.getElementById('albumSubtitleInput').value.trim();
-            const folderName = createFolderName(title);
-
-            if (editingAlbumIndex !== null) {
-                const album = albums[editingAlbumIndex];
-                if (album) {
-                    album.title = title;
-                    album.subtitle = subtitle;
-                    album.folderName = folderName;
-                }
-                showNotification('Album updated successfully!', '✅');
-            } else {
-                const newAlbum = {
-                    folderName,
-                    title,
-                    subtitle,
-                    photos: [],
-                    captions: {},
-                    isFavorite: false
-                };
-                albums.push(newAlbum);
-                currentAlbumIndex = albums.length - 1;
-                showNotification(`Album created! Remember to create the folder: images/${folderName}/`, '✅');
-            }
-
-            displayHeaderSelector();
-            displayCurrentAlbum();
-            closeModal('albumModal');
-        }
-
-        function deleteCurrentAlbum() {
-            if (albums.length === 1) {
-                showNotification('Cannot delete the last album', '⚠️');
-                return;
-            }
-
-            const album = albums[currentAlbumIndex];
-            const message = `Delete album "${album.title}"?\n\nThis will remove it from the gallery. The images/${album.folderName}/ folder will remain in GitHub.`;
-            
-            showConfirmModal('Delete Album', message, () => {
-                albums.splice(currentAlbumIndex, 1);
-                currentAlbumIndex = 0;
-                currentSlideIndex = 0;
-                displayHeaderSelector();
-                displayCurrentAlbum();
-                showNotification('Album deleted successfully', '✅');
-            });
-        }
-
-        function toggleFavoriteAlbum() {
-            albums.forEach(a => a.isFavorite = false);
-            const album = albums[currentAlbumIndex];
-            if (album) {
-                album.isFavorite = true;
-                showNotification(`"${album.title}" is now the default album`, '⭐');
-            }
-            displayHeaderSelector();
-        }
-
-        function handlePhotoUpload(event) {
-            const files = event.target.files;
-            if (!files.length) return;
-
-            const album = albums[currentAlbumIndex];
-            if (!album) return;
-
-            if (!album.photos) album.photos = [];
-            if (!album.captions) album.captions = {};
-
-            let processed = 0;
-            const totalFiles = files.length;
-
-            Array.from(files).forEach(file => {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const fileName = file.name;
-                    album.photos.push(fileName);
-                    
-                    processed++;
-                    if (processed === totalFiles) {
-                        displayCurrentAlbum();
-                        showNotification(`${totalFiles} photo(s) added! Remember to click "Save Changes" and upload these files to images/${album.folderName}/ in GitHub.`, '✅');
-                    }
-                };
-                reader.readAsDataURL(file);
-            });
-
-            event.target.value = '';
-        }
-
-        function movePhoto(index, direction) {
-            const album = albums[currentAlbumIndex];
-            if (!album || !album.photos) return;
-
-            const newIndex = index + direction;
-            if (newIndex < 0 || newIndex >= album.photos.length) return;
-
-            [album.photos[index], album.photos[newIndex]] = [album.photos[newIndex], album.photos[index]];
-            
-            if (currentSlideIndex === index) {
-                currentSlideIndex = newIndex;
-            } else if (currentSlideIndex === newIndex) {
-                currentSlideIndex = index;
-            }
-            
-            displayCurrentAlbum();
-        }
-
-        function deletePhoto(index) {
-            const album = albums[currentAlbumIndex];
-            if (!album || !album.photos) return;
-            
-            const photoName = album.photos[index];
-            const message = `Delete "${photoName}"?\n\nYou should also delete this file from images/${album.folderName}/ in GitHub.`;
-            
-            showConfirmModal('Delete Photo', message, () => {
-                album.photos.splice(index, 1);
-                
-                // Remove caption if exists
-                if (album.captions && album.captions[photoName]) {
-                    delete album.captions[photoName];
-                }
-                
-                if (currentSlideIndex >= album.photos.length) {
-                    currentSlideIndex = Math.max(0, album.photos.length - 1);
-                }
-                
-                displayCurrentAlbum();
-                showNotification('Photo removed from gallery', '✅');
-            });
-        }
-
-        function exportData() {
-            // Create a deep copy of current state to modify for export
-            const albumsJSON = JSON.stringify(albums, null, 2);
-            
-            // Temporarily set logged in states to false for the string replacement
-            let htmlContent = document.documentElement.outerHTML;
-            
-            // Force the exported variables to be logged out
-            htmlContent = htmlContent.replace(/let isLoggedIn = false;/g, 'let isLoggedIn = false;');
-            htmlContent = htmlContent.replace(/let isEditMode = false;/g, 'let isEditMode = false;');
-            
-            // Update the Data block
-            htmlContent = htmlContent.replace(/\/\/ ALBUMS_DATA_START[\s\S]*?\/\/ ALBUMS_DATA_END/m, 
-                `// ALBUMS_DATA_START\n        let ALBUMS_DATA = ${albumsJSON};\n        // ALBUMS_DATA_END`);
-            
-            const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
-            const htmlUrl = URL.createObjectURL(htmlBlob);
-            const htmlLink = document.createElement('a');
-            htmlLink.href = htmlUrl;
-            htmlLink.download = 'index.html';
-            document.body.appendChild(htmlLink);
-            htmlLink.click();
-            document.body.removeChild(htmlLink);
-            URL.revokeObjectURL(htmlUrl);
-            
-            showNotification('Gallery data saved! Logout forced for security.', '💾');
-        }
-
+        // Swipe support for caption modal
         function setupModalSwipes() {
-            const modalImg = document.getElementById('captionImage');
-            let modalStartX = 0;
-
-            modalImg.addEventListener('touchstart', (e) => {
-                modalStartX = e.touches[0].clientX;
-            }, { passive: true });
-
-            modalImg.addEventListener('touchend', (e) => {
-                const endX = e.changedTouches[0].clientX;
-                const diff = modalStartX - endX;
-
-                if (Math.abs(diff) > 50) { // Threshold
-                    if (diff > 0) {
-                        // Swipe Left -> Next
-                        modalNavigate(1);
-                    } else {
-                        // Swipe Right -> Prev
-                        modalNavigate(-1);
-                    }
+            const modal = document.getElementById('captionModal');
+            let touchStartX = 0;
+            let touchEndX = 0;
+            
+            modal.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            }, false);
+            
+            modal.addEventListener('touchend', (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            }, false);
+            
+            function handleSwipe() {
+                const swipeThreshold = 50;
+                if (touchEndX < touchStartX - swipeThreshold) {
+                    modalNavigate(1);
                 }
-            });
+                if (touchEndX > touchStartX + swipeThreshold) {
+                    modalNavigate(-1);
+                }
+            }
         }
-        // Helper to change image inside the modal
+
         function modalNavigate(direction) {
             const album = albums[currentAlbumIndex];
             currentSlideIndex = (currentSlideIndex + direction + album.photos.length) % album.photos.length;
             currentCaptionPhotoIndex = currentSlideIndex;
             
-            const photoName = album.photos[currentCaptionPhotoIndex];
-            const caption = album.captions[photoName] || '';
+            const media = album.photos[currentCaptionPhotoIndex];
+            const caption = album.captions[media] || '';
 
-            document.getElementById('captionImage').src = `images/${album.folderName}/${photoName}`;
+            const captionImage = document.getElementById('captionImage');
+            const captionVideo = document.getElementById('captionVideo');
+            
+            if (isVideoFile(media)) {
+                captionImage.style.display = 'none';
+                captionVideo.style.display = 'block';
+                captionVideo.src = `images/${album.folderName}/${media}`;
+                captionVideo.load();
+            } else {
+                if (captionVideo) {
+                    captionVideo.pause();
+                    captionVideo.currentTime = 0;
+                }
+                captionVideo.style.display = 'none';
+                captionImage.style.display = 'block';
+                captionImage.src = `images/${album.folderName}/${media}`;
+            }
+            
             document.getElementById('captionDisplayText').textContent = caption || 'No caption yet.';
             
-            // Also update main slideshow in background so they stay synced
             updateSlideshow();
         }
 
@@ -1903,23 +1762,22 @@ You should also delete this file from images/My-Collection/ in GitHub.</p>
             let newTheme;
             let themeIcon;
             
-            // Cycle through: light -> dark -> valentine -> light
-            if (currentTheme === 'light') {
-                newTheme = 'dark';
-                themeIcon = '🌙';
-            } else if (currentTheme === 'dark') {
-                newTheme = 'valentine';
-                themeIcon = '💖';
-            } else {
+            // Cycle through: valentine -> light -> dark -> valentine
+            if (currentTheme === 'valentine') {
                 newTheme = 'light';
                 themeIcon = '☀️';
+            } else if (currentTheme === 'light') {
+                newTheme = 'dark';
+                themeIcon = '🌙';
+            } else {
+                newTheme = 'valentine';
+                themeIcon = '💖';
             }
             
             html.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
             document.getElementById('themeToggle').textContent = themeIcon;
             
-            // Initialize valentine effects if switching to valentine theme
             if (newTheme === 'valentine') {
                 initValentineEffects();
             } else {
@@ -1928,10 +1786,9 @@ You should also delete this file from images/My-Collection/ in GitHub.</p>
         }
 
         function checkTheme() {
-            const savedTheme = localStorage.getItem('theme') || 'light';
+            const savedTheme = localStorage.getItem('theme') || 'valentine';
             document.documentElement.setAttribute('data-theme', savedTheme);
             
-            // Set appropriate theme icon
             const themeToggle = document.getElementById('themeToggle');
             if (themeToggle) {
                 if (savedTheme === 'dark') {
@@ -1947,9 +1804,8 @@ You should also delete this file from images/My-Collection/ in GitHub.</p>
 
         function initValentineEffects() {
             const container = document.getElementById('floatingHearts');
-            container.innerHTML = ''; // Clear existing hearts
+            container.innerHTML = '';
             
-            // Create floating hearts
             const heartEmojis = ['💕', '💖', '💗', '💓', '💝', '❤️', '💘'];
             const numberOfHearts = 15;
             
@@ -1963,7 +1819,6 @@ You should also delete this file from images/My-Collection/ in GitHub.</p>
                 container.appendChild(heart);
             }
             
-            // Add heart cursor trail effect
             document.addEventListener('mousemove', createHeartCursor);
             document.addEventListener('touchmove', createHeartCursor);
         }
@@ -1978,7 +1833,7 @@ You should also delete this file from images/My-Collection/ in GitHub.</p>
         let lastHeartTime = 0;
         function createHeartCursor(e) {
             const now = Date.now();
-            if (now - lastHeartTime < 200) return; // Limit heart creation rate
+            if (now - lastHeartTime < 200) return;
             lastHeartTime = now;
             
             const heart = document.createElement('div');
@@ -2037,11 +1892,9 @@ You should also delete this file from images/My-Collection/ in GitHub.</p>
                 if(document.getElementById('lightbox').classList.contains('active')) navigateLightbox(1);
                 else if(!document.getElementById('captionModal').classList.contains('active')) changeSlide(1);
             }
-            // Enter key to login
             if (e.key === 'Enter' && document.getElementById('loginModal').classList.contains('active')) {
                 login();
             }
-            // Enter key to confirm action
             if (e.key === 'Enter' && document.getElementById('confirmModal').classList.contains('active')) {
                 confirmAction();
             }
