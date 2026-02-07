@@ -1,7 +1,7 @@
-<html lang="en" data-theme="dark"><head>
+<html lang="en" data-theme="valentine"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Photo & Video Gallery</title>
+    <title>Photo &amp; Video Gallery</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;family=Raleway:wght@300;400;500&amp;display=swap" rel="stylesheet">
     <script src="auth.js"></script>
     <style>
@@ -720,20 +720,20 @@
     </style>
 </head>
 <body>
-    <div class="floating-hearts" id="floatingHearts"></div>
+    <div class="floating-hearts" id="floatingHearts"><div class="heart" style="left: 14.6974%; animation-delay: 1.1274s; animation-duration: 19.2472s;">💖</div><div class="heart" style="left: 36.9496%; animation-delay: 0.522799s; animation-duration: 10.3904s;">💗</div><div class="heart" style="left: 57.8417%; animation-delay: 14.6877s; animation-duration: 17.2245s;">❤️</div><div class="heart" style="left: 93.5798%; animation-delay: 13.9537s; animation-duration: 19.456s;">💓</div><div class="heart" style="left: 90.7544%; animation-delay: 10.2943s; animation-duration: 14.6761s;">💗</div><div class="heart" style="left: 41.8497%; animation-delay: 10.5933s; animation-duration: 13.9391s;">💗</div><div class="heart" style="left: 22.9633%; animation-delay: 13.7767s; animation-duration: 15.4444s;">💖</div><div class="heart" style="left: 72.6588%; animation-delay: 7.12181s; animation-duration: 16.376s;">💝</div><div class="heart" style="left: 46.3298%; animation-delay: 0.438635s; animation-duration: 19.2284s;">💖</div><div class="heart" style="left: 9.24134%; animation-delay: 3.9548s; animation-duration: 15.0165s;">💘</div><div class="heart" style="left: 35.0573%; animation-delay: 14.161s; animation-duration: 18.0287s;">💗</div><div class="heart" style="left: 80.5294%; animation-delay: 11.2318s; animation-duration: 19.513s;">💖</div><div class="heart" style="left: 14.0453%; animation-delay: 11.234s; animation-duration: 13.972s;">❤️</div><div class="heart" style="left: 56.8282%; animation-delay: 2.95061s; animation-duration: 14.2228s;">💘</div><div class="heart" style="left: 42.6998%; animation-delay: 11.805s; animation-duration: 14.7389s;">💓</div></div>
 
     <header class="header">
         <div class="logo">Gallery</div>
         <div class="header-selector">
             <div class="header-select-display" id="headerSelectDisplay" onclick="toggleHeaderSelect()">
-                <span id="currentAlbumDisplay">Select Album</span>
+                <span id="currentAlbumDisplay">Test</span>
                 <span class="header-select-arrow">▼</span>
             </div>
-            <div class="header-select-options" id="headerSelectOptions"></div>
+            <div class="header-select-options" id="headerSelectOptions"><div class="header-select-option selected">Test</div></div>
         </div>
         <div class="header-actions">
-            <button id="themeToggle" onclick="toggleTheme()">🌙</button>
-            <button class="btn" id="authBtn" onclick="showLogin()">Login</button>
+            <button id="themeToggle" onclick="toggleTheme()">💖</button>
+            <button class="btn" id="authBtn" onclick="showLogin()">Manage</button>
         </div>
     </header>
 
@@ -741,11 +741,11 @@
         <div class="slideshow">
             <div class="slide-container">
                 <div class="slide-main" id="mainSlide">
-                    <img id="slideImage" src="" alt="Slideshow" style="display: none;">
-                    <video id="slideVideo" controls style="display: none;"></video>
+                    <img id="slideImage" src="images/Test/rics.jpg" alt="Slideshow" style="display: block;">
+                    <video id="slideVideo" controls="" style="display: none;"></video>
                     <div class="slide-overlay">
                         <div class="slide-caption" id="slideCaption"></div>
-                        <div class="slide-counter" id="slideCounter"></div>
+                        <div class="slide-counter" id="slideCounter">1 / 2</div>
                     </div>
                 </div>
                 <button class="slide-nav prev" onclick="changeSlide(-1)">❮</button>
@@ -753,7 +753,7 @@
             </div>
         </div>
 
-        <div class="gallery" id="gallery"></div>
+        <div class="gallery" id="gallery"><div class="gallery-item"><img src="images/Test/rics.jpg" alt="rics.jpg"></div><div class="gallery-item"><img src="images/Test/russ.jpg" alt="russ.jpg"></div></div>
     </div>
 
     <!-- Login Modal -->
@@ -777,7 +777,7 @@
     </div>
 
     <!-- Album Management Modal -->
-    <div class="modal" id="albumModal">
+    <div class="modal active" id="albumModal">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal('albumModal')">×</button>
             <h2 class="modal-header">Manage Albums</h2>
@@ -794,7 +794,7 @@
                     <label class="file-input-label" for="mediaUpload">
                         📁 Choose Images or Videos (Multiple)
                     </label>
-                    <input type="file" id="mediaUpload" multiple accept="image/*,video/*" onchange="handleMediaUpload(event)">
+                    <input type="file" id="mediaUpload" multiple="" accept="image/*,video/*" onchange="handleMediaUpload(event)">
                 </div>
             </div>
 
@@ -820,7 +820,7 @@
             <div id="captionContent">
                 <div style="margin-bottom: 1.5rem;">
                     <img id="captionImage" src="" style="max-width: 100%; height: auto; border-radius: 4px; display: none;">
-                    <video id="captionVideo" controls style="max-width: 100%; height: auto; border-radius: 4px; display: none;"></video>
+                    <video id="captionVideo" controls="" style="max-width: 100%; height: auto; border-radius: 4px; display: none;"></video>
                 </div>
                 <div class="form-group">
                     <label>Caption</label>
@@ -863,18 +863,31 @@
     <div class="lightbox" id="lightbox" onclick="closeLightbox()">
         <div class="lightbox-content" onclick="event.stopPropagation()">
             <img id="lightboxImage" src="" alt="Lightbox" style="display: none;">
-            <video id="lightboxVideo" controls style="display: none;"></video>
+            <video id="lightboxVideo" controls="" style="display: none;"></video>
         </div>
     </div>
 
-    <div class="notification" id="notification">
-        <span id="notificationIcon">✓</span>
-        <span id="notificationText"></span>
+    <div class="notification show" id="notification">
+        <span id="notificationIcon">📁</span>
+        <span id="notificationText">1 file(s) added - Remember to save!</span>
     </div>
 
     <script>
         // ALBUMS_DATA_START
-        let ALBUMS_DATA = [];
+        let ALBUMS_DATA = [
+        {
+                "name": "Test",
+                "folderName": "Test",
+                "photos": [
+                        "rics.jpg",
+                        "russ.jpg"
+                ],
+                "captions": {
+                        "rics.jpg": "",
+                        "russ.jpg": ""
+                }
+        }
+];
         // ALBUMS_DATA_END
 
         let albums = ALBUMS_DATA.length > 0 ? ALBUMS_DATA : [];
@@ -1475,4 +1488,5 @@
         });
     </script>
 
-</body></html>
+
+<div class="heart-cursor" style="left: 838px; top: 555px;">💕</div><div class="heart-cursor" style="left: 816px; top: 531px;">💗</div><div class="heart-cursor" style="left: 850px; top: 601px;">💗</div></body></html>
