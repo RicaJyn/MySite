@@ -1,7 +1,7 @@
-<html lang="en" data-theme="valentine"><head>
+<html lang="en" data-theme="dark"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Photo &amp; Video Gallery</title>
+    <title>Photo Gallery</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;family=Raleway:wght@300;400;500&amp;display=swap" rel="stylesheet">
     <script src="auth.js"></script>
     <style>
@@ -221,23 +221,19 @@
             border-color: var(--accent);
         }
 
-        .header-select-display.open {
-            border-color: var(--accent);
-            background: var(--accent);
-            color: #fff;
-        }
-
-        .header-select-arrow {
+        .header-select-display::after {
+            content: '▼';
             position: absolute;
             right: 1rem;
             top: 50%;
             transform: translateY(-50%);
             font-size: 0.7rem;
+            color: var(--text-secondary);
             transition: transform 0.3s ease;
             pointer-events: none;
         }
 
-        .header-select-display.open .header-select-arrow {
+        .header-select-display.open::after {
             transform: translateY(-50%) rotate(180deg);
         }
 
@@ -246,27 +242,26 @@
             top: calc(100% + 0.5rem);
             left: 0;
             right: 0;
-            background: var(--bg-secondary);
+            background: var(--bg-primary);
             border: 2px solid var(--border);
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+            z-index: 600;
+            box-shadow: 0 10px 30px var(--shadow);
             border-radius: 4px;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease, border-color 0.3s ease;
-            box-shadow: 0 4px 12px var(--shadow);
         }
 
         .header-select-options.show {
-            max-height: 400px;
-            overflow-y: auto;
-            border-color: var(--accent);
+            display: block;
         }
 
         .header-select-option {
             padding: 0.9rem 1.2rem;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: background 0.2s ease;
+            text-align: center;
             border-bottom: 1px solid var(--border);
-            font-size: 0.9rem;
         }
 
         .header-select-option:last-child {
@@ -274,55 +269,44 @@
         }
 
         .header-select-option:hover {
+            background: var(--bg-secondary);
+        }
+
+        .header-select-option.active {
             background: var(--accent);
-            color: #fff;
-            padding-left: 1.5rem;
+            color: white;
         }
 
-        .header-select-option.selected {
-            background: var(--accent);
-            color: #fff;
-            font-weight: 500;
-        }
-
-        .logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            letter-spacing: 1px;
-        }
-
-        .header-actions {
+        .header-controls {
             display: flex;
             gap: 1rem;
             align-items: center;
         }
 
         .btn {
-            padding: 0.7rem 1.5rem;
+            padding: 0.7rem 1.8rem;
             background: transparent;
-            border: 2px solid var(--accent);
-            color: var(--accent);
-            cursor: pointer;
-            font-size: 0.9rem;
+            border: 1px solid var(--border);
+            color: var(--text-primary);
             font-family: 'Raleway', sans-serif;
+            font-size: 0.875rem;
             font-weight: 500;
+            cursor: pointer;
             transition: all 0.3s ease;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
             border-radius: 4px;
         }
 
         .btn:hover {
             background: var(--accent);
-            color: #fff;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px var(--shadow);
+            color: white;
+            border-color: var(--accent);
         }
 
         .btn-primary {
             background: var(--accent);
-            color: #fff;
+            color: white;
             border-color: var(--accent);
         }
 
@@ -331,166 +315,405 @@
             border-color: var(--accent-hover);
         }
 
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-size: 1.5rem;
+            padding: 0.5rem;
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(180deg) scale(1.1);
+        }
+
+        [data-theme="valentine"] .theme-toggle {
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% {
+                transform: scale(1);
+            }
+            10%, 30% {
+                transform: scale(1.1);
+            }
+            20%, 40% {
+                transform: scale(1);
+            }
+        }
+
         .container {
-            margin-top: 6rem;
-            padding: 0 3rem 3rem;
-            position: relative;
-            z-index: 2;
-        }
-
-        .slideshow {
-            margin-bottom: 4rem;
-        }
-
-        .slide-container {
-            position: relative;
             max-width: 1200px;
             margin: 0 auto;
+            padding: 12rem 2rem 2rem;
         }
 
+        /* Slideshow Container - Inside container */
+        .slideshow-container {
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            margin: 0 0 2rem 0;
+            padding: 0;
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slideshow-wrapper {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 1500px;
+        }
+
+        /* Previous image (left shadow) */
+        .slide-preview-left,
+        .slide-preview-right {
+            position: absolute;
+            width: 45%;
+            height: 600px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0.3;
+            filter: blur(2px) brightness(0.6);
+            z-index: 1;
+        }
+
+        .slide-preview-left {
+            left: 0;
+            transform: translateX(-15%) rotateY(15deg) scale(0.85);
+        }
+
+        .slide-preview-right {
+            right: 0;
+            transform: translateX(15%) rotateY(-15deg) scale(0.85);
+        }
+
+        .slide-preview-left:hover,
+        .slide-preview-right:hover {
+            opacity: 0.5;
+            filter: blur(1px) brightness(0.7);
+        }
+
+        .slide-preview-left img,
+        .slide-preview-right img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Main current slide */
         .slide-main {
             position: relative;
             width: 100%;
-            height: 70vh;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 10px 40px var(--shadow);
-            background: var(--bg-secondary);
-        }
-
-        .slide-main img,
-        .slide-main video {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            display: block;
-        }
-
-        .slide-main video {
-            background: #000;
-        }
-
-        .slide-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 2rem;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-            color: #fff;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-        }
-
-        .slide-caption {
-            font-size: 1.1rem;
-            font-weight: 300;
-            letter-spacing: 0.5px;
-            max-width: 70%;
-        }
-
-        .slide-counter {
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-
-        .slide-nav {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            border: none;
-            color: #fff;
-            font-size: 2rem;
-            padding: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            max-width: 600px;
+            height: 600px;
             z-index: 10;
-        }
-
-        .slide-nav:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .slide-nav.prev { left: 1rem; border-radius: 0 4px 4px 0; }
-        .slide-nav.next { right: 1rem; border-radius: 4px 0 0 4px; }
-
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .gallery-item {
-            position: relative;
-            aspect-ratio: 4/3;
-            border-radius: 8px;
             overflow: hidden;
             cursor: pointer;
-            box-shadow: 0 4px 12px var(--shadow);
-            transition: all 0.3s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
         }
 
-        .gallery-item:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 24px var(--shadow);
+        .slide-main:hover {
+            transform: scale(1.02);
         }
 
-        .gallery-item img,
-        .gallery-item video {
+        .slide-main img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
         }
 
-        /* Video indicator overlay */
-        .video-indicator {
+        /* Fixed title and subtitle overlay on image */
+        .slide-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            padding: 3rem 2rem 2rem;
+            color: white;
+            pointer-events: none;
+            z-index: 15;
+        }
+
+        .slide-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .slide-subtitle {
+            font-size: 1.1rem;
+            font-weight: 300;
+            opacity: 0.9;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Navigation arrows */
+        .slide-nav {
             position: absolute;
             top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 60px;
-            height: 60px;
-            background: rgba(0, 0, 0, 0.6);
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 20;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            pointer-events: none;
-            transition: all 0.3s ease;
+            color: var(--text-primary);
         }
 
-        .gallery-item:hover .video-indicator {
-            background: rgba(0, 0, 0, 0.8);
-            transform: translate(-50%, -50%) scale(1.1);
+        [data-theme="dark"] .slide-nav {
+            background: rgba(50, 50, 50, 0.9);
         }
 
-        .video-indicator::before {
-            content: '';
-            width: 0;
-            height: 0;
-            border-style: solid;
-            border-width: 12px 0 12px 20px;
-            border-color: transparent transparent transparent #fff;
-            margin-left: 4px;
+        .slide-nav:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-50%) scale(1.1);
         }
 
-        .modal {
-            display: none;
+        .slide-nav.prev {
+            left: 1rem;
+        }
+
+        .slide-nav.next {
+            right: 1rem;
+        }
+
+        /* Photo caption modal */
+        .caption-modal {
             position: fixed;
             top: 0;
             left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--overlay);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 2rem;
+        }
+
+        .caption-modal.active {
+            display: flex;
+        }
+
+        .caption-content {
+            background: var(--bg-primary);
+            border-radius: 8px;
+            max-width: 95vw; /* Increased for better mobile use */
+            width: 1000px;
+            max-height: 95vh;
+            overflow: hidden; /* Prevent double scrollbars */
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .caption-image-container {
+            position: relative;
+            width: 100%;
+            flex-grow: 1;
+            background: #000; /* Black bars if image is narrow */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .caption-image-container img {
+            max-width: 100%;
+            max-height: 80vh; /* Leave room for text */
+            object-fit: contain; /* CRITICAL: Prevents cropping */
+        }
+
+        /* CAPTION TEXT OVERLAY (Shadowed instead of solid) */
+        .caption-text-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.4) 70%, transparent 100%);
+            padding: 4rem 2rem 2rem;
+            color: white;
+            pointer-events: none;
+            z-index: 15;
+        }
+
+        .caption-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #ffffff; /* Forced white for contrast against shadow */
+            text-align: center;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+        }
+
+        .caption-edit-area {
+            width: 100%;
+            min-height: 100px;
+            padding: 1rem;
+            border: 2px solid var(--border);
+            border-radius: 4px;
+            font-family: 'Raleway', sans-serif;
+            font-size: 1rem;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            resize: vertical;
+        }
+
+        .caption-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .close-caption {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+
+        .close-caption:hover {
+            background: rgba(0, 0, 0, 0.8);
+            transform: rotate(90deg);
+        }
+
+        /* Edit mode styles */
+        .edit-mode-controls {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .photo-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .photo-item:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px var(--shadow);
+        }
+
+        .photo-item img {
             width: 100%;
             height: 100%;
-            background: var(--overlay);
-            z-index: 2000;
+            object-fit: cover;
+        }
+
+        .photo-controls {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 0.5rem;
+            display: flex;
+            gap: 0.5rem;
             justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .photo-item:hover .photo-controls {
+            opacity: 1;
+        }
+
+        .photo-control-btn {
+            background: white;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .photo-control-btn:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        .photo-caption-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 0.5rem;
+            font-size: 0.75rem;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .photo-item:hover .photo-caption-label {
+            opacity: 1;
+        }
+
+        /* Modal styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
             align-items: center;
-            backdrop-filter: blur(5px);
+            justify-content: center;
+            z-index: 3000;
+            padding: 2rem;
         }
 
         .modal.active {
@@ -499,21 +722,20 @@
 
         .modal-content {
             background: var(--bg-primary);
-            padding: 2.5rem;
-            border-radius: 8px;
-            max-width: 500px;
-            width: 90%;
+            border-radius: 12px;
+            max-width: 600px;
+            width: 100%;
             max-height: 90vh;
             overflow-y: auto;
+            padding: 2.5rem;
             position: relative;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
 
         .modal-header {
             font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            color: var(--text-primary);
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
         }
 
         .form-group {
@@ -523,22 +745,21 @@
         .form-group label {
             display: block;
             margin-bottom: 0.5rem;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
             font-weight: 500;
+            color: var(--text-secondary);
         }
 
         .form-group input,
         .form-group textarea {
             width: 100%;
-            padding: 0.8rem;
+            padding: 0.9rem;
             border: 2px solid var(--border);
+            border-radius: 6px;
+            font-family: 'Raleway', sans-serif;
+            font-size: 1rem;
             background: var(--bg-secondary);
             color: var(--text-primary);
-            font-family: 'Raleway', sans-serif;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-            border-radius: 4px;
+            transition: border-color 0.3s ease;
         }
 
         .form-group input:focus,
@@ -547,72 +768,82 @@
             border-color: var(--accent);
         }
 
-        .file-input-wrapper {
-            position: relative;
-            overflow: hidden;
-            display: inline-block;
-            width: 100%;
-        }
-
-        .file-input-label {
-            display: block;
-            padding: 0.8rem;
-            background: var(--bg-secondary);
-            border: 2px dashed var(--border);
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border-radius: 4px;
-        }
-
-        .file-input-label:hover {
-            border-color: var(--accent);
-            background: var(--accent);
-            color: #fff;
-        }
-
-        .file-input-wrapper input[type="file"] {
-            position: absolute;
-            left: -9999px;
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
         }
 
         .modal-actions {
             display: flex;
             gap: 1rem;
+            justify-content: flex-end;
             margin-top: 2rem;
         }
 
-        .modal-actions .btn {
-            flex: 1;
-        }
-
-        .close-btn {
+        .close-modal {
             position: absolute;
             top: 1rem;
             right: 1rem;
             background: none;
             border: none;
-            font-size: 1.5rem;
+            font-size: 2rem;
             color: var(--text-secondary);
             cursor: pointer;
             transition: color 0.3s ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .close-btn:hover {
+        .close-modal:hover {
             color: var(--text-primary);
         }
 
-        .lightbox {
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg-primary);
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            padding: 2rem 3rem;
+            text-align: center;
+            z-index: 4000;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
             display: none;
+        }
+
+        .notification.active {
+            display: block;
+        }
+
+        .notification-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .notification-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        /* Lightbox */
+        .lightbox {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            right: 0;
+            bottom: 0;
             background: var(--overlay);
-            z-index: 3000;
-            justify-content: center;
+            display: none;
             align-items: center;
+            justify-content: center;
+            z-index: 5000;
+            padding: 2rem;
         }
 
         .lightbox.active {
@@ -621,315 +852,594 @@
 
         .lightbox-content {
             max-width: 90%;
-            max-height: 90vh;
+            max-height: 90%;
             position: relative;
         }
 
-        .lightbox-content img,
-        .lightbox-content video {
+        .lightbox-content img {
             max-width: 100%;
             max-height: 90vh;
             object-fit: contain;
-            border-radius: 4px;
         }
 
-        .lightbox-content video {
-            background: #000;
-        }
-
-        .notification {
-            position: fixed;
-            top: 6rem;
-            right: 3rem;
-            background: var(--accent);
-            color: #fff;
-            padding: 1rem 1.5rem;
-            border-radius: 4px;
-            box-shadow: 0 4px 12px var(--shadow);
-            z-index: 4000;
-            display: none;
-            align-items: center;
-            gap: 0.5rem;
-            animation: slideIn 0.3s ease;
-        }
-
-        .notification.show {
-            display: flex;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateX(400px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        #themeToggle {
-            font-size: 1.5rem;
-            background: none;
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.9);
             border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
             cursor: pointer;
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
         }
 
-        #themeToggle:hover {
-            transform: rotate(20deg) scale(1.1);
+        [data-theme="dark"] .lightbox-nav {
+            background: rgba(50, 50, 50, 0.9);
+            color: white;
         }
 
+        .lightbox-nav:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        .lightbox-nav.prev {
+            left: 2rem;
+        }
+
+        .lightbox-nav.next {
+            right: 2rem;
+        }
+
+        .close-lightbox {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-lightbox:hover {
+            background: rgba(0, 0, 0, 0.9);
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
             .header {
-                padding: 1rem 1.5rem;
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            .logo {
-                font-size: 1.5rem;
+                padding: 1rem;
+                flex-direction: row;
+                gap: 0.5rem;
             }
 
             .header-selector {
-                min-width: 100%;
+                min-width: auto;
+                flex: 1;
+            }
+
+            .header-select-display {
+                padding: 0.6rem 2rem 0.6rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            .header-controls {
+                gap: 0.5rem;
+            }
+
+            .btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.75rem;
+            }
+
+            .theme-toggle {
+                font-size: 1.2rem;
+                padding: 0.3rem;
             }
 
             .container {
-                padding: 0 1.5rem 1.5rem;
+                padding: 9rem 1rem 1rem;
             }
 
-            .gallery {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-                gap: 1rem;
+            .slideshow-container {
+                margin: 0 0 2rem 0;
+                min-height: 350px;
+            }
+
+            .slideshow-wrapper {
+                height: 450px;
             }
 
             .slide-main {
-                height: 50vh;
+                width: 100%;
+                height: 330px;
+            }
+
+            .slide-preview-left,
+            .slide-preview-right {
+                display: none;
+            }
+
+            .slide-title {
+                font-size: 1.5rem;
+            }
+
+            .slide-subtitle {
+                font-size: 0.9rem;
+            }
+
+            .slide-overlay {
+                padding: 2rem 1rem 1rem;
             }
 
             .slide-nav {
-                font-size: 1.5rem;
-                padding: 0.5rem;
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+
+            .slide-nav.prev {
+                left: 0.5rem;
+            }
+
+            .slide-nav.next {
+                right: 0.5rem;
+            }
+
+            .edit-mode-controls {
+                padding: 1rem;
+            }
+
+            .edit-mode-controls h3 {
+                font-size: 1.1rem;
+            }
+
+            .photo-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 0.75rem;
             }
 
             .modal-content {
                 padding: 1.5rem;
+                margin: 1rem;
             }
+
+            .modal-header {
+                font-size: 1.5rem;
+            }
+            .caption-content {
+                height: auto;
+                max-height: 90vh;
+            }
+            .caption-text {
+                font-size: 0.95rem;
+            }
+            .caption-text-container {
+                padding: 2rem 1rem 1rem;
+            }
+        }
+
+        /* Hide scrollbar for options */
+        .header-select-options::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .header-select-options::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        .header-select-options::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 4px;
         }
     </style>
 </head>
 <body>
-    <div class="floating-hearts" id="floatingHearts"><div class="heart" style="left: 14.6974%; animation-delay: 1.1274s; animation-duration: 19.2472s;">💖</div><div class="heart" style="left: 36.9496%; animation-delay: 0.522799s; animation-duration: 10.3904s;">💗</div><div class="heart" style="left: 57.8417%; animation-delay: 14.6877s; animation-duration: 17.2245s;">❤️</div><div class="heart" style="left: 93.5798%; animation-delay: 13.9537s; animation-duration: 19.456s;">💓</div><div class="heart" style="left: 90.7544%; animation-delay: 10.2943s; animation-duration: 14.6761s;">💗</div><div class="heart" style="left: 41.8497%; animation-delay: 10.5933s; animation-duration: 13.9391s;">💗</div><div class="heart" style="left: 22.9633%; animation-delay: 13.7767s; animation-duration: 15.4444s;">💖</div><div class="heart" style="left: 72.6588%; animation-delay: 7.12181s; animation-duration: 16.376s;">💝</div><div class="heart" style="left: 46.3298%; animation-delay: 0.438635s; animation-duration: 19.2284s;">💖</div><div class="heart" style="left: 9.24134%; animation-delay: 3.9548s; animation-duration: 15.0165s;">💘</div><div class="heart" style="left: 35.0573%; animation-delay: 14.161s; animation-duration: 18.0287s;">💗</div><div class="heart" style="left: 80.5294%; animation-delay: 11.2318s; animation-duration: 19.513s;">💖</div><div class="heart" style="left: 14.0453%; animation-delay: 11.234s; animation-duration: 13.972s;">❤️</div><div class="heart" style="left: 56.8282%; animation-delay: 2.95061s; animation-duration: 14.2228s;">💘</div><div class="heart" style="left: 42.6998%; animation-delay: 11.805s; animation-duration: 14.7389s;">💓</div></div>
-
-    <header class="header">
-        <div class="logo">Gallery</div>
+    <!-- Header with Album Selector -->
+    <div class="header">
         <div class="header-selector">
-            <div class="header-select-display" id="headerSelectDisplay" onclick="toggleHeaderSelect()">
-                <span id="currentAlbumDisplay">Test</span>
-                <span class="header-select-arrow">▼</span>
+            <div class="header-select-display" onclick="toggleHeaderSelect()">
+                <span id="headerSelectedAlbum">Sample Test</span>
             </div>
-            <div class="header-select-options" id="headerSelectOptions"><div class="header-select-option selected">Test</div></div>
+            <div class="header-select-options" id="headerSelectOptions">
+                <div class="header-select-option " onclick="selectAlbum(0)">
+                    ⭐ My Collection
+                </div>
+            
+                <div class="header-select-option active" onclick="selectAlbum(1)">
+                    Sample Test
+                </div>
+            </div>
         </div>
-        <div class="header-actions">
-            <button id="themeToggle" onclick="toggleTheme()">💖</button>
-            <button class="btn" id="authBtn" onclick="showLogin()">Manage</button>
-        </div>
-    </header>
 
-    <div class="container">
-        <div class="slideshow">
-            <div class="slide-container">
-                <div class="slide-main" id="mainSlide">
-                    <img id="slideImage" src="images/Test/rics.jpg" alt="Slideshow" style="display: block;">
-                    <video id="slideVideo" controls="" style="display: none;"></video>
+        <div class="header-controls">
+            <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme" id="themeToggle">🌙</button>
+            <button class="btn btn-primary" id="editModeBtn" onclick="showLoginModal()">Admin</button>
+        </div>
+    </div>
+
+    <!-- Floating Hearts (Valentine Theme) -->
+    <div class="floating-hearts" id="floatingHearts"></div>
+
+    <!-- Main Container (Now Second) -->
+    <div class="container" id="mainContainer">
+        
+        <!-- Main Slideshow Container (Now First/Highlighted) -->
+        <div class="slideshow-container" id="slideshowContainer" style="display: block;">
+            <div class="slideshow-wrapper">
+                <!-- Previous image preview (left shadow) -->
+                <div class="slide-preview-left" onclick="changeSlide(-1)">
+                    <img id="previewLeftImg" src="images/sample-test/photo.jpg" alt="Previous">
+                </div>
+
+                <!-- Main current slide -->
+                <div class="slide-main" onclick="openPhotoCaption()" style="transform: translateX(0px); transition: transform 0.3s;">
+                    <img id="mainSlideImg" src="images/sample-test/photo.jpg" alt="Current Photo">
+                    <!-- Fixed overlay with title and subtitle -->
                     <div class="slide-overlay">
-                        <div class="slide-caption" id="slideCaption"></div>
-                        <div class="slide-counter" id="slideCounter">1 / 2</div>
+                        <div class="slide-title" id="slideTitle">Sample Test</div>
+                        <div class="slide-subtitle" id="slideSubtitle"></div>
                     </div>
                 </div>
-                <button class="slide-nav prev" onclick="changeSlide(-1)">❮</button>
-                <button class="slide-nav next" onclick="changeSlide(1)">❯</button>
+
+                <!-- Next image preview (right shadow) -->
+                <div class="slide-preview-right" onclick="changeSlide(1)">
+                    <img id="previewRightImg" src="images/sample-test/photo.jpg" alt="Next">
+                </div>
+
+                <!-- Navigation arrows -->
+                <button class="slide-nav prev" onclick="changeSlide(-1)">‹</button>
+                <button class="slide-nav next" onclick="changeSlide(1)">›</button>
+            </div>
+        </div>
+        
+        <!-- Edit Mode Controls -->
+        <div class="edit-mode-controls" id="editControls" style="display: none;">
+            <h3 style="margin-bottom: 1rem;">Edit Mode</h3>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <button class="btn" onclick="showCreateAlbumModal()">➕ Create Album</button>
+                <button class="btn" onclick="showEditAlbumModal()">✏️ Edit Album</button>
+                <button class="btn" onclick="toggleFavoriteAlbum()">⭐ Set as Default</button>
+                <button class="btn" onclick="deleteCurrentAlbum()" style="border-color: #d9534f; color: #d9534f;">🗑️ Delete Album</button>
+                <label class="btn" style="margin: 0;">
+                    📸 Add Photos
+                    <input type="file" multiple="" accept="image/*" onchange="handlePhotoUpload(event)" style="display: none;">
+                </label>
+                <button class="btn btn-primary" onclick="exportData()">💾 Save Changes</button>
+                <button class="btn" onclick="logout()" style="border-color: #f0ad4e; color: #f0ad4e;">🚪 Logout</button>
             </div>
         </div>
 
-        <div class="gallery" id="gallery"><div class="gallery-item"><img src="images/Test/rics.jpg" alt="rics.jpg"></div><div class="gallery-item"><img src="images/Test/russ.jpg" alt="russ.jpg"></div></div>
+        <!-- Photo Grid (Edit Mode) -->
+        <div class="photo-grid" id="photoGrid" style="display: none;">
+                    <div class="photo-item">
+                        <img src="images/sample-test/photo.jpg" alt="photo.jpg">
+                        <div class="photo-controls">
+                            <button class="photo-control-btn" onclick="movePhoto(0, -1)" title="Move left">◄</button>
+                            <button class="photo-control-btn" onclick="editPhotoCaption(0)" title="Edit caption">✏️</button>
+                            <button class="photo-control-btn" onclick="movePhoto(0, 1)" title="Move right">►</button>
+                            <button class="photo-control-btn" onclick="deletePhoto(0)" title="Delete">🗑️</button>
+                        </div>
+                        <div class="photo-caption-label">No caption</div>
+                    </div>
+                </div>
+    </div>
+
+    <!-- Photo Caption Modal -->
+    <div class="caption-modal" id="captionModal">
+        <div class="caption-content">
+            <button class="close-caption" onclick="closeCaptionModal()">×</button>
+            <div class="caption-image-container">
+                <img id="captionImage" src="" alt="Photo">  
+            </div>
+            <div class="caption-text-container">
+                <div id="captionDisplayText" class="caption-text"></div> 
+            </div>
+        </div>
     </div>
 
     <!-- Login Modal -->
     <div class="modal" id="loginModal">
         <div class="modal-content">
-            <button class="close-btn" onclick="closeModal('loginModal')">×</button>
+            <button class="close-modal" onclick="closeModal('loginModal')">×</button>
             <h2 class="modal-header">Admin Login</h2>
             <div class="form-group">
-                <label>Username</label>
-                <input type="text" id="username" placeholder="Enter username">
+                <label for="usernameInput">Username</label>
+                <input type="text" id="usernameInput" placeholder="Enter username">
             </div>
             <div class="form-group">
-                <label>Password</label>
-                <input type="password" id="password" placeholder="Enter password">
+                <label for="passwordInput">Password</label>
+                <input type="password" id="passwordInput" placeholder="Enter password">
             </div>
             <div class="modal-actions">
-                <button class="btn btn-primary" onclick="login()">Login</button>
                 <button class="btn" onclick="closeModal('loginModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="login()">Login</button>
             </div>
         </div>
     </div>
 
-    <!-- Album Management Modal -->
-    <div class="modal active" id="albumModal">
+    <!-- Album Modal -->
+    <div class="modal" id="albumModal">
         <div class="modal-content">
-            <button class="close-btn" onclick="closeModal('albumModal')">×</button>
-            <h2 class="modal-header">Manage Albums</h2>
-            
+            <button class="close-modal" onclick="closeModal('albumModal')">×</button>
+            <h2 class="modal-header" id="albumModalTitle">Create Album</h2>
             <div class="form-group">
-                <label>Create New Album</label>
-                <input type="text" id="newAlbumName" placeholder="Album name">
-                <button class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;" onclick="createAlbum()">Create Album</button>
+                <label for="albumTitleInput">Album Title *</label>
+                <input type="text" id="albumTitleInput" placeholder="e.g., Summer Vacation 2024">
             </div>
-
-            <div class="form-group" style="margin-top: 2rem;">
-                <label>Add Media to Current Album</label>
-                <div class="file-input-wrapper">
-                    <label class="file-input-label" for="mediaUpload">
-                        📁 Choose Images or Videos (Multiple)
-                    </label>
-                    <input type="file" id="mediaUpload" multiple="" accept="image/*,video/*" onchange="handleMediaUpload(event)">
-                </div>
-            </div>
-
             <div class="form-group">
-                <button class="btn" style="width: 100%;" onclick="openCaptionModal()">Edit Captions</button>
+                <label for="albumSubtitleInput">Subtitle</label>
+                <input type="text" id="albumSubtitleInput" placeholder="e.g., Adventures in Paradise">
             </div>
-
-            <div class="form-group">
-                <button class="btn" style="width: 100%;" onclick="confirmDeleteAlbum()">Delete Current Album</button>
-            </div>
-
-            <div class="form-group">
-                <button class="btn btn-primary" style="width: 100%;" onclick="saveGallery()">💾 Save Gallery</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Caption Modal -->
-    <div class="modal" id="captionModal">
-        <div class="modal-content">
-            <button class="close-btn" onclick="closeCaptionModal()">×</button>
-            <h2 class="modal-header">Edit Captions</h2>
-            <div id="captionContent">
-                <div style="margin-bottom: 1.5rem;">
-                    <img id="captionImage" src="" style="max-width: 100%; height: auto; border-radius: 4px; display: none;">
-                    <video id="captionVideo" controls="" style="max-width: 100%; height: auto; border-radius: 4px; display: none;"></video>
-                </div>
-                <div class="form-group">
-                    <label>Caption</label>
-                    <textarea id="captionInput" rows="3" placeholder="Enter caption..."></textarea>
-                </div>
-                <div class="modal-actions">
-                    <button class="btn" onclick="modalNavigate(-1)">← Previous</button>
-                    <button class="btn btn-primary" onclick="saveCaption()">Save</button>
-                    <button class="btn" onclick="modalNavigate(1)">Next →</button>
-                </div>
-                <div style="text-align: center; margin-top: 1rem; color: var(--text-secondary);">
-                    <small id="captionDisplayText"></small>
-                </div>
+            <div class="modal-actions">
+                <button class="btn" onclick="closeModal('albumModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="saveAlbum()">Save Album</button>
             </div>
         </div>
     </div>
 
     <!-- Notification Modal -->
-    <div class="modal" id="notificationModal">
-        <div class="modal-content" style="max-width: 400px;">
-            <h2 class="modal-header" id="notificationTitle">Notification</h2>
-            <p id="notificationMessage" style="margin-bottom: 1.5rem;"></p>
-            <button class="btn btn-primary" style="width: 100%;" onclick="closeModal('notificationModal')">OK</button>
-        </div>
+    <div class="notification" id="notificationModal">
+        <div class="notification-icon" id="notificationIcon">✅</div>
+        <div class="notification-text" id="notificationText">1 photo(s) added! Remember to click "Save Changes" and upload these files to images/sample-test/ in GitHub.</div>
     </div>
 
-    <!-- Confirm Modal -->
+    <!-- Confirmation Modal -->
     <div class="modal" id="confirmModal">
-        <div class="modal-content" style="max-width: 400px;">
-            <h2 class="modal-header">Confirm Action</h2>
-            <p id="confirmMessage" style="margin-bottom: 1.5rem;"></p>
+        <div class="modal-content">
+            <h2 class="modal-header" id="confirmTitle">Delete Photo</h2>
+            <p id="confirmMessage" style="text-align: center; margin: 2rem 0; line-height: 1.6;">Delete "photo3.jpg"?
+
+You should also delete this file from images/My-Collection/ in GitHub.</p>
             <div class="modal-actions">
-                <button class="btn btn-primary" onclick="confirmAction()">Confirm</button>
                 <button class="btn" onclick="closeModal('confirmModal')">Cancel</button>
+                <button class="btn btn-primary" id="confirmBtn" onclick="confirmAction()">Confirm</button>
             </div>
         </div>
     </div>
 
     <!-- Lightbox -->
-    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
-        <div class="lightbox-content" onclick="event.stopPropagation()">
-            <img id="lightboxImage" src="" alt="Lightbox" style="display: none;">
-            <video id="lightboxVideo" controls="" style="display: none;"></video>
+    <div class="lightbox" id="lightbox">
+        <button class="close-lightbox" onclick="closeLightbox()">×</button>
+        <div class="lightbox-content">
+            <img id="lightboxImage" src="" alt="Lightbox">
+            <button class="lightbox-nav prev" onclick="navigateLightbox(-1)">‹</button>
+            <button class="lightbox-nav next" onclick="navigateLightbox(1)">›</button>
         </div>
-    </div>
-
-    <div class="notification show" id="notification">
-        <span id="notificationIcon">📁</span>
-        <span id="notificationText">1 file(s) added - Remember to save!</span>
     </div>
 
     <script>
         // ALBUMS_DATA_START
         let ALBUMS_DATA = [
-        {
-                "name": "Test",
-                "folderName": "Test",
-                "photos": [
-                        "rics.jpg",
-                        "russ.jpg"
-                ],
-                "captions": {
-                        "rics.jpg": "",
-                        "russ.jpg": ""
-                }
-        }
+  {
+    "folderName": "My-Collection",
+    "title": "My Collection",
+    "subtitle": "Your First Collection",
+    "photos": [
+      "facebook.png",
+      "Bob_F-T_624317.webp",
+      "Slimmers_icon.png"
+    ],
+    "captions": {},
+    "isFavorite": true
+  },
+  {
+    "folderName": "sample-test",
+    "title": "Sample Test",
+    "subtitle": "",
+    "photos": [
+      "photo.jpg"
+    ],
+    "captions": {},
+    "isFavorite": false
+  }
 ];
         // ALBUMS_DATA_END
 
-        let albums = ALBUMS_DATA.length > 0 ? ALBUMS_DATA : [];
+        let albums = JSON.parse(JSON.stringify(ALBUMS_DATA));
         let currentAlbumIndex = 0;
         let currentSlideIndex = 0;
-        let isLoggedIn = false;
+        let editingAlbumIndex = null;
+        let isEditMode = false;
         let currentCaptionPhotoIndex = 0;
-        let pendingConfirmAction = null;
+        let isLoggedIn = false;
+        let slideDirection = 1;
+        let confirmCallback = null;
 
-        // Helper function to check if file is a video
-        function isVideo(filename) {
-            const videoExtensions = ['.mp4', '.webm', '.mov', '.avi', '.mkv', '.m4v'];
-            return videoExtensions.some(ext => filename.toLowerCase().endsWith(ext));
-        }
+        // Drag/Swipe variables
+        let isDragging = false;
+        let startX = 0;
+        let currentTranslate = 0;
+        let dragThreshold = 50;
 
-        // Helper function to get file type
-        function getMediaType(filename) {
-            return isVideo(filename) ? 'video' : 'image';
+        // Password encryption using SHA-256
+        async function hashPassword(password) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(password);
+            const hash = await crypto.subtle.digest('SHA-256', data);
+            return Array.from(new Uint8Array(hash))
+                .map(b => b.toString(16).padStart(2, '0'))
+                .join('');
         }
 
         function init() {
+            // FORCE DEFAULT USER MODE
+            isLoggedIn = false;
+            isEditMode = false;
+
+            document.getElementById('editControls').style.display = 'none';
+            document.getElementById('photoGrid').style.display = 'none';
+
+            updateUIForLoginState();
+
             checkTheme();
-            populateAlbumSelector();
-            if (albums.length > 0) {
-                loadAlbum(0);
+            const favoriteIndex = albums.findIndex(a => a.isFavorite);
+            currentAlbumIndex = favoriteIndex >= 0 ? favoriteIndex : 0;
+
+            loadPhotosFromFolders().then(() => {
+                displayHeaderSelector();
+                displayCurrentAlbum();
+                setupDragGestures();
+            });
+        }
+
+        // Auto-load photos from GitHub folders
+        async function loadPhotosFromFolders() {
+            for (let album of albums) {
+                try {
+                    const response = await fetch(`images/${album.folderName}/`);
+                    if (response.ok) {
+                        const text = await response.text();
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(text, 'text/html');
+                        const links = doc.querySelectorAll('a');
+                        const photos = [];
+                        
+                        links.forEach(link => {
+                            const href = link.getAttribute('href');
+                            if (href && /\.(jpg|jpeg|png|gif|webp)$/i.test(href)) {
+                                photos.push(href);
+                            }
+                        });
+                        
+                        if (photos.length > 0) {
+                            album.photos = photos;
+                        }
+                    }
+                } catch (error) {
+                    console.log(`Could not auto-load photos for ${album.folderName}`);
+                }
             }
         }
 
-        function populateAlbumSelector() {
-            const optionsContainer = document.getElementById('headerSelectOptions');
-            optionsContainer.innerHTML = '';
-            
-            albums.forEach((album, index) => {
-                const option = document.createElement('div');
-                option.className = 'header-select-option';
-                option.textContent = album.name;
-                option.onclick = () => selectAlbum(index);
-                if (index === currentAlbumIndex) {
-                    option.classList.add('selected');
+        function showConfirmModal(title, message, callback) {
+            document.getElementById('confirmTitle').textContent = title;
+            document.getElementById('confirmMessage').textContent = message;
+            confirmCallback = callback;
+            document.getElementById('confirmModal').classList.add('active');
+        }
+
+        function confirmAction() {
+            if (confirmCallback) {
+                confirmCallback();
+                confirmCallback = null;
+            }
+            closeModal('confirmModal');
+        }
+
+        function setupDragGestures() {
+            const slideMain = document.querySelector('.slide-main');
+            if (!slideMain) return;
+
+            const getPositionX = (e) => {
+                return e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+            };
+
+            const startDrag = (e) => {
+                if (isEditMode) return; // Disable drag in edit mode
+                isDragging = true;
+                startX = getPositionX(e);
+                slideMain.style.transition = 'none';
+            };
+
+            const moveDrag = (e) => {
+                if (!isDragging) return;
+                const currentX = getPositionX(e);
+                const diff = currentX - startX;
+                currentTranslate = diff;
+                slideMain.style.transform = `translateX(${diff}px)`;
+            };
+
+            const endDrag = (e) => {
+                if (!isDragging) return;
+                isDragging = false;
+                slideMain.style.transition = 'transform 0.3s ease';
+
+                if (Math.abs(currentTranslate) > dragThreshold) {
+                    if (currentTranslate > 0) {
+                        changeSlide(-1); // Swipe right -> previous
+                    } else {
+                        changeSlide(1); // Swipe left -> next
+                    }
+                } else {
+                    slideMain.style.transform = 'translateX(0)';
                 }
-                optionsContainer.appendChild(option);
-            });
+                currentTranslate = 0;
+            };
+
+            // Mouse events
+            slideMain.addEventListener('mousedown', startDrag);
+            slideMain.addEventListener('mousemove', moveDrag);
+            slideMain.addEventListener('mouseup', endDrag);
+            slideMain.addEventListener('mouseleave', endDrag);
+
+            // Touch events
+            slideMain.addEventListener('touchstart', startDrag, { passive: true });
+            slideMain.addEventListener('touchmove', moveDrag, { passive: true });
+            slideMain.addEventListener('touchend', endDrag);
+        }
+
+        function showLoginModal() {
+            if (isLoggedIn) {
+                toggleEditMode();
+            } else {
+                document.getElementById('loginModal').classList.add('active');
+                document.getElementById('usernameInput').value = '';
+                document.getElementById('passwordInput').value = '';
+            }
+        }
+
+        async function login() {
+            const username = document.getElementById('usernameInput').value;
+            const password = document.getElementById('passwordInput').value;
+
+            if (username !== ADMIN_USERNAME) {
+                showNotification('Invalid username or password', '❌');
+                return;
+            }
+
+            const hash = await hashPassword(password);
+
+            if (hash === STORED_PASSWORD_HASH) {
+                isLoggedIn = true;
+                closeModal('loginModal');
+                updateUIForLoginState();
+                toggleEditMode();
+                document.getElementById('usernameInput').value = '';
+                document.getElementById('passwordInput').value = '';
+                showNotification('Welcome back, Admin!', '✅');
+            } else {
+                showNotification('Invalid username or password', '❌');
+            }
+        }
+
+        function logout() {
+            isLoggedIn = false;
+            isEditMode = false;
+            updateUIForLoginState();
+            document.getElementById('editControls').style.display = 'none';
+            document.getElementById('photoGrid').style.display = 'none';
+            showNotification('Logged out successfully', '👋');
+        }
+
+        function updateUIForLoginState() {
+            const editModeBtn = document.getElementById('editModeBtn');
+
+            if (isLoggedIn) {
+                editModeBtn.textContent = isEditMode ? 'View Mode' : 'Edit Mode';
+                editModeBtn.classList.add('btn-primary');
+            } else {
+                editModeBtn.textContent = 'Admin';
+                editModeBtn.classList.add('btn-primary');
+            }
         }
 
         function toggleHeaderSelect() {
@@ -939,327 +1449,396 @@
             display.classList.toggle('open');
         }
 
-        function selectAlbum(index) {
-            loadAlbum(index);
-            toggleHeaderSelect();
+        function displayHeaderSelector() {
+            const container = document.getElementById('headerSelectOptions');
+            const display = document.getElementById('headerSelectedAlbum');
+            
+            container.innerHTML = albums.map((album, index) => `
+                <div class="header-select-option ${index === currentAlbumIndex ? 'active' : ''}" 
+                     onclick="selectAlbum(${index})">
+                    ${album.isFavorite ? '⭐ ' : ''}${album.title}
+                </div>
+            `).join('');
+
+            const currentAlbum = albums[currentAlbumIndex];
+            display.textContent = (currentAlbum.isFavorite ? '⭐ ' : '') + currentAlbum.title;
         }
 
-        function loadAlbum(index) {
+        function selectAlbum(index) {
             currentAlbumIndex = index;
             currentSlideIndex = 0;
-            const album = albums[index];
+            displayHeaderSelector();
+            displayCurrentAlbum();
             
-            document.getElementById('currentAlbumDisplay').textContent = album.name;
-            
-            // Update selected state
-            const options = document.querySelectorAll('.header-select-option');
-            options.forEach((opt, i) => {
-                opt.classList.toggle('selected', i === index);
-            });
-            
-            renderGallery();
-            updateSlideshow();
+            const options = document.getElementById('headerSelectOptions');
+            const display = document.querySelector('.header-select-display');
+            options.classList.remove('show');
+            display.classList.remove('open');
         }
 
-        function renderGallery() {
-            const gallery = document.getElementById('gallery');
+        function displayCurrentAlbum() {
             const album = albums[currentAlbumIndex];
-            
-            if (!album || !album.photos || album.photos.length === 0) {
-                gallery.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">No media in this album yet.</p>';
-                return;
+            if (!album) return;
+
+            // Initialize captions object if it doesn't exist
+            if (!album.captions) {
+                album.captions = {};
             }
-            
-            gallery.innerHTML = '';
-            album.photos.forEach((photo, index) => {
-                const item = document.createElement('div');
-                item.className = 'gallery-item';
-                item.onclick = () => openLightbox(index);
-                
-                const mediaType = getMediaType(photo);
-                
-                if (mediaType === 'video') {
-                    const video = document.createElement('video');
-                    video.src = `images/${album.folderName}/${photo}`;
-                    video.muted = true;
-                    video.playsInline = true;
-                    item.appendChild(video);
-                    
-                    // Add play button indicator
-                    const indicator = document.createElement('div');
-                    indicator.className = 'video-indicator';
-                    item.appendChild(indicator);
-                } else {
-                    const img = document.createElement('img');
-                    img.src = `images/${album.folderName}/${photo}`;
-                    img.alt = album.captions[photo] || photo;
-                    item.appendChild(img);
-                }
-                
-                gallery.appendChild(item);
-            });
+
+            // Update slideshow
+            updateSlideshow();
+
+            // Re-setup drag gestures after DOM update
+            setTimeout(() => {
+                setupDragGestures();
+            }, 100);
+
+            // Update photo grid (edit mode)
+            if (isEditMode) {
+                displayPhotoGrid();
+            }
         }
 
         function updateSlideshow() {
             const album = albums[currentAlbumIndex];
-            if (!album || !album.photos || album.photos.length === 0) return;
-            
-            const photoName = album.photos[currentSlideIndex];
-            const mediaType = getMediaType(photoName);
-            const slideImage = document.getElementById('slideImage');
-            const slideVideo = document.getElementById('slideVideo');
-            
-            if (mediaType === 'video') {
-                slideImage.style.display = 'none';
-                slideVideo.style.display = 'block';
-                slideVideo.src = `images/${album.folderName}/${photoName}`;
-                slideVideo.load();
-            } else {
-                slideVideo.style.display = 'none';
-                slideImage.style.display = 'block';
-                slideImage.src = `images/${album.folderName}/${photoName}`;
+            if (!album || !album.photos || album.photos.length === 0) {
+                document.getElementById('slideshowContainer').style.display = 'none';
+                return;
             }
-            
-            document.getElementById('slideCaption').textContent = album.captions[photoName] || '';
-            document.getElementById('slideCounter').textContent = `${currentSlideIndex + 1} / ${album.photos.length}`;
+
+            document.getElementById('slideshowContainer').style.display = 'block';
+
+            const totalPhotos = album.photos.length;
+            const prevIndex = (currentSlideIndex - 1 + totalPhotos) % totalPhotos;
+            const nextIndex = (currentSlideIndex + 1) % totalPhotos;
+
+            // Update main slide
+            const mainImg = document.getElementById('mainSlideImg');
+            mainImg.src = `images/${album.folderName}/${album.photos[currentSlideIndex]}`;
+
+            // Reset transform
+            const slideMain = document.querySelector('.slide-main');
+            if (slideMain) {
+                slideMain.style.transform = 'translateX(0)';
+                slideMain.style.transition = 'transform 0.3s ease';
+            }
+
+            // Update preview images
+            const prevImg = document.getElementById('previewLeftImg');
+            const nextImg = document.getElementById('previewRightImg');
+            prevImg.src = `images/${album.folderName}/${album.photos[prevIndex]}`;
+            nextImg.src = `images/${album.folderName}/${album.photos[nextIndex]}`;
+
+            // Update fixed title and subtitle overlay
+            document.getElementById('slideTitle').textContent = album.title;
+            document.getElementById('slideSubtitle').textContent = album.subtitle || '';
         }
 
         function changeSlide(direction) {
             const album = albums[currentAlbumIndex];
+            if (!album || !album.photos || album.photos.length === 0) return;
+
+            slideDirection = direction;
             currentSlideIndex = (currentSlideIndex + direction + album.photos.length) % album.photos.length;
             updateSlideshow();
         }
 
-        function openLightbox(index) {
+        function openPhotoCaption() {
+            if (isEditMode) return; // Don't open in edit mode
+            
             const album = albums[currentAlbumIndex];
-            const photoName = album.photos[index];
-            const mediaType = getMediaType(photoName);
-            const lightboxImage = document.getElementById('lightboxImage');
-            const lightboxVideo = document.getElementById('lightboxVideo');
-            
-            if (mediaType === 'video') {
-                lightboxImage.style.display = 'none';
-                lightboxVideo.style.display = 'block';
-                lightboxVideo.src = `images/${album.folderName}/${photoName}`;
-                lightboxVideo.load();
-            } else {
-                lightboxVideo.style.display = 'none';
-                lightboxImage.style.display = 'block';
-                lightboxImage.src = `images/${album.folderName}/${photoName}`;
-            }
-            
-            document.getElementById('lightbox').classList.add('active');
-            currentSlideIndex = index;
-            updateSlideshow();
+            if (!album || !album.photos || album.photos.length === 0) return;
+
+            currentCaptionPhotoIndex = currentSlideIndex;
+            const photoName = album.photos[currentCaptionPhotoIndex];
+            const caption = album.captions[photoName] || '';
+
+            document.getElementById('captionImage').src = `images/${album.folderName}/${photoName}`;
+            document.getElementById('captionDisplayText').textContent = caption || 'No caption yet.';
+            document.getElementById('captionDisplayText').style.display = 'block'; 
+
+            document.getElementById('captionModal').classList.add('active');
         }
 
-        function showLogin() {
-            if (isLoggedIn) {
-                showAlbumManagement();
-            } else {
-                document.getElementById('loginModal').classList.add('active');
-            }
+        function closeCaptionModal() {
+            document.getElementById('captionModal').classList.remove('active');
         }
 
-        async function login() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
+        function startCaptionEdit() {
+            const album = albums[currentAlbumIndex];
+            const photoName = album.photos[currentCaptionPhotoIndex];
+            const caption = album.captions[photoName] || '';
 
-            const encoder = new TextEncoder();
-            const data = encoder.encode(password);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-
-            if (username === ADMIN_USERNAME && hashHex === STORED_PASSWORD_HASH) {
-                isLoggedIn = true;
-                document.getElementById('authBtn').textContent = 'Manage';
-                closeModal('loginModal');
-                showNotification('Login successful!', '✓');
-                showAlbumManagement();
-            } else {
-                showNotification('Invalid credentials', '✗');
-            }
+            document.getElementById('captionEditText').value = caption;
+            document.getElementById('captionDisplayText').style.display = 'none';
+            document.getElementById('captionEditContainer').style.display = 'block';
+            document.getElementById('editCaptionBtn').style.display = 'none';
         }
 
-        function logout() {
-            isLoggedIn = false;
-            document.getElementById('authBtn').textContent = 'Login';
-            closeModal('albumModal');
-            showNotification('Logged out', '✓');
+        function cancelCaptionEdit() {
+            document.getElementById('captionDisplayText').style.display = 'block';
+            document.getElementById('captionEditContainer').style.display = 'none';
+            document.getElementById('editCaptionBtn').style.display = 'block';
         }
 
-        function showAlbumManagement() {
+        function saveCaptionEdit() {
+            const album = albums[currentAlbumIndex];
+            const photoName = album.photos[currentCaptionPhotoIndex];
+            const newCaption = document.getElementById('captionEditText').value.trim();
+
+            if (!album.captions) album.captions = {};
+            album.captions[photoName] = newCaption;
+
+            document.getElementById('captionDisplayText').textContent = newCaption || 'No caption yet.';
+            cancelCaptionEdit();
+            showNotification('Caption saved! Remember to click "Save Changes" to export.', '✅');
+        }
+
+        function toggleEditMode() {
             if (!isLoggedIn) {
-                showLogin();
+                showLoginModal();
                 return;
             }
+
+            isEditMode = !isEditMode;
+            document.getElementById('editControls').style.display = isEditMode ? 'block' : 'none';
+            document.getElementById('photoGrid').style.display = isEditMode ? 'grid' : 'none';
+            
+            const editModeBtn = document.getElementById('editModeBtn');
+            editModeBtn.textContent = isEditMode ? 'View Mode' : 'Edit Mode';
+            
+            if (isEditMode) {
+                displayPhotoGrid();
+            }
+        }
+
+        function displayPhotoGrid() {
+            const album = albums[currentAlbumIndex];
+            const grid = document.getElementById('photoGrid');
+            
+            if (!album || !album.photos || album.photos.length === 0) {
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-secondary);">No photos in this album. Add some photos to get started!</p>';
+                return;
+            }
+
+            grid.innerHTML = album.photos.map((photo, index) => {
+                const caption = album.captions && album.captions[photo] ? album.captions[photo] : 'No caption';
+                return `
+                    <div class="photo-item">
+                        <img src="images/${album.folderName}/${photo}" alt="${photo}">
+                        <div class="photo-controls">
+                            <button class="photo-control-btn" onclick="movePhoto(${index}, -1)" title="Move left">◄</button>
+                            <button class="photo-control-btn" onclick="editPhotoCaption(${index})" title="Edit caption">✏️</button>
+                            <button class="photo-control-btn" onclick="movePhoto(${index}, 1)" title="Move right">►</button>
+                            <button class="photo-control-btn" onclick="deletePhoto(${index})" title="Delete">🗑️</button>
+                        </div>
+                        <div class="photo-caption-label">${caption.substring(0, 50)}${caption.length > 50 ? '...' : ''}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function editPhotoCaption(index) {
+            currentCaptionPhotoIndex = index;
+            const album = albums[currentAlbumIndex];
+            const photoName = album.photos[index];
+            const caption = album.captions && album.captions[photoName] ? album.captions[photoName] : '';
+
+            document.getElementById('captionImage').src = `images/${album.folderName}/${photoName}`;
+            document.getElementById('captionEditText').value = caption;
+            document.getElementById('captionDisplayText').style.display = 'none';
+            document.getElementById('captionEditContainer').style.display = 'block';
+            document.getElementById('editCaptionBtn').style.display = 'none';
+
+            document.getElementById('captionModal').classList.add('active');
+        }
+
+        function showNotification(message, icon = '✅') {
+            document.getElementById('notificationText').textContent = message;
+            document.getElementById('notificationIcon').textContent = icon;
+            document.getElementById('notificationModal').classList.add('active');
+            setTimeout(() => {
+                document.getElementById('notificationModal').classList.remove('active');
+            }, 3000);
+        }
+
+        function createFolderName(title) {
+            return title.toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-|-$/g, '');
+        }
+
+        function showCreateAlbumModal() {
+            editingAlbumIndex = null;
+            document.getElementById('albumModalTitle').textContent = 'Create Album';
+            document.getElementById('albumTitleInput').value = '';
+            document.getElementById('albumSubtitleInput').value = '';
             document.getElementById('albumModal').classList.add('active');
         }
 
-        function createAlbum() {
-            const albumName = document.getElementById('newAlbumName').value.trim();
-            if (!albumName) {
-                showNotification('Please enter an album name', '⚠');
-                return;
-            }
+        function showEditAlbumModal() {
+            const album = albums[currentAlbumIndex];
+            if (!album) return;
 
-            const folderName = albumName.replace(/\s+/g, '-');
-            const newAlbum = {
-                name: albumName,
-                folderName: folderName,
-                photos: [],
-                captions: {}
-            };
-
-            albums.push(newAlbum);
-            populateAlbumSelector();
-            loadAlbum(albums.length - 1);
-            document.getElementById('newAlbumName').value = '';
-            showNotification('Album created!', '✓');
+            editingAlbumIndex = currentAlbumIndex;
+            document.getElementById('albumModalTitle').textContent = 'Edit Album';
+            document.getElementById('albumTitleInput').value = album.title;
+            document.getElementById('albumSubtitleInput').value = album.subtitle || '';
+            document.getElementById('albumModal').classList.add('active');
         }
 
-        function handleMediaUpload(event) {
-            const files = Array.from(event.target.files);
-            const album = albums[currentAlbumIndex];
-            
-            if (!album) {
-                showNotification('Please create an album first', '⚠');
+        function saveAlbum() {
+            const title = document.getElementById('albumTitleInput').value.trim();
+            if (!title) {
+                showNotification('Album title is required', '⚠️');
                 return;
             }
 
-            files.forEach(file => {
+            const subtitle = document.getElementById('albumSubtitleInput').value.trim();
+            const folderName = createFolderName(title);
+
+            if (editingAlbumIndex !== null) {
+                const album = albums[editingAlbumIndex];
+                if (album) {
+                    album.title = title;
+                    album.subtitle = subtitle;
+                    album.folderName = folderName;
+                }
+                showNotification('Album updated successfully!', '✅');
+            } else {
+                const newAlbum = {
+                    folderName,
+                    title,
+                    subtitle,
+                    photos: [],
+                    captions: {},
+                    isFavorite: false
+                };
+                albums.push(newAlbum);
+                currentAlbumIndex = albums.length - 1;
+                showNotification(`Album created! Remember to create the folder: images/${folderName}/`, '✅');
+            }
+
+            displayHeaderSelector();
+            displayCurrentAlbum();
+            closeModal('albumModal');
+        }
+
+        function deleteCurrentAlbum() {
+            if (albums.length === 1) {
+                showNotification('Cannot delete the last album', '⚠️');
+                return;
+            }
+
+            const album = albums[currentAlbumIndex];
+            const message = `Delete album "${album.title}"?\n\nThis will remove it from the gallery. The images/${album.folderName}/ folder will remain in GitHub.`;
+            
+            showConfirmModal('Delete Album', message, () => {
+                albums.splice(currentAlbumIndex, 1);
+                currentAlbumIndex = 0;
+                currentSlideIndex = 0;
+                displayHeaderSelector();
+                displayCurrentAlbum();
+                showNotification('Album deleted successfully', '✅');
+            });
+        }
+
+        function toggleFavoriteAlbum() {
+            albums.forEach(a => a.isFavorite = false);
+            const album = albums[currentAlbumIndex];
+            if (album) {
+                album.isFavorite = true;
+                showNotification(`"${album.title}" is now the default album`, '⭐');
+            }
+            displayHeaderSelector();
+        }
+
+        function handlePhotoUpload(event) {
+            const files = event.target.files;
+            if (!files.length) return;
+
+            const album = albums[currentAlbumIndex];
+            if (!album) return;
+
+            if (!album.photos) album.photos = [];
+            if (!album.captions) album.captions = {};
+
+            let processed = 0;
+            const totalFiles = files.length;
+
+            Array.from(files).forEach(file => {
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = (e) => {
                     const fileName = file.name;
+                    album.photos.push(fileName);
                     
-                    // Check if it's a valid media file
-                    const isValidImage = file.type.startsWith('image/');
-                    const isValidVideo = file.type.startsWith('video/');
-                    
-                    if (!isValidImage && !isValidVideo) {
-                        showNotification(`Skipped ${fileName} - not a valid media file`, '⚠');
-                        return;
+                    processed++;
+                    if (processed === totalFiles) {
+                        displayCurrentAlbum();
+                        showNotification(`${totalFiles} photo(s) added! Remember to click "Save Changes" and upload these files to images/${album.folderName}/ in GitHub.`, '✅');
                     }
-                    
-                    if (!album.photos.includes(fileName)) {
-                        album.photos.push(fileName);
-                        album.captions[fileName] = '';
-                    }
-                    
-                    renderGallery();
-                    updateSlideshow();
                 };
                 reader.readAsDataURL(file);
             });
 
-            showNotification(`${files.length} file(s) added - Remember to save!`, '📁');
             event.target.value = '';
         }
 
-        function openCaptionModal() {
+        function movePhoto(index, direction) {
             const album = albums[currentAlbumIndex];
-            if (!album || album.photos.length === 0) {
-                showNotification('No media to add captions to', '⚠');
-                return;
-            }
+            if (!album || !album.photos) return;
 
-            currentCaptionPhotoIndex = currentSlideIndex;
-            updateCaptionModal();
-            document.getElementById('captionModal').classList.add('active');
+            const newIndex = index + direction;
+            if (newIndex < 0 || newIndex >= album.photos.length) return;
+
+            [album.photos[index], album.photos[newIndex]] = [album.photos[newIndex], album.photos[index]];
+            
+            if (currentSlideIndex === index) {
+                currentSlideIndex = newIndex;
+            } else if (currentSlideIndex === newIndex) {
+                currentSlideIndex = index;
+            }
+            
+            displayCurrentAlbum();
         }
 
-        function updateCaptionModal() {
+        function deletePhoto(index) {
             const album = albums[currentAlbumIndex];
-            const photoName = album.photos[currentCaptionPhotoIndex];
-            const mediaType = getMediaType(photoName);
-            const captionImage = document.getElementById('captionImage');
-            const captionVideo = document.getElementById('captionVideo');
+            if (!album || !album.photos) return;
             
-            if (mediaType === 'video') {
-                captionImage.style.display = 'none';
-                captionVideo.style.display = 'block';
-                captionVideo.src = `images/${album.folderName}/${photoName}`;
-                captionVideo.load();
-            } else {
-                captionVideo.style.display = 'none';
-                captionImage.style.display = 'block';
-                captionImage.src = `images/${album.folderName}/${photoName}`;
-            }
+            const photoName = album.photos[index];
+            const message = `Delete "${photoName}"?\n\nYou should also delete this file from images/${album.folderName}/ in GitHub.`;
             
-            document.getElementById('captionInput').value = album.captions[photoName] || '';
-            document.getElementById('captionDisplayText').textContent = `${currentCaptionPhotoIndex + 1} / ${album.photos.length}`;
+            showConfirmModal('Delete Photo', message, () => {
+                album.photos.splice(index, 1);
+                
+                // Remove caption if exists
+                if (album.captions && album.captions[photoName]) {
+                    delete album.captions[photoName];
+                }
+                
+                if (currentSlideIndex >= album.photos.length) {
+                    currentSlideIndex = Math.max(0, album.photos.length - 1);
+                }
+                
+                displayCurrentAlbum();
+                showNotification('Photo removed from gallery', '✅');
+            });
         }
 
-        function saveCaption() {
-            const album = albums[currentAlbumIndex];
-            const photoName = album.photos[currentCaptionPhotoIndex];
-            const caption = document.getElementById('captionInput').value;
+        function exportData() {
+            // Create a deep copy of current state to modify for export
+            const albumsJSON = JSON.stringify(albums, null, 2);
             
-            album.captions[photoName] = caption;
-            updateSlideshow();
-            showNotification('Caption saved!', '✓');
-        }
-
-        function closeCaptionModal() {
-            closeModal('captionModal');
-        }
-
-        function confirmDeleteAlbum() {
-            if (albums.length === 0) {
-                showNotification('No album to delete', '⚠');
-                return;
-            }
-            
-            const album = albums[currentAlbumIndex];
-            document.getElementById('confirmMessage').textContent = 
-                `Are you sure you want to delete "${album.name}"? This action cannot be undone.`;
-            
-            pendingConfirmAction = deleteCurrentAlbum;
-            document.getElementById('confirmModal').classList.add('active');
-        }
-
-        function confirmAction() {
-            if (pendingConfirmAction) {
-                pendingConfirmAction();
-                pendingConfirmAction = null;
-            }
-            closeModal('confirmModal');
-        }
-
-        function deleteCurrentAlbum() {
-            albums.splice(currentAlbumIndex, 1);
-            
-            if (albums.length > 0) {
-                currentAlbumIndex = Math.min(currentAlbumIndex, albums.length - 1);
-                loadAlbum(currentAlbumIndex);
-            } else {
-                currentAlbumIndex = 0;
-                document.getElementById('gallery').innerHTML = '';
-                document.getElementById('currentAlbumDisplay').textContent = 'Select Album';
-            }
-            
-            populateAlbumSelector();
-            showNotification('Album deleted', '✓');
-        }
-
-        function showNotification(message, icon = '✓') {
-            const notification = document.getElementById('notification');
-            document.getElementById('notificationText').textContent = message;
-            document.getElementById('notificationIcon').textContent = icon;
-            
-            notification.classList.add('show');
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
-        }
-
-        function saveGallery() {
-            const albumsJSON = JSON.stringify(albums, null, 8);
-            
+            // Temporarily set logged in states to false for the string replacement
             let htmlContent = document.documentElement.outerHTML;
-            htmlContent = htmlContent.replace(
-                /\/\/ ALBUMS_DATA_START[\s\S]*?\/\/ ALBUMS_DATA_END/,
+            
+            // Force the exported variables to be logged out
+            htmlContent = htmlContent.replace(/let isLoggedIn = false;/g, 'let isLoggedIn = false;');
+            htmlContent = htmlContent.replace(/let isEditMode = false;/g, 'let isEditMode = false;');
+            
+            // Update the Data block
+            htmlContent = htmlContent.replace(/\/\/ ALBUMS_DATA_START[\s\S]*?\/\/ ALBUMS_DATA_END/m, 
                 `// ALBUMS_DATA_START\n        let ALBUMS_DATA = ${albumsJSON};\n        // ALBUMS_DATA_END`);
             
             const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
@@ -1273,43 +1852,44 @@
             URL.revokeObjectURL(htmlUrl);
             
             showNotification('Gallery data saved! Logout forced for security.', '💾');
-            setTimeout(() => logout(), 1500);
         }
 
         function setupModalSwipes() {
             const modalImg = document.getElementById('captionImage');
-            const modalVideo = document.getElementById('captionVideo');
             let modalStartX = 0;
 
-            const handleTouchStart = (e) => {
+            modalImg.addEventListener('touchstart', (e) => {
                 modalStartX = e.touches[0].clientX;
-            };
+            }, { passive: true });
 
-            const handleTouchEnd = (e) => {
+            modalImg.addEventListener('touchend', (e) => {
                 const endX = e.changedTouches[0].clientX;
                 const diff = modalStartX - endX;
 
-                if (Math.abs(diff) > 50) {
+                if (Math.abs(diff) > 50) { // Threshold
                     if (diff > 0) {
+                        // Swipe Left -> Next
                         modalNavigate(1);
                     } else {
+                        // Swipe Right -> Prev
                         modalNavigate(-1);
                     }
                 }
-            };
-
-            modalImg.addEventListener('touchstart', handleTouchStart, { passive: true });
-            modalImg.addEventListener('touchend', handleTouchEnd);
-            modalVideo.addEventListener('touchstart', handleTouchStart, { passive: true });
-            modalVideo.addEventListener('touchend', handleTouchEnd);
+            });
         }
-
+        // Helper to change image inside the modal
         function modalNavigate(direction) {
             const album = albums[currentAlbumIndex];
             currentSlideIndex = (currentSlideIndex + direction + album.photos.length) % album.photos.length;
             currentCaptionPhotoIndex = currentSlideIndex;
             
-            updateCaptionModal();
+            const photoName = album.photos[currentCaptionPhotoIndex];
+            const caption = album.captions[photoName] || '';
+
+            document.getElementById('captionImage').src = `images/${album.folderName}/${photoName}`;
+            document.getElementById('captionDisplayText').textContent = caption || 'No caption yet.';
+            
+            // Also update main slideshow in background so they stay synced
             updateSlideshow();
         }
 
@@ -1323,6 +1903,7 @@
             let newTheme;
             let themeIcon;
             
+            // Cycle through: light -> dark -> valentine -> light
             if (currentTheme === 'light') {
                 newTheme = 'dark';
                 themeIcon = '🌙';
@@ -1338,6 +1919,7 @@
             localStorage.setItem('theme', newTheme);
             document.getElementById('themeToggle').textContent = themeIcon;
             
+            // Initialize valentine effects if switching to valentine theme
             if (newTheme === 'valentine') {
                 initValentineEffects();
             } else {
@@ -1346,9 +1928,10 @@
         }
 
         function checkTheme() {
-            const savedTheme = localStorage.getItem('theme') || 'dark';
+            const savedTheme = localStorage.getItem('theme') || 'light';
             document.documentElement.setAttribute('data-theme', savedTheme);
             
+            // Set appropriate theme icon
             const themeToggle = document.getElementById('themeToggle');
             if (themeToggle) {
                 if (savedTheme === 'dark') {
@@ -1364,8 +1947,9 @@
 
         function initValentineEffects() {
             const container = document.getElementById('floatingHearts');
-            container.innerHTML = '';
+            container.innerHTML = ''; // Clear existing hearts
             
+            // Create floating hearts
             const heartEmojis = ['💕', '💖', '💗', '💓', '💝', '❤️', '💘'];
             const numberOfHearts = 15;
             
@@ -1379,6 +1963,7 @@
                 container.appendChild(heart);
             }
             
+            // Add heart cursor trail effect
             document.addEventListener('mousemove', createHeartCursor);
             document.addEventListener('touchmove', createHeartCursor);
         }
@@ -1393,7 +1978,7 @@
         let lastHeartTime = 0;
         function createHeartCursor(e) {
             const now = Date.now();
-            if (now - lastHeartTime < 200) return;
+            if (now - lastHeartTime < 200) return; // Limit heart creation rate
             lastHeartTime = now;
             
             const heart = document.createElement('div');
@@ -1414,35 +1999,13 @@
         }
 
         function closeLightbox() {
-            const lightbox = document.getElementById('lightbox');
-            const video = document.getElementById('lightboxVideo');
-            
-            // Pause video when closing lightbox
-            if (video.style.display !== 'none') {
-                video.pause();
-            }
-            
-            lightbox.classList.remove('active');
+            document.getElementById('lightbox').classList.remove('active');
         }
 
         function navigateLightbox(direction) {
             changeSlide(direction);
             const album = albums[currentAlbumIndex];
-            const photoName = album.photos[currentSlideIndex];
-            const mediaType = getMediaType(photoName);
-            const lightboxImage = document.getElementById('lightboxImage');
-            const lightboxVideo = document.getElementById('lightboxVideo');
-            
-            if (mediaType === 'video') {
-                lightboxImage.style.display = 'none';
-                lightboxVideo.style.display = 'block';
-                lightboxVideo.src = `images/${album.folderName}/${photoName}`;
-                lightboxVideo.load();
-            } else {
-                lightboxVideo.style.display = 'none';
-                lightboxImage.style.display = 'block';
-                lightboxImage.src = `images/${album.folderName}/${photoName}`;
-            }
+            document.getElementById('lightboxImage').src = `images/${album.folderName}/${album.photos[currentSlideIndex]}`;
         }
 
         document.addEventListener('click', (e) => {
@@ -1474,9 +2037,11 @@
                 if(document.getElementById('lightbox').classList.contains('active')) navigateLightbox(1);
                 else if(!document.getElementById('captionModal').classList.contains('active')) changeSlide(1);
             }
+            // Enter key to login
             if (e.key === 'Enter' && document.getElementById('loginModal').classList.contains('active')) {
                 login();
             }
+            // Enter key to confirm action
             if (e.key === 'Enter' && document.getElementById('confirmModal').classList.contains('active')) {
                 confirmAction();
             }
@@ -1489,4 +2054,5 @@
     </script>
 
 
-<div class="heart-cursor" style="left: 838px; top: 555px;">💕</div><div class="heart-cursor" style="left: 816px; top: 531px;">💗</div><div class="heart-cursor" style="left: 850px; top: 601px;">💗</div></body></html>
+
+</body></html>
