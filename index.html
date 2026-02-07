@@ -581,6 +581,60 @@
             object-fit: cover;
         }
 
+        .slide-preview-left video,
+        .slide-preview-right video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            pointer-events: none;
+        }
+        
+        .slide-main video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+        
+        .slide-main.video-slide {
+            background: #000;
+        }
+        
+        .slide-controls {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            z-index: 20;
+            pointer-events: all;
+        }
+        
+        .slide-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            color: var(--text-primary);
+        }
+        
+        .slide-btn:hover {
+            background: var(--accent);
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+
         /* Main current slide */
         .slide-main {
             position: relative;
@@ -1280,28 +1334,31 @@
     <!-- Main Container (Now Second) -->
     <div class="container" id="mainContainer">
         
-        <!-- Main Slideshow Container (Now First/Highlighted) -->
+                <!-- Main Slideshow Container (Now First/Highlighted) -->
         <div class="slideshow-container" id="slideshowContainer" style="display: block;">
             <div class="slideshow-wrapper">
-                <!-- Previous image preview (left shadow) -->
-                <div class="slide-preview-left" onclick="changeSlide(-1)">
-                    <img id="previewLeftImg" src="images/sample-test/photo.jpg" alt="Previous">
-                </div>
+                <!-- Previous image/video preview (left shadow) -->
+                <div class="slide-preview-left" onclick="changeSlide(-1)"></div>
 
                 <!-- Main current slide -->
-                <div class="slide-main" onclick="openPhotoCaption()" style="transform: translateX(0px); transition: transform 0.3s;">
-                    <img id="slideImage" class="slide-main" src="" alt="Photo" onclick="openLightbox()" style="display: none;">
-                    <video id="slideVideo" class="slide-main video-slide" controls style="display: none;" onclick="openLightbox()"></video>
-                    
-                    <div class="slide-controls">
-                        <button class="slide-btn" onclick="changeSlide(-1)">‹</button>
-                        <button class="slide-btn" onclick="changeSlide(1)">›</button>
-                    </div>
+                <div class="slide-main" onclick="openPhotoCaption()">
+                    <img id="slideImage" src="" alt="Photo" style="display: none;">
+                    <video id="slideVideo" controls style="display: none;"></video>
                     
                     <div class="slide-overlay">
                         <div class="slide-caption" id="slideCaption">Caption</div>
                         <div class="slide-counter" id="slideCounter">1 / 1</div>
                     </div>
+                </div>
+
+                <!-- Next image/video preview (right shadow) -->
+                <div class="slide-preview-right" onclick="changeSlide(1)"></div>
+
+                <!-- Navigation arrows -->
+                <button class="slide-nav prev" onclick="changeSlide(-1)">‹</button>
+                <button class="slide-nav next" onclick="changeSlide(1)">›</button>
+            </div>
+        </div>
                 </div>
 
                 <!-- Next image preview (right shadow) -->
@@ -1728,7 +1785,7 @@ You should also delete this file from images/My-Collection/ in GitHub.</p>
             }
         }
 
-        function updateSlideshow() {
+                function updateSlideshow() {
             const album = albums[currentAlbumIndex];
             const slideImage = document.getElementById('slideImage');
             const slideVideo = document.getElementById('slideVideo');
@@ -1758,6 +1815,63 @@ You should also delete this file from images/My-Collection/ in GitHub.</p>
 
             caption.textContent = album.captions[currentFile] || 'No caption';
             counter.textContent = `${currentSlideIndex + 1} / ${album.photos.length}`;
+            
+            // Update preview images
+            updatePreviewImages();
+        }
+        
+        function updatePreviewImages() {
+            const album = albums[currentAlbumIndex];
+            if (!album || !album.photos || album.photos.length === 0) return;
+            
+            const prevLeftImg = document.getElementById('previewLeftImg');
+            const prevRightImg = document.getElementById('previewRightImg');
+            const prevLeftContainer = document.querySelector('.slide-preview-left');
+            const prevRightContainer = document.querySelector('.slide-preview-right');
+            
+            if (!prevLeftImg || !prevRightImg) return;
+            
+            // Calculate previous and next indices
+            const prevIndex = (currentSlideIndex - 1 + album.photos.length) % album.photos.length;
+            const nextIndex = (currentSlideIndex + 1) % album.photos.length;
+            
+            // Get file info
+            const prevFile = album.photos[prevIndex];
+            const nextFile = album.photos[nextIndex];
+            const isPrevVideo = prevFile.toLowerCase().endsWith('.mp4');
+            const isNextVideo = nextFile.toLowerCase().endsWith('.mp4');
+            
+            // Update previous preview
+            if (prevLeftContainer) {
+                prevLeftContainer.innerHTML = '';
+                if (isPrevVideo) {
+                    const video = document.createElement('video');
+                    video.src = `images/${album.folderName}/${prevFile}`;
+                    video.muted = true;
+                    prevLeftContainer.appendChild(video);
+                } else {
+                    const img = document.createElement('img');
+                    img.src = `images/${album.folderName}/${prevFile}`;
+                    img.alt = 'Previous';
+                    prevLeftContainer.appendChild(img);
+                }
+            }
+            
+            // Update next preview
+            if (prevRightContainer) {
+                prevRightContainer.innerHTML = '';
+                if (isNextVideo) {
+                    const video = document.createElement('video');
+                    video.src = `images/${album.folderName}/${nextFile}`;
+                    video.muted = true;
+                    prevRightContainer.appendChild(video);
+                } else {
+                    const img = document.createElement('img');
+                    img.src = `images/${album.folderName}/${nextFile}`;
+                    img.alt = 'Next';
+                    prevRightContainer.appendChild(img);
+                }
+            }
         }
 
         function updateGrid() {
