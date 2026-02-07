@@ -1,4 +1,4 @@
-<html lang="en" data-theme="valentine"><head>
+<html lang="en" data-theme="dark"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Photo Gallery</title>
@@ -41,29 +41,6 @@
             --overlay: rgba(139, 21, 56, 0.95);
         }
 
-        [data-theme="valentine-dark"] {
-            --bg-primary: #1a0a0f;
-            --bg-secondary: #2a1520;
-            --text-primary: #ffb6d9;
-            --text-secondary: #ff8fc7;
-            --accent: #ff69b4;
-            --accent-hover: #ff1493;
-            --border: #5a2a3f;
-            --shadow: rgba(255, 105, 180, 0.3);
-            --overlay: rgba(42, 21, 32, 0.95);
-        }
-
-        [data-theme="valentine-red"] {
-            --bg-primary: #2a0000;
-            --bg-secondary: #3d0000;
-            --text-primary: #ffcccc;
-            --text-secondary: #ff9999;
-            --accent: #ff0000;
-            --accent-hover: #cc0000;
-            --border: #660000;
-            --shadow: rgba(255, 0, 0, 0.4);
-            --overlay: rgba(61, 0, 0, 0.95);
-        }
         * {
             margin: 0;
             padding: 0;
@@ -82,10 +59,7 @@
         }
 
         /* Valentine Theme Heart Animations */
-        [data-theme="valentine"] body::before,
-        [data-theme="valentine-dark"] body::before,
-        [data-theme="valentine-red"] body::before {
-
+        [data-theme="valentine"] body::before {
             content: '';
             position: fixed;
             top: 0;
@@ -99,41 +73,6 @@
                 radial-gradient(circle at 80% 70%, rgba(255, 105, 180, 0.1) 0%, transparent 50%);
         }
 
-        [data-theme="valentine-red"] body::before {
-            background-image: 
-                radial-gradient(circle at 20% 30%, rgba(255, 0, 0, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(139, 0, 0, 0.15) 0%, transparent 50%);
-        }
-
-        [data-theme="valentine-red"] .btn {
-            background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
-            border: 2px solid #ff0000;
-            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.4);
-        }
-
-        [data-theme="valentine-red"] .btn:hover {
-            background: linear-gradient(135deg, #cc0000 0%, #ff0000 100%);
-            border-color: #cc0000;
-            box-shadow: 0 6px 20px rgba(255, 0, 0, 0.6);
-        }
-
-        [data-theme="valentine-red"] .btn-primary {
-            background: linear-gradient(135deg, #cc0000 0%, #8b0000 100%);
-            border-color: #cc0000;
-        }
-
-        [data-theme="valentine-red"] .slide-main {
-            border: 3px solid #ff0000;
-            box-shadow: 0 20px 60px rgba(255, 0, 0, 0.5), 0 0 30px rgba(255, 0, 0, 0.3);
-        }
-
-        [data-theme="valentine-red"] .slide-overlay {
-            background: linear-gradient(to top, rgba(139, 0, 0, 0.9), transparent);
-        }
-
-        [data-theme="valentine-red"] .modal-content {
-            box-shadow: 0 20px 60px rgba(255, 0, 0, 0.4);
-        }
         /* Floating Hearts Container */
         .floating-hearts {
             position: fixed;
@@ -338,119 +277,11 @@
             color: white;
         }
 
-        /* Theme Selector Dropdown */
-        .theme-selector {
-            position: relative;
-            z-index: 502;
-        }
-
-        .theme-toggle-btn {
-            background: var(--bg-secondary);
-            border: 2px solid var(--border);
-            padding: 0.6rem 1rem;
-            font-size: 1.3rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 50px;
-            position: relative;
-        }
-
-        .theme-toggle-btn:hover {
-            border-color: var(--accent);
-            background: var(--bg-primary);
-            transform: scale(1.05);
-        }
-
-        .theme-toggle-btn .tooltip {
-            position: absolute;
-            bottom: calc(100% + 0.5rem);
-            left: 50%;
-            transform: translateX(-50%) scale(0.9);
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.2s ease;
-            border: 1px solid var(--border);
-            box-shadow: 0 4px 12px var(--shadow);
-            z-index: 1000;
-        }
-
-        .theme-toggle-btn:hover .tooltip,
-        .theme-toggle-btn:active .tooltip {
-            opacity: 1;
-            transform: translateX(-50%) scale(1);
-        }
-
-        .theme-options {
-            position: absolute;
-            top: calc(100% + 0.5rem);
-            right: 0;
-            background: var(--bg-primary);
-            border: 2px solid var(--border);
-            border-radius: 4px;
-            box-shadow: 0 8px 24px var(--shadow);
-            min-width: 200px;
-            max-height: 0;
-            overflow: hidden;
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-
-        .theme-options.show {
-            max-height: 400px;
-            opacity: 1;
-            overflow-y: auto;
-        }
-
-        .theme-option {
-            padding: 0.9rem 1.2rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
-
-        .theme-option:last-child {
-            border-bottom: none;
-        }
-
-        .theme-option .icon {
-            font-size: 1.3rem;
-            min-width: 24px;
-            text-align: center;
-        }
-
-        .theme-option .label {
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-        .theme-option:hover {
-            background: var(--bg-secondary);
-            padding-left: 1.5rem;
-        }
-
-        .theme-option.active {
-            background: var(--accent);
-            color: white;
-            font-weight: 600;
-        }
-        /* .header-controls {
+        .header-controls {
             display: flex;
             gap: 1rem;
             align-items: center;
-        } */
+        }
 
         .btn {
             padding: 0.7rem 1.8rem;
@@ -580,60 +411,6 @@
             height: 100%;
             object-fit: cover;
         }
-
-        .slide-preview-left video,
-        .slide-preview-right video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            pointer-events: none;
-        }
-        
-        .slide-main video {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            display: block;
-        }
-        
-        .slide-main.video-slide {
-            background: #000;
-        }
-        
-        .slide-controls {
-            position: absolute;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 1rem;
-            z-index: 20;
-            pointer-events: all;
-        }
-        
-        .slide-btn {
-            background: rgba(255, 255, 255, 0.9);
-            border: none;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            color: var(--text-primary);
-        }
-        
-        .slide-btn:hover {
-            background: var(--accent);
-            color: white;
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-        }
-
 
         /* Main current slide */
         .slide-main {
@@ -849,18 +626,6 @@
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 1.5rem;
             margin-top: 2rem;
-        }
-        
-        .grid-item .video-indicator {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 3rem;
-            color: white;
-            opacity: 0.8;
-            pointer-events: none;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
         }
 
         .photo-item {
@@ -1166,9 +931,9 @@
                 font-size: 0.85rem;
             }
 
-            /* .header-controls {
+            .header-controls {
                 gap: 0.5rem;
-            } */
+            }
 
             .btn {
                 padding: 0.6rem 1rem;
@@ -1295,36 +1060,9 @@
             </div>
         </div>
 
-        <div class="controls">
-            <div class="theme-selector">
-                <button class="theme-toggle-btn" id="themeToggle" onclick="toggleThemeDropdown()">
-                    💖
-                    <span class="tooltip" id="themeTooltip">Light Valentine Mode</span>
-                </button>
-                <div class="theme-options" id="themeOptions">
-                    <div class="theme-option" data-theme="light" onclick="selectTheme('light')">
-                        <span class="icon">☀️</span>
-                        <span class="label">Light Mode</span>
-                    </div>
-                    <div class="theme-option" data-theme="dark" onclick="selectTheme('dark')">
-                        <span class="icon">🌙</span>
-                        <span class="label">Dark Mode</span>
-                    </div>
-                    <div class="theme-option active" data-theme="valentine" onclick="selectTheme('valentine')">
-                        <span class="icon">💖</span>
-                        <span class="label">Light Valentine Mode</span>
-                    </div>
-                    <div class="theme-option" data-theme="valentine-dark" onclick="selectTheme('valentine-dark')">
-                        <span class="icon">🌹</span>
-                        <span class="label">Dark Valentine Mode</span>
-                    </div>
-                    <div class="theme-option" data-theme="valentine-red" onclick="selectTheme('valentine-red')">
-                        <span class="icon">❤️</span>
-                        <span class="label">Red Valentine Mode</span>
-                    </div>
-                </div>
-            </div>
-            <button class="btn btn-small" id="loginBtn" onclick="openModal('loginModal')">Admin</button>
+        <div class="header-controls">
+            <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme" id="themeToggle">🌙</button>
+            <button class="btn btn-primary" id="editModeBtn" onclick="showLoginModal()">Admin</button>
         </div>
     </div>
 
@@ -1334,31 +1072,22 @@
     <!-- Main Container (Now Second) -->
     <div class="container" id="mainContainer">
         
-                <!-- Main Slideshow Container (Now First/Highlighted) -->
+        <!-- Main Slideshow Container (Now First/Highlighted) -->
         <div class="slideshow-container" id="slideshowContainer" style="display: block;">
             <div class="slideshow-wrapper">
-                <!-- Previous image/video preview (left shadow) -->
-                <div class="slide-preview-left" onclick="changeSlide(-1)"></div>
-
-                <!-- Main current slide -->
-                <div class="slide-main" onclick="openPhotoCaption()">
-                    <img id="slideImage" src="" alt="Photo" style="display: none;">
-                    <video id="slideVideo" controls style="display: none;"></video>
-                    
-                    <div class="slide-overlay">
-                        <div class="slide-caption" id="slideCaption">Caption</div>
-                        <div class="slide-counter" id="slideCounter">1 / 1</div>
-                    </div>
+                <!-- Previous image preview (left shadow) -->
+                <div class="slide-preview-left" onclick="changeSlide(-1)">
+                    <img id="previewLeftImg" src="images/sample-test/photo.jpg" alt="Previous">
                 </div>
 
-                <!-- Next image/video preview (right shadow) -->
-                <div class="slide-preview-right" onclick="changeSlide(1)"></div>
-
-                <!-- Navigation arrows -->
-                <button class="slide-nav prev" onclick="changeSlide(-1)">‹</button>
-                <button class="slide-nav next" onclick="changeSlide(1)">›</button>
-            </div>
-        </div>
+                <!-- Main current slide -->
+                <div class="slide-main" onclick="openPhotoCaption()" style="transform: translateX(0px); transition: transform 0.3s;">
+                    <img id="mainSlideImg" src="images/sample-test/photo.jpg" alt="Current Photo">
+                    <!-- Fixed overlay with title and subtitle -->
+                    <div class="slide-overlay">
+                        <div class="slide-title" id="slideTitle">Sample Test</div>
+                        <div class="slide-subtitle" id="slideSubtitle"></div>
+                    </div>
                 </div>
 
                 <!-- Next image preview (right shadow) -->
@@ -1380,14 +1109,10 @@
                 <button class="btn" onclick="showEditAlbumModal()">✏️ Edit Album</button>
                 <button class="btn" onclick="toggleFavoriteAlbum()">⭐ Set as Default</button>
                 <button class="btn" onclick="deleteCurrentAlbum()" style="border-color: #d9534f; color: #d9534f;">🗑️ Delete Album</button>
-                <div class="upload-text">Click to select or drag and drop<br>Photos (JPG, PNG) & Videos (MP4)
-                    <input type="file" id="fileInput" multiple accept="image/*,video/mp4" onchange="handleFiles(this.files)">
-                </div>
-                
-                <!-- <label class="btn" style="margin: 0;">
+                <label class="btn" style="margin: 0;">
                     📸 Add Photos
                     <input type="file" multiple="" accept="image/*" onchange="handlePhotoUpload(event)" style="display: none;">
-                </label> -->
+                </label>
                 <button class="btn btn-primary" onclick="exportData()">💾 Save Changes</button>
                 <button class="btn" onclick="logout()" style="border-color: #f0ad4e; color: #f0ad4e;">🚪 Logout</button>
             </div>
@@ -1413,8 +1138,7 @@
         <div class="caption-content">
             <button class="close-caption" onclick="closeCaptionModal()">×</button>
             <div class="caption-image-container">
-                <img id="captionImage" src="" alt="Current photo" style="max-width: 100%; max-height: 300px; border-radius: 8px; display: none;">
-                <video id="captionVideo" controls style="max-width: 100%; max-height: 300px; border-radius: 8px; display: none;"></video>
+                <img id="captionImage" src="" alt="Photo">  
             </div>
             <div class="caption-text-container">
                 <div id="captionDisplayText" class="caption-text"></div> 
@@ -1486,9 +1210,7 @@ You should also delete this file from images/My-Collection/ in GitHub.</p>
     <div class="lightbox" id="lightbox">
         <button class="close-lightbox" onclick="closeLightbox()">×</button>
         <div class="lightbox-content">
-            <button class="lightbox-close" onclick="closeLightbox()">×</button>
-            <img id="lightboxImage" src="" alt="Full size" style="display: none;">
-            <video id="lightboxVideo" controls style="display: none;"></video>
+            <img id="lightboxImage" src="" alt="Lightbox">
             <button class="lightbox-nav prev" onclick="navigateLightbox(-1)">‹</button>
             <button class="lightbox-nav next" onclick="navigateLightbox(1)">›</button>
         </div>
@@ -1537,14 +1259,6 @@ You should also delete this file from images/My-Collection/ in GitHub.</p>
         let startX = 0;
         let currentTranslate = 0;
         let dragThreshold = 50;
-
-        const THEMES = {
-            'light': { icon: '☀️', name: 'Light Mode' },
-            'dark': { icon: '🌙', name: 'Dark Mode' },
-            'valentine': { icon: '💖', name: 'Light Valentine Mode' },
-            'valentine-dark': { icon: '🌹', name: 'Dark Valentine Mode' },
-            'valentine-red': { icon: '❤️', name: 'Red Valentine Mode' }
-        };
 
         // Password encryption using SHA-256
         async function hashPassword(password) {
@@ -1785,157 +1499,39 @@ You should also delete this file from images/My-Collection/ in GitHub.</p>
             }
         }
 
-                function updateSlideshow() {
+        function updateSlideshow() {
             const album = albums[currentAlbumIndex];
-            const slideImage = document.getElementById('slideImage');
-            const slideVideo = document.getElementById('slideVideo');
-            const caption = document.getElementById('slideCaption');
-            const counter = document.getElementById('slideCounter');
-
-            if (album.photos.length === 0) {
-                slideImage.style.display = 'none';
-                slideVideo.style.display = 'none';
-                caption.textContent = 'No photos/videos in this album';
-                counter.textContent = '0 / 0';
+            if (!album || !album.photos || album.photos.length === 0) {
+                document.getElementById('slideshowContainer').style.display = 'none';
                 return;
             }
 
-            const currentFile = album.photos[currentSlideIndex];
-            const isVideo = currentFile.toLowerCase().endsWith('.mp4');
-            
-            if (isVideo) {
-                slideImage.style.display = 'none';
-                slideVideo.style.display = 'block';
-                slideVideo.src = `images/${album.folderName}/${currentFile}`;
-            } else {
-                slideVideo.style.display = 'none';
-                slideImage.style.display = 'block';
-                slideImage.src = `images/${album.folderName}/${currentFile}`;
+            document.getElementById('slideshowContainer').style.display = 'block';
+
+            const totalPhotos = album.photos.length;
+            const prevIndex = (currentSlideIndex - 1 + totalPhotos) % totalPhotos;
+            const nextIndex = (currentSlideIndex + 1) % totalPhotos;
+
+            // Update main slide
+            const mainImg = document.getElementById('mainSlideImg');
+            mainImg.src = `images/${album.folderName}/${album.photos[currentSlideIndex]}`;
+
+            // Reset transform
+            const slideMain = document.querySelector('.slide-main');
+            if (slideMain) {
+                slideMain.style.transform = 'translateX(0)';
+                slideMain.style.transition = 'transform 0.3s ease';
             }
 
-            caption.textContent = album.captions[currentFile] || 'No caption';
-            counter.textContent = `${currentSlideIndex + 1} / ${album.photos.length}`;
-            
             // Update preview images
-            updatePreviewImages();
-        }
-        
-        function updatePreviewImages() {
-            const album = albums[currentAlbumIndex];
-            if (!album || !album.photos || album.photos.length === 0) return;
-            
-            const prevLeftImg = document.getElementById('previewLeftImg');
-            const prevRightImg = document.getElementById('previewRightImg');
-            const prevLeftContainer = document.querySelector('.slide-preview-left');
-            const prevRightContainer = document.querySelector('.slide-preview-right');
-            
-            if (!prevLeftImg || !prevRightImg) return;
-            
-            // Calculate previous and next indices
-            const prevIndex = (currentSlideIndex - 1 + album.photos.length) % album.photos.length;
-            const nextIndex = (currentSlideIndex + 1) % album.photos.length;
-            
-            // Get file info
-            const prevFile = album.photos[prevIndex];
-            const nextFile = album.photos[nextIndex];
-            const isPrevVideo = prevFile.toLowerCase().endsWith('.mp4');
-            const isNextVideo = nextFile.toLowerCase().endsWith('.mp4');
-            
-            // Update previous preview
-            if (prevLeftContainer) {
-                prevLeftContainer.innerHTML = '';
-                if (isPrevVideo) {
-                    const video = document.createElement('video');
-                    video.src = `images/${album.folderName}/${prevFile}`;
-                    video.muted = true;
-                    prevLeftContainer.appendChild(video);
-                } else {
-                    const img = document.createElement('img');
-                    img.src = `images/${album.folderName}/${prevFile}`;
-                    img.alt = 'Previous';
-                    prevLeftContainer.appendChild(img);
-                }
-            }
-            
-            // Update next preview
-            if (prevRightContainer) {
-                prevRightContainer.innerHTML = '';
-                if (isNextVideo) {
-                    const video = document.createElement('video');
-                    video.src = `images/${album.folderName}/${nextFile}`;
-                    video.muted = true;
-                    prevRightContainer.appendChild(video);
-                } else {
-                    const img = document.createElement('img');
-                    img.src = `images/${album.folderName}/${nextFile}`;
-                    img.alt = 'Next';
-                    prevRightContainer.appendChild(img);
-                }
-            }
-        }
+            const prevImg = document.getElementById('previewLeftImg');
+            const nextImg = document.getElementById('previewRightImg');
+            prevImg.src = `images/${album.folderName}/${album.photos[prevIndex]}`;
+            nextImg.src = `images/${album.folderName}/${album.photos[nextIndex]}`;
 
-        function updateGrid() {
-            const album = albums[currentAlbumIndex];
-            const grid = document.getElementById('gridContainer');
-            grid.innerHTML = '';
-
-            album.photos.forEach((photo, index) => {
-                const item = document.createElement('div');
-                item.className = 'grid-item';
-                item.onclick = () => {
-                    currentSlideIndex = index;
-                    updateSlideshow();
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                };
-
-                const isVideo = photo.toLowerCase().endsWith('.mp4');
-                
-                if (isVideo) {
-                    const video = document.createElement('video');
-                    video.src = `images/${album.folderName}/${photo}`;
-                    video.preload = 'metadata';
-                    item.appendChild(video);
-                    
-                    const playIcon = document.createElement('div');
-                    playIcon.className = 'video-indicator';
-                    playIcon.textContent = '▶';
-                    item.appendChild(playIcon);
-                } else {
-                    const img = document.createElement('img');
-                    img.src = `images/${album.folderName}/${photo}`;
-                    img.alt = photo;
-                    item.appendChild(img);
-                }
-
-                const captionDiv = document.createElement('div');
-                captionDiv.className = 'caption';
-                captionDiv.textContent = album.captions[photo] || 'No caption';
-                item.appendChild(captionDiv);
-
-                grid.appendChild(item);
-            });
-        }
-
-        function openLightbox() {
-            const album = albums[currentAlbumIndex];
-            if (album.photos.length === 0) return;
-
-            const currentFile = album.photos[currentSlideIndex];
-            const isVideo = currentFile.toLowerCase().endsWith('.mp4');
-            const lightboxImage = document.getElementById('lightboxImage');
-            const lightboxVideo = document.getElementById('lightboxVideo');
-
-            if (isVideo) {
-                lightboxImage.style.display = 'none';
-                lightboxVideo.style.display = 'block';
-                lightboxVideo.src = `images/${album.folderName}/${currentFile}`;
-            } else {
-                lightboxVideo.style.display = 'none';
-                lightboxImage.style.display = 'block';
-                lightboxImage.src = `images/${album.folderName}/${currentFile}`;
-            }
-
-            document.getElementById('lightbox').classList.add('active');
+            // Update fixed title and subtitle overlay
+            document.getElementById('slideTitle').textContent = album.title;
+            document.getElementById('slideSubtitle').textContent = album.subtitle || '';
         }
 
         function changeSlide(direction) {
@@ -1945,39 +1541,6 @@ You should also delete this file from images/My-Collection/ in GitHub.</p>
             slideDirection = direction;
             currentSlideIndex = (currentSlideIndex + direction + album.photos.length) % album.photos.length;
             updateSlideshow();
-        }
-
-        function openCaptionModal() {
-            if (!isLoggedIn) {
-                showNotification('Please login first', '🔒');
-                return;
-            }
-
-            const album = albums[currentAlbumIndex];
-            if (album.photos.length === 0) {
-                showNotification('No photos/videos in this album', '⚠️');
-                return;
-            }
-
-            currentCaptionPhotoIndex = currentSlideIndex;
-            const currentFile = album.photos[currentCaptionPhotoIndex];
-            const isVideo = currentFile.toLowerCase().endsWith('.mp4');
-            
-            const captionImage = document.getElementById('captionImage');
-            const captionVideo = document.getElementById('captionVideo');
-
-            if (isVideo) {
-                captionImage.style.display = 'none';
-                captionVideo.style.display = 'block';
-                captionVideo.src = `images/${album.folderName}/${currentFile}`;
-            } else {
-                captionVideo.style.display = 'none';
-                captionImage.style.display = 'block';
-                captionImage.src = `images/${album.folderName}/${currentFile}`;
-            }
-
-            document.getElementById('captionText').value = album.captions[currentFile] || '';
-            openModal('captionModal');
         }
 
         function openPhotoCaption() {
@@ -2239,35 +1802,28 @@ You should also delete this file from images/My-Collection/ in GitHub.</p>
             displayCurrentAlbum();
         }
 
-       function deletePhoto() {
-            if (!isLoggedIn) {
-                showNotification('Please login first', '🔒');
-                return;
-            }
-
+        function deletePhoto(index) {
             const album = albums[currentAlbumIndex];
-            if (album.photos.length === 0) {
-                showNotification('No photos/videos to delete', '⚠️');
-                return;
-            }
-
-            const currentFile = album.photos[currentSlideIndex];
-            const fileType = currentFile.toLowerCase().endsWith('.mp4') ? 'video' : 'photo';
+            if (!album || !album.photos) return;
             
-            confirmCallback = () => {
-                album.photos.splice(currentSlideIndex, 1);
-                delete album.captions[currentFile];
+            const photoName = album.photos[index];
+            const message = `Delete "${photoName}"?\n\nYou should also delete this file from images/${album.folderName}/ in GitHub.`;
+            
+            showConfirmModal('Delete Photo', message, () => {
+                album.photos.splice(index, 1);
+                
+                // Remove caption if exists
+                if (album.captions && album.captions[photoName]) {
+                    delete album.captions[photoName];
+                }
                 
                 if (currentSlideIndex >= album.photos.length) {
                     currentSlideIndex = Math.max(0, album.photos.length - 1);
                 }
                 
-                updateSlideshow();
-                updateGrid();
-                showNotification(`${fileType.charAt(0).toUpperCase() + fileType.slice(1)} removed from gallery. Don't forget to delete: images/${album.folderName}/${currentFile}`, '🗑️');
-            };
-
-            showConfirm(`Delete this ${fileType}? "${currentFile}"\n\nThis will remove it from the gallery. You'll also need to delete it from GitHub.`);
+                displayCurrentAlbum();
+                showNotification('Photo removed from gallery', '✅');
+            });
         }
 
         function exportData() {
@@ -2299,70 +1855,26 @@ You should also delete this file from images/My-Collection/ in GitHub.</p>
         }
 
         function setupModalSwipes() {
-            const captionImage = document.getElementById('captionImage');
-            const captionVideo = document.getElementById('captionVideo');
+            const modalImg = document.getElementById('captionImage');
             let modalStartX = 0;
 
-            [captionImage, captionVideo].forEach(element => {
-                element.addEventListener('touchstart', (e) => {
-                    modalStartX = e.touches[0].clientX;
-                }, { passive: true });
+            modalImg.addEventListener('touchstart', (e) => {
+                modalStartX = e.touches[0].clientX;
+            }, { passive: true });
 
-                element.addEventListener('touchend', (e) => {
-                    const endX = e.changedTouches[0].clientX;
-                    const diff = modalStartX - endX;
+            modalImg.addEventListener('touchend', (e) => {
+                const endX = e.changedTouches[0].clientX;
+                const diff = modalStartX - endX;
 
-                    if (Math.abs(diff) > 50) {
-                        if (diff > 0) {
-                            modalNavigate(1);
-                        } else {
-                            modalNavigate(-1);
-                        }
-                    }
-                });
-            });
-        }
-
-        function handleFiles(files) {
-            const previewContainer = document.getElementById('previewContainer');
-            
-            Array.from(files).forEach(file => {
-                if (!file.type.match('image.*') && !file.type.match('video/mp4')) {
-                    showNotification('Only images and MP4 videos are allowed', '⚠️');
-                    return;
-                }
-
-                filesToUpload.push(file);
-
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const previewItem = document.createElement('div');
-                    previewItem.className = 'preview-item';
-
-                    if (file.type.match('video.*')) {
-                        const video = document.createElement('video');
-                        video.src = e.target.result;
-                        video.preload = 'metadata';
-                        previewItem.appendChild(video);
+                if (Math.abs(diff) > 50) { // Threshold
+                    if (diff > 0) {
+                        // Swipe Left -> Next
+                        modalNavigate(1);
                     } else {
-                        const img = document.createElement('img');
-                        img.src = e.target.result;
-                        previewItem.appendChild(img);
+                        // Swipe Right -> Prev
+                        modalNavigate(-1);
                     }
-
-                    const removeBtn = document.createElement('button');
-                    removeBtn.className = 'remove-btn';
-                    removeBtn.textContent = '×';
-                    removeBtn.onclick = () => {
-                        const index = filesToUpload.indexOf(file);
-                        if (index > -1) filesToUpload.splice(index, 1);
-                        previewItem.remove();
-                    };
-
-                    previewItem.appendChild(removeBtn);
-                    previewContainer.appendChild(previewItem);
-                };
-                reader.readAsDataURL(file);
+                }
             });
         }
         // Helper to change image inside the modal
@@ -2371,23 +1883,13 @@ You should also delete this file from images/My-Collection/ in GitHub.</p>
             currentSlideIndex = (currentSlideIndex + direction + album.photos.length) % album.photos.length;
             currentCaptionPhotoIndex = currentSlideIndex;
             
-            const currentFile = album.photos[currentCaptionPhotoIndex];
-            const isVideo = currentFile.toLowerCase().endsWith('.mp4');
-            const caption = album.captions[currentFile] || '';
-            const captionImage = document.getElementById('captionImage');
-            const captionVideo = document.getElementById('captionVideo');
+            const photoName = album.photos[currentCaptionPhotoIndex];
+            const caption = album.captions[photoName] || '';
 
-            if (isVideo) {
-                captionImage.style.display = 'none';
-                captionVideo.style.display = 'block';
-                captionVideo.src = `images/${album.folderName}/${currentFile}`;
-            } else {
-                captionVideo.style.display = 'none';
-                captionImage.style.display = 'block';
-                captionImage.src = `images/${album.folderName}/${currentFile}`;
-            }
-
-            document.getElementById('captionText').value = caption;
+            document.getElementById('captionImage').src = `images/${album.folderName}/${photoName}`;
+            document.getElementById('captionDisplayText').textContent = caption || 'No caption yet.';
+            
+            // Also update main slideshow in background so they stay synced
             updateSlideshow();
         }
 
@@ -2395,34 +1897,30 @@ You should also delete this file from images/My-Collection/ in GitHub.</p>
             document.getElementById(modalId).classList.remove('active');
         }
 
-        function toggleThemeDropdown() {
-            const options = document.getElementById('themeOptions');
-            options.classList.toggle('show');
-        }
-
-        function selectTheme(theme) {
+        function toggleTheme() {
             const html = document.documentElement;
-            html.setAttribute('data-theme', theme);
-            localStorage.setItem('theme', theme);
+            const currentTheme = html.getAttribute('data-theme');
+            let newTheme;
+            let themeIcon;
             
-            // Update theme toggle button
-            const themeToggle = document.getElementById('themeToggle');
-            themeToggle.innerHTML = `${THEMES[theme].icon}<span class="tooltip" id="themeTooltip">${THEMES[theme].name}</span>`;
+            // Cycle through: light -> dark -> valentine -> light
+            if (currentTheme === 'light') {
+                newTheme = 'dark';
+                themeIcon = '🌙';
+            } else if (currentTheme === 'dark') {
+                newTheme = 'valentine';
+                themeIcon = '💖';
+            } else {
+                newTheme = 'light';
+                themeIcon = '☀️';
+            }
             
-            // Update active state in dropdown
-            document.querySelectorAll('.theme-option').forEach(opt => {
-                opt.classList.remove('active');
-                if (opt.dataset.theme === theme) {
-                    opt.classList.add('active');
-                }
-            });
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            document.getElementById('themeToggle').textContent = themeIcon;
             
-            // Close dropdown
-            toggleThemeDropdown();
-            
-            // Handle Valentine effects
-            const isValentine = theme.includes('valentine');
-            if (isValentine) {
+            // Initialize valentine effects if switching to valentine theme
+            if (newTheme === 'valentine') {
                 initValentineEffects();
             } else {
                 removeValentineEffects();
@@ -2430,26 +1928,20 @@ You should also delete this file from images/My-Collection/ in GitHub.</p>
         }
 
         function checkTheme() {
-            const savedTheme = localStorage.getItem('theme') || 'valentine';
+            const savedTheme = localStorage.getItem('theme') || 'light';
             document.documentElement.setAttribute('data-theme', savedTheme);
             
-            // Set appropriate theme button
+            // Set appropriate theme icon
             const themeToggle = document.getElementById('themeToggle');
-            if (themeToggle && THEMES[savedTheme]) {
-                themeToggle.innerHTML = `${THEMES[savedTheme].icon}<span class="tooltip" id="themeTooltip">${THEMES[savedTheme].name}</span>`;
-            }
-            
-            // Update active state
-            document.querySelectorAll('.theme-option').forEach(opt => {
-                opt.classList.remove('active');
-                if (opt.dataset.theme === savedTheme) {
-                    opt.classList.add('active');
+            if (themeToggle) {
+                if (savedTheme === 'dark') {
+                    themeToggle.textContent = '🌙';
+                } else if (savedTheme === 'valentine') {
+                    themeToggle.textContent = '💖';
+                    initValentineEffects();
+                } else {
+                    themeToggle.textContent = '☀️';
                 }
-            });
-            
-            // Initialize Valentine effects if needed
-            if (savedTheme.includes('valentine')) {
-                initValentineEffects();
             }
         }
 
@@ -2513,20 +2005,7 @@ You should also delete this file from images/My-Collection/ in GitHub.</p>
         function navigateLightbox(direction) {
             changeSlide(direction);
             const album = albums[currentAlbumIndex];
-            const currentFile = album.photos[currentSlideIndex];
-            const isVideo = currentFile.toLowerCase().endsWith('.mp4');
-            const lightboxImage = document.getElementById('lightboxImage');
-            const lightboxVideo = document.getElementById('lightboxVideo');
-
-            if (isVideo) {
-                lightboxImage.style.display = 'none';
-                lightboxVideo.style.display = 'block';
-                lightboxVideo.src = `images/${album.folderName}/${currentFile}`;
-            } else {
-                lightboxVideo.style.display = 'none';
-                lightboxImage.style.display = 'block';
-                lightboxImage.src = `images/${album.folderName}/${currentFile}`;
-            }
+            document.getElementById('lightboxImage').src = `images/${album.folderName}/${album.photos[currentSlideIndex]}`;
         }
 
         document.addEventListener('click', (e) => {
@@ -2537,15 +2016,6 @@ You should also delete this file from images/My-Collection/ in GitHub.</p>
                 if (options && display) {
                     options.classList.remove('show');
                     display.classList.remove('open');
-                }
-            }
-
-            // Add this section for theme dropdown
-            const themeSelector = document.querySelector('.theme-selector');
-            if (themeSelector && !themeSelector.contains(e.target)) {
-                const themeOptions = document.getElementById('themeOptions');
-                if (themeOptions) {
-                    themeOptions.classList.remove('show');
                 }
             }
         });
