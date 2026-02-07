@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html lang="en" data-theme="valentine">
-<head>
+<html lang="en" data-theme="valentine"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Photo & Video Gallery</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>Photo &amp; Video Gallery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;family=Raleway:wght@300;400;500&amp;display=swap" rel="stylesheet">
     <script src="auth.js"></script>
     <style>
         :root {
@@ -1063,14 +1061,14 @@
     <div class="header">
         <div class="header-selector">
             <div class="header-select-display" onclick="toggleHeaderSelect()">
-                <span id="headerSelectedAlbum">Sample Test</span>
+                <span id="headerSelectedAlbum">⭐ My Collection</span>
             </div>
             <div class="header-select-options" id="headerSelectOptions">
-                <div class="header-select-option " onclick="selectAlbum(0)">
+                <div class="header-select-option active" onclick="selectAlbum(0)">
                     ⭐ My Collection
                 </div>
             
-                <div class="header-select-option active" onclick="selectAlbum(1)">
+                <div class="header-select-option " onclick="selectAlbum(1)">
                     Sample Test
                 </div>
             </div>
@@ -1078,34 +1076,34 @@
 
         <div class="header-controls">
             <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme" id="themeToggle">💖</button>
-            <button class="btn btn-primary" id="editModeBtn" onclick="showLoginModal()">Admin</button>
+            <button class="btn btn-primary" id="editModeBtn" onclick="showLoginModal()">View Mode</button>
         </div>
     </div>
 
-    <div class="floating-hearts" id="floatingHearts"></div>
+    <div class="floating-hearts" id="floatingHearts"><div class="heart" style="left: 14.4589%; animation-delay: 9.8523s; animation-duration: 11.7272s;">💖</div><div class="heart" style="left: 38.5505%; animation-delay: 8.56683s; animation-duration: 15.3607s;">💕</div><div class="heart" style="left: 70.6421%; animation-delay: 9.78389s; animation-duration: 13.8745s;">💕</div><div class="heart" style="left: 1.60335%; animation-delay: 4.1072s; animation-duration: 12.3376s;">💗</div><div class="heart" style="left: 86.0323%; animation-delay: 13.4456s; animation-duration: 18.5153s;">💓</div><div class="heart" style="left: 65.4541%; animation-delay: 9.115s; animation-duration: 10.4923s;">💖</div><div class="heart" style="left: 94.6409%; animation-delay: 13.3037s; animation-duration: 16.7492s;">💗</div><div class="heart" style="left: 96.5776%; animation-delay: 11.9716s; animation-duration: 16.5436s;">💝</div><div class="heart" style="left: 24.6528%; animation-delay: 3.90688s; animation-duration: 11.9668s;">💕</div><div class="heart" style="left: 18.9699%; animation-delay: 5.90739s; animation-duration: 11.9875s;">💗</div><div class="heart" style="left: 64.1898%; animation-delay: 7.333s; animation-duration: 12.7997s;">💝</div><div class="heart" style="left: 36.0684%; animation-delay: 9.09348s; animation-duration: 14.3561s;">❤️</div><div class="heart" style="left: 91.7254%; animation-delay: 11.6038s; animation-duration: 15.3506s;">❤️</div><div class="heart" style="left: 76.7475%; animation-delay: 5.59695s; animation-duration: 16.0813s;">❤️</div><div class="heart" style="left: 20.4386%; animation-delay: 6.38283s; animation-duration: 14.2855s;">💕</div></div>
 
     <div class="container" id="mainContainer">
         
         <div class="slideshow-container" id="slideshowContainer" style="display: block;">
             <div class="slideshow-wrapper">
                 <div class="slide-preview-left" onclick="changeSlide(-1)">
-                    <img id="previewLeftImg" src="" alt="Previous" style="display: none;">
-                    <video id="previewLeftVideo" src="" style="display: none;" muted></video>
+                    <img id="previewLeftImg" src="images/My-Collection/Slimmers_icon.png" alt="Previous" style="display: none;">
+                    <video id="previewLeftVideo" src="images/My-Collection/1000010181.mp4" style="display: block;" muted=""></video>
                 </div>
 
                 <div class="slide-main" onclick="openPhotoCaption()" style="transform: translateX(0px); transition: transform 0.3s;">
-                    <img id="mainSlideImg" src="" alt="Current Photo">
-                    <video id="mainSlideVideo" src="" style="display: none;" autoplay muted loop playsinline controls></video>
+                    <img id="mainSlideImg" src="images/My-Collection/facebook.png" alt="Current Photo" style="display: block;">
+                    <video id="mainSlideVideo" src="" style="display: none;" autoplay="" muted="" loop="" playsinline="" controls=""></video>
                     
                     <div class="slide-overlay">
-                        <div class="slide-title" id="slideTitle">Sample Test</div>
-                        <div class="slide-subtitle" id="slideSubtitle"></div>
+                        <div class="slide-title" id="slideTitle">My Collection</div>
+                        <div class="slide-subtitle" id="slideSubtitle">Your First Collection</div>
                     </div>
                 </div>
 
                 <div class="slide-preview-right" onclick="changeSlide(1)">
-                    <img id="previewRightImg" src="" alt="Next" style="display: none;">
-                    <video id="previewRightVideo" src="" style="display: none;" muted></video>
+                    <img id="previewRightImg" src="images/My-Collection/Slimmers_icon.png" alt="Next" style="display: block;">
+                    <video id="previewRightVideo" src="images/My-Collection/1000010181.mp4" style="display: none;" muted=""></video>
                 </div>
 
                 <button class="slide-nav prev" onclick="changeSlide(-1)">‹</button>
@@ -1113,7 +1111,7 @@
             </div>
         </div>
         
-        <div class="edit-mode-controls" id="editControls" style="display: none;">
+        <div class="edit-mode-controls" id="editControls" style="display: block;">
             <h3 style="margin-bottom: 1rem;">Edit Mode</h3>
             <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
                 <button class="btn" onclick="showCreateAlbumModal()">➕ Create Album</button>
@@ -1129,8 +1127,40 @@
             </div>
         </div>
 
-        <div class="photo-grid" id="photoGrid" style="display: none;">
-            </div>
+        <div class="photo-grid" id="photoGrid" style="display: grid;">
+                    <div class="photo-item">
+                        <video src="images/My-Collection/1000010181.mp4" muted=""></video>
+                        <div class="photo-controls">
+                            <button class="photo-control-btn" onclick="movePhoto(0, -1)" title="Move left">◄</button>
+                            <button class="photo-control-btn" onclick="editPhotoCaption(0)" title="Edit caption">✏️</button>
+                            <button class="photo-control-btn" onclick="movePhoto(0, 1)" title="Move right">►</button>
+                            <button class="photo-control-btn" onclick="deletePhoto(0)" title="Delete">🗑️</button>
+                        </div>
+                        <div class="photo-caption-label">No caption</div>
+                    </div>
+                
+                    <div class="photo-item">
+                        <img src="images/My-Collection/facebook.png" alt="facebook.png">
+                        <div class="photo-controls">
+                            <button class="photo-control-btn" onclick="movePhoto(1, -1)" title="Move left">◄</button>
+                            <button class="photo-control-btn" onclick="editPhotoCaption(1)" title="Edit caption">✏️</button>
+                            <button class="photo-control-btn" onclick="movePhoto(1, 1)" title="Move right">►</button>
+                            <button class="photo-control-btn" onclick="deletePhoto(1)" title="Delete">🗑️</button>
+                        </div>
+                        <div class="photo-caption-label">No caption</div>
+                    </div>
+                
+                    <div class="photo-item">
+                        <img src="images/My-Collection/Slimmers_icon.png" alt="Slimmers_icon.png">
+                        <div class="photo-controls">
+                            <button class="photo-control-btn" onclick="movePhoto(2, -1)" title="Move left">◄</button>
+                            <button class="photo-control-btn" onclick="editPhotoCaption(2)" title="Edit caption">✏️</button>
+                            <button class="photo-control-btn" onclick="movePhoto(2, 1)" title="Move right">►</button>
+                            <button class="photo-control-btn" onclick="deletePhoto(2)" title="Delete">🗑️</button>
+                        </div>
+                        <div class="photo-caption-label">No caption</div>
+                    </div>
+                </div>
     </div>
 
     <div class="caption-modal" id="captionModal">
@@ -1138,7 +1168,7 @@
             <button class="close-caption" onclick="closeCaptionModal()">×</button>
             <div class="caption-image-container">
                 <img id="captionImage" src="" alt="Photo" style="display: block;">
-                <video id="captionVideo" src="" style="display: none;" controls playsinline></video>
+                <video id="captionVideo" src="" style="display: none;" controls="" playsinline=""></video>
             </div>
             <div class="caption-text-container">
                 <div id="captionDisplayText" class="caption-text"></div> 
@@ -1186,13 +1216,15 @@
 
     <div class="notification" id="notificationModal">
         <div class="notification-icon" id="notificationIcon">✅</div>
-        <div class="notification-text" id="notificationText"></div>
+        <div class="notification-text" id="notificationText">Item removed from gallery</div>
     </div>
 
     <div class="modal" id="confirmModal">
         <div class="modal-content">
-            <h2 class="modal-header" id="confirmTitle">Delete Photo</h2>
-            <p id="confirmMessage" style="text-align: center; margin: 2rem 0; line-height: 1.6;"></p>
+            <h2 class="modal-header" id="confirmTitle">Delete Item</h2>
+            <p id="confirmMessage" style="text-align: center; margin: 2rem 0; line-height: 1.6;">Delete "Bob_F-T_624317.webp"?
+
+You should also delete this file from images/My-Collection/ in GitHub.</p>
             <div class="modal-actions">
                 <button class="btn" onclick="closeModal('confirmModal')">Cancel</button>
                 <button class="btn btn-primary" id="confirmBtn" onclick="confirmAction()">Confirm</button>
@@ -1204,7 +1236,7 @@
         <button class="close-lightbox" onclick="closeLightbox()">×</button>
         <div class="lightbox-content">
             <img id="lightboxImage" src="" alt="Lightbox" style="display: block;">
-            <video id="lightboxVideo" src="" style="display: none;" controls playsinline></video>
+            <video id="lightboxVideo" src="" style="display: none;" controls="" playsinline=""></video>
             
             <button class="lightbox-nav prev" onclick="navigateLightbox(-1)">‹</button>
             <button class="lightbox-nav next" onclick="navigateLightbox(1)">›</button>
@@ -1219,11 +1251,13 @@
     "title": "My Collection",
     "subtitle": "Your First Collection",
     "photos": [
+      "1000010181.mp4",
       "facebook.png",
-      "Bob_F-T_624317.webp",
       "Slimmers_icon.png"
     ],
-    "captions": {},
+    "captions": {
+      "1000010181.mp4": ""
+    },
     "isFavorite": true
   },
   {
@@ -2121,5 +2155,6 @@
             setupModalSwipes();
         });
     </script>
-</body>
-</html>
+
+
+<div class="heart-cursor" style="left: 79px; top: 951px;">💕</div></body></html>
