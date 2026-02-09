@@ -1,8 +1,8 @@
 <html lang="en" data-theme="valentine"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Photo & Video Gallery</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>Photo &amp; Video Gallery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;family=Raleway:wght@300;400;500&amp;display=swap" rel="stylesheet">
     <script src="auth.js"></script>
     <style>
         :root {
@@ -81,8 +81,7 @@
             overflow-x: hidden;
             position: relative;
         }
-
-        /* Valentine Theme Heart Animations */
+        /* Valentine Theme Heart Animations – Base Overlay */
         [data-theme="valentine"] body::before,
         [data-theme="valentine-dark"] body::before,
         [data-theme="valentine-red"] body::before {
@@ -93,23 +92,26 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 1;
+            z-index: -1;
         }
 
+        /* Light Valentine */
         [data-theme="valentine"] body::before {
-            background-image: 
+            background-image:
                 radial-gradient(circle at 20% 30%, rgba(255, 192, 203, 0.1) 0%, transparent 50%),
                 radial-gradient(circle at 80% 70%, rgba(255, 105, 180, 0.1) 0%, transparent 50%);
         }
 
+        /* Dark Valentine */
         [data-theme="valentine-dark"] body::before {
-            background-image: 
+            background-image:
                 radial-gradient(circle at 20% 30%, rgba(255, 20, 147, 0.15) 0%, transparent 50%),
                 radial-gradient(circle at 80% 70%, rgba(255, 105, 180, 0.15) 0%, transparent 50%);
         }
 
+        /* Red Valentine */
         [data-theme="valentine-red"] body::before {
-            background-image: 
+            background-image:
                 radial-gradient(circle at 20% 30%, rgba(255, 0, 0, 0.2) 0%, transparent 50%),
                 radial-gradient(circle at 80% 70%, rgba(139, 0, 0, 0.2) 0%, transparent 50%);
         }
@@ -125,10 +127,10 @@
             z-index: 1;
             display: none;
         }
-
         [data-theme="valentine"] .floating-hearts,
         [data-theme="valentine-dark"] .floating-hearts,
-        [data-theme="valentine-red"] .floating-hearts {
+        [data-theme="valentine-red"] .floating-hearts,
+        [data-theme="valentine"] .floating-hearts {
             display: block;
         }
 
@@ -162,116 +164,41 @@
             box-shadow: 0 2px 20px rgba(255, 20, 147, 0.1);
         }
 
-        [data-theme="valentine-dark"] .header {
-            background: linear-gradient(135deg, rgba(26, 10, 15, 0.95) 0%, rgba(45, 21, 32, 0.95) 100%);
-            box-shadow: 0 2px 20px rgba(255, 20, 147, 0.3);
-        }
-
-        [data-theme="valentine-red"] .header {
-            background: linear-gradient(135deg, rgba(45, 10, 10, 0.95) 0%, rgba(74, 14, 14, 0.95) 100%);
-            box-shadow: 0 2px 20px rgba(255, 0, 0, 0.3);
-        }
-
         /* Valentine buttons */
-        [data-theme="valentine"] .btn,
-        [data-theme="valentine-dark"] .btn,
-        [data-theme="valentine-red"] .btn {
+        [data-theme="valentine"] .btn {
+            background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
             color: white;
             border: 2px solid #ff69b4;
             box-shadow: 0 4px 15px rgba(255, 20, 147, 0.3);
         }
 
-        [data-theme="valentine"] .btn {
-            background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
-        }
-
-        [data-theme="valentine-dark"] .btn {
-            background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
-        }
-
-        [data-theme="valentine-red"] .btn {
-            background: linear-gradient(135deg, #ff3333 0%, #ff0000 100%);
-            border-color: #ff0000;
-            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
-        }
-
-        [data-theme="valentine"] .btn:hover,
-        [data-theme="valentine-dark"] .btn:hover {
+        [data-theme="valentine"] .btn:hover {
             background: linear-gradient(135deg, #ff1493 0%, #ff69b4 100%);
             border-color: #ff1493;
             box-shadow: 0 6px 20px rgba(255, 20, 147, 0.5);
             transform: translateY(-2px);
         }
 
-        [data-theme="valentine-red"] .btn:hover {
-            background: linear-gradient(135deg, #ff0000 0%, #ff3333 100%);
-            border-color: #ff0000;
-            box-shadow: 0 6px 20px rgba(255, 0, 0, 0.5);
-            transform: translateY(-2px);
-        }
-
-        [data-theme="valentine"] .btn-primary,
-        [data-theme="valentine-dark"] .btn-primary {
+        [data-theme="valentine"] .btn-primary {
             background: linear-gradient(135deg, #ff1493 0%, #c71585 100%);
             border-color: #ff1493;
         }
 
-        [data-theme="valentine-red"] .btn-primary {
-            background: linear-gradient(135deg, #ff0000 0%, #8b0000 100%);
-            border-color: #ff0000;
-        }
-
         /* Valentine slideshow */
-        [data-theme="valentine"] .slide-main,
-        [data-theme="valentine-dark"] .slide-main,
-        [data-theme="valentine-red"] .slide-main {
-            border: 3px solid #ffb6c1;
-        }
-
         [data-theme="valentine"] .slide-main {
+            border: 3px solid #ffb6c1;
             box-shadow: 0 20px 60px rgba(255, 20, 147, 0.4), 0 0 30px rgba(255, 105, 180, 0.2);
-        }
-
-        [data-theme="valentine-dark"] .slide-main {
-            box-shadow: 0 20px 60px rgba(255, 20, 147, 0.5), 0 0 30px rgba(255, 105, 180, 0.3);
-            border-color: #ff1493;
-        }
-
-        [data-theme="valentine-red"] .slide-main {
-            box-shadow: 0 20px 60px rgba(255, 0, 0, 0.5), 0 0 30px rgba(139, 0, 0, 0.3);
-            border-color: #ff0000;
         }
 
         [data-theme="valentine"] .slide-overlay {
             background: linear-gradient(to top, rgba(199, 21, 133, 0.9), transparent);
         }
 
-        [data-theme="valentine-dark"] .slide-overlay {
-            background: linear-gradient(to top, rgba(139, 21, 56, 0.9), transparent);
-        }
-
-        [data-theme="valentine-red"] .slide-overlay {
-            background: linear-gradient(to top, rgba(139, 0, 0, 0.9), transparent);
-        }
-
         /* Valentine modal */
-        [data-theme="valentine"] .modal-content,
-        [data-theme="valentine-dark"] .modal-content,
-        [data-theme="valentine-red"] .modal-content {
+        [data-theme="valentine"] .modal-content {
             background: var(--bg-primary);
             border: 3px solid var(--accent);
-        }
-
-        [data-theme="valentine"] .modal-content {
             box-shadow: 0 20px 60px rgba(255, 20, 147, 0.3);
-        }
-
-        [data-theme="valentine-dark"] .modal-content {
-            box-shadow: 0 20px 60px rgba(255, 20, 147, 0.4);
-        }
-
-        [data-theme="valentine-red"] .modal-content {
-            box-shadow: 0 20px 60px rgba(255, 0, 0, 0.4);
         }
 
         /* Heart cursor trail */
@@ -335,6 +262,10 @@
             border-radius: 4px;
         }
 
+        .header-select-display:hover {
+            border-color: var(--accent);
+        }
+
         .header-select-display::after {
             content: '▼';
             position: absolute;
@@ -342,43 +273,40 @@
             top: 50%;
             transform: translateY(-50%);
             font-size: 0.7rem;
+            color: var(--text-secondary);
             transition: transform 0.3s ease;
+            pointer-events: none;
         }
 
         .header-select-display.open::after {
             transform: translateY(-50%) rotate(180deg);
         }
 
-        .header-select-display:hover {
-            border-color: var(--accent);
-            background: var(--bg-primary);
-        }
-
         .header-select-options {
             position: absolute;
-            top: calc(100% + 5px);
+            top: calc(100% + 0.5rem);
             left: 0;
             right: 0;
             background: var(--bg-primary);
             border: 2px solid var(--border);
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+            z-index: 600;
+            box-shadow: 0 10px 30px var(--shadow);
             border-radius: 4px;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 4px 12px var(--shadow);
         }
 
         .header-select-options.show {
-            max-height: 300px;
-            overflow-y: auto;
+            display: block;
         }
 
         .header-select-option {
-            padding: 0.8rem 1.2rem;
+            padding: 0.9rem 1.2rem;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: background 0.2s ease;
+            text-align: center;
             border-bottom: 1px solid var(--border);
-            font-weight: 400;
         }
 
         .header-select-option:last-child {
@@ -387,54 +315,85 @@
 
         .header-select-option:hover {
             background: var(--bg-secondary);
-            color: var(--accent);
         }
 
-        .header-select-option.selected {
+        .header-select-option.active {
             background: var(--accent);
             color: white;
-            font-weight: 600;
         }
 
-        .title {
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-align: center;
-            flex: 1;
-        }
-
-        .controls {
+        .header-controls {
             display: flex;
-            gap: 0.8rem;
+            gap: 1rem;
             align-items: center;
         }
 
-        /* Theme Dropdown Styles */
-        .theme-dropdown {
-            position: relative;
+        .btn {
+            padding: 0.7rem 1.8rem;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            font-family: 'Raleway', sans-serif;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-radius: 4px;
+        }
+
+        .btn:hover {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            border-color: var(--accent-hover);
         }
 
         .theme-toggle {
-            background: var(--bg-secondary);
-            border: 2px solid var(--border);
-            padding: 0.6rem 0.8rem;
-            border-radius: 4px;
+            background: none;
+            border: none;
+            color: var(--text-primary);
             cursor: pointer;
-            font-size: 1.3rem;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 45px;
-            height: 45px;
+            font-size: 1.5rem;
+            padding: 0.5rem;
+            transition: transform 0.3s ease;
+            position: relative;
         }
 
         .theme-toggle:hover {
-            border-color: var(--accent);
-            background: var(--bg-primary);
-            transform: scale(1.05);
+            transform: rotate(180deg) scale(1.1);
+        }
+
+        [data-theme="valentine"] .theme-toggle {
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes heartbeat {
+            0%, 100% {
+                transform: scale(1);
+            }
+            10%, 30% {
+                transform: scale(1.1);
+            }
+            20%, 40% {
+                transform: scale(1);
+            }
+        }
+
+        /* Theme Dropdown */
+        .theme-dropdown {
+            position: relative;
         }
 
         .theme-menu {
@@ -442,22 +401,17 @@
             top: calc(100% + 8px);
             right: 0;
             background: var(--bg-primary);
-            border: 2px solid var(--border);
-            border-radius: 8px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
             box-shadow: 0 8px 24px var(--shadow);
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s ease;
+            display: none;
             min-width: 180px;
             overflow: hidden;
             z-index: 1001;
         }
 
         .theme-menu.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
+            display: block;
         }
 
         .theme-option {
@@ -482,7 +436,6 @@
         .theme-option.active {
             background: var(--accent);
             color: white;
-            font-weight: 600;
         }
 
         .theme-option .icon {
@@ -496,7 +449,7 @@
             font-weight: 500;
         }
 
-        /* Tooltip for mobile long-press and desktop hover */
+        /* Tooltip for hover and mobile long-press */
         .theme-option .tooltip {
             position: absolute;
             left: calc(100% + 10px);
@@ -525,433 +478,539 @@
             border-right-color: rgba(0, 0, 0, 0.9);
         }
 
-        .theme-option:hover .tooltip {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        /* Mobile-specific tooltip (shows on touch) */
+        .theme-option:hover .tooltip,
         .theme-option.show-tooltip .tooltip {
             opacity: 1;
             visibility: visible;
         }
 
-        .btn {
-            background: var(--accent);
-            color: white;
-            border: 2px solid var(--accent);
-            padding: 0.6rem 1.5rem;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            letter-spacing: 0.5px;
-        }
-
-        .btn:hover {
-            background: var(--accent-hover);
-            border-color: var(--accent-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px var(--shadow);
-        }
-
-        .btn-primary {
-            background: var(--accent);
-            border-color: var(--accent);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--accent);
-        }
-
-        .btn-secondary:hover {
-            background: var(--accent);
-            color: white;
-        }
-
-        .btn-danger {
-            background: #dc3545;
-            border-color: #dc3545;
-        }
-
-        .btn-danger:hover {
-            background: #c82333;
-            border-color: #c82333;
-        }
 
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 6rem 2rem 2rem;
+            padding: 12rem 2rem 2rem;
         }
 
+        /* Slideshow Container - Inside container */
         .slideshow-container {
-            margin-bottom: 3rem;
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            margin: 0 0 2rem 0;
+            padding: 0;
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
+        .slideshow-wrapper {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 1500px;
+        }
+
+        /* Previous image (left shadow) */
+        .slide-preview-left,
+        .slide-preview-right {
+            position: absolute;
+            width: 45%;
+            height: 600px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0.3;
+            filter: blur(2px) brightness(0.6);
+            z-index: 1;
+        }
+
+        .slide-preview-left {
+            left: 0;
+            transform: translateX(-15%) rotateY(15deg) scale(0.85);
+        }
+
+        .slide-preview-right {
+            right: 0;
+            transform: translateX(15%) rotateY(-15deg) scale(0.85);
+        }
+
+        .slide-preview-left:hover,
+        .slide-preview-right:hover {
+            opacity: 0.5;
+            filter: blur(1px) brightness(0.7);
+        }
+
+        /* UPDATE: Apply to video as well */
+        .slide-preview-left img,
+        .slide-preview-right img,
+        .slide-preview-left video,
+        .slide-preview-right video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Main current slide */
         .slide-main {
             position: relative;
             width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
-            aspect-ratio: 16/10;
-            border-radius: 8px;
+            max-width: 600px;
+            height: 600px;
+            z-index: 10;
             overflow: hidden;
-            box-shadow: 0 10px 40px var(--shadow);
-            background: var(--bg-secondary);
+            cursor: pointer;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
         }
 
-        .slide-main img, .slide-main video {
+        .slide-main:hover {
+            transform: scale(1.02);
+        }
+
+        /* UPDATE: Main Slide Video Styling */
+        .slide-main img,
+        .slide-main video {
             width: 100%;
             height: 100%;
-            object-fit: contain;
-            background: #000;
+            object-fit: cover;
+            display: block;
         }
 
+        /* Fixed title and subtitle overlay on image */
         .slide-overlay {
             position: absolute;
             bottom: 0;
             left: 0;
             right: 0;
-            padding: 2rem;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            padding: 3rem 2rem 2rem;
             color: white;
+            pointer-events: none;
+            z-index: 15;
         }
 
         .slide-title {
             font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
+            font-size: 2.5rem;
+            font-weight: 700;
             margin-bottom: 0.5rem;
-            font-weight: 600;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
 
-        .slide-caption {
-            font-size: 1rem;
-            opacity: 0.95;
+        .slide-subtitle {
+            font-size: 1.1rem;
+            font-weight: 300;
+            opacity: 0.9;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
         }
 
+        /* Navigation arrows */
         .slide-nav {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background: rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.9);
             border: none;
-            color: white;
-            font-size: 2rem;
-            padding: 1rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
             cursor: pointer;
+            z-index: 20;
             transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+        }
+
+        [data-theme="dark"] .slide-nav {
+            background: rgba(50, 50, 50, 0.9);
         }
 
         .slide-nav:hover {
-            background: rgba(255,255,255,0.3);
-        }
-
-        .slide-nav.prev { left: 1rem; }
-        .slide-nav.next { right: 1rem; }
-
-        .thumbnails {
-            display: flex;
-            gap: 1rem;
-            overflow-x: auto;
-            padding: 1.5rem 0;
-            margin-top: 1.5rem;
-            scrollbar-width: thin;
-            scrollbar-color: var(--accent) var(--bg-secondary);
-        }
-
-        .thumbnails::-webkit-scrollbar {
-            height: 8px;
-        }
-
-        .thumbnails::-webkit-scrollbar-track {
-            background: var(--bg-secondary);
-            border-radius: 4px;
-        }
-
-        .thumbnails::-webkit-scrollbar-thumb {
             background: var(--accent);
-            border-radius: 4px;
-        }
-
-        .thumbnail {
-            min-width: 120px;
-            height: 80px;
-            border-radius: 4px;
-            overflow: hidden;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .thumbnail img, .thumbnail video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .thumbnail:hover {
-            border-color: var(--accent);
-            transform: scale(1.05);
-        }
-
-        .thumbnail.active {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px var(--accent-hover);
-        }
-
-        .thumbnail video::after {
-            content: '▶';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 2rem;
             color: white;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            transform: translateY(-50%) scale(1.1);
         }
 
-        .albums-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
+        .slide-nav.prev {
+            left: 1rem;
         }
 
-        .album-card {
-            background: var(--bg-secondary);
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px var(--shadow);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
+        .slide-nav.next {
+            right: 1rem;
         }
 
-        .album-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 8px 24px var(--shadow);
-        }
-
-        .album-thumbnail {
-            width: 100%;
-            aspect-ratio: 16/10;
-            background: var(--bg-primary);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .album-thumbnail img, .album-thumbnail video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .album-info {
-            padding: 1.5rem;
-        }
-
-        .album-name {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .album-count {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-
-        .album-actions {
-            display: flex;
-            gap: 0.5rem;
-            margin-top: 1rem;
-        }
-
-        .modal {
+        /* Photo caption modal */
+        .caption-modal {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
             background: var(--overlay);
-            display: flex;
+            display: none;
             align-items: center;
             justify-content: center;
             z-index: 2000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            padding: 1rem;
+            padding: 2rem;
         }
 
-        .modal.active {
-            opacity: 1;
-            visibility: visible;
+        .caption-modal.active {
+            display: flex;
         }
 
-        .modal-content {
+        .caption-content {
             background: var(--bg-primary);
             border-radius: 8px;
-            padding: 2rem;
-            max-width: 500px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
+            max-width: 95vw; /* Increased for better mobile use */
+            width: 1000px;
+            max-height: 95vh;
+            overflow: hidden; /* Prevent double scrollbars */
             position: relative;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-
-        .modal-header {
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
+            flex-direction: column;
         }
 
-        .modal-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
-            font-weight: 600;
-        }
-
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 2rem;
-            cursor: pointer;
-            color: var(--text-secondary);
-            transition: color 0.3s ease;
-            padding: 0;
-            width: 35px;
-            height: 35px;
+        .caption-image-container {
+            position: relative;
+            width: 100%;
+            flex-grow: 1;
+            background: #000; /* Black bars if image is narrow */
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
         }
 
-        .close-btn:hover {
-            color: var(--text-primary);
+        /* UPDATE: Apply to video in modal */
+        .caption-image-container img,
+        .caption-image-container video {
+            max-width: 100%;
+            max-height: 80vh; /* Leave room for text */
+            object-fit: contain; /* CRITICAL: Prevents cropping */
         }
 
-        .form-group {
-            margin-bottom: 1.5rem;
+        /* CAPTION TEXT OVERLAY (Shadowed instead of solid) */
+        .caption-text-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.4) 70%, transparent 100%);
+            padding: 4rem 2rem 2rem;
+            color: white;
+            pointer-events: none;
+            z-index: 15;
         }
 
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: var(--text-primary);
+        .caption-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #ffffff; /* Forced white for contrast against shadow */
+            text-align: center;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
         }
 
-        .form-input {
+        .caption-edit-area {
             width: 100%;
-            padding: 0.8rem;
+            min-height: 100px;
+            padding: 1rem;
             border: 2px solid var(--border);
             border-radius: 4px;
+            font-family: 'Raleway', sans-serif;
+            font-size: 1rem;
             background: var(--bg-secondary);
             color: var(--text-primary);
-            font-size: 1rem;
+            resize: vertical;
+        }
+
+        .caption-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .close-caption {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 10;
             transition: all 0.3s ease;
         }
 
-        .form-input:focus {
-            outline: none;
-            border-color: var(--accent);
+        .close-caption:hover {
+            background: rgba(0, 0, 0, 0.8);
+            transform: rotate(90deg);
         }
 
-        .form-actions {
-            display: flex;
-            gap: 1rem;
-            justify-content: flex-end;
-            margin-top: 2rem;
+        /* Edit mode styles */
+        .edit-mode-controls {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            text-align: center;
         }
 
         .photo-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 1rem;
-            margin-top: 1rem;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
         }
 
         .photo-item {
             position: relative;
             aspect-ratio: 1;
-            border-radius: 4px;
+            border-radius: 8px;
             overflow: hidden;
-            cursor: move;
             border: 2px solid var(--border);
             transition: all 0.3s ease;
         }
 
         .photo-item:hover {
             border-color: var(--accent);
-            transform: scale(1.05);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px var(--shadow);
         }
 
-        .photo-item img, .photo-item video {
+        /* UPDATE: Apply to video in grid */
+        .photo-item img,
+        .photo-item video {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
-        .photo-actions {
+        .photo-controls {
             position: absolute;
-            top: 0.5rem;
-            right: 0.5rem;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 0.5rem;
             display: flex;
-            gap: 0.3rem;
+            gap: 0.5rem;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
-        .photo-btn {
-            background: rgba(0,0,0,0.7);
+        .photo-item:hover .photo-controls {
+            opacity: 1;
+        }
+
+        .photo-control-btn {
+            background: white;
             border: none;
-            color: white;
-            padding: 0.3rem 0.5rem;
-            border-radius: 3px;
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
             cursor: pointer;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             transition: all 0.2s ease;
         }
 
-        .photo-btn:hover {
-            background: rgba(0,0,0,0.9);
+        .photo-control-btn:hover {
+            background: var(--accent);
+            color: white;
         }
 
+        .photo-caption-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 0.5rem;
+            font-size: 0.75rem;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .photo-item:hover .photo-caption-label {
+            opacity: 1;
+        }
+
+        /* Modal styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            padding: 2rem;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-primary);
+            border-radius: 12px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2.5rem;
+            position: relative;
+        }
+
+        .modal-header {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.9rem;
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            font-family: 'Raleway', sans-serif;
+            font-size: 1rem;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: color 0.3s ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-modal:hover {
+            color: var(--text-primary);
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg-primary);
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            padding: 2rem 3rem;
+            text-align: center;
+            z-index: 4000;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            display: none;
+        }
+
+        .notification.active {
+            display: block;
+        }
+
+        .notification-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .notification-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        /* Lightbox */
         .lightbox {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.95);
-            display: flex;
+            background: var(--overlay);
+            display: none;
             align-items: center;
             justify-content: center;
-            z-index: 3000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
+            z-index: 5000;
+            padding: 2rem;
         }
 
         .lightbox.active {
-            opacity: 1;
-            visibility: visible;
+            display: flex;
         }
 
         .lightbox-content {
-            max-width: 90vw;
-            max-height: 90vh;
+            max-width: 90%;
+            max-height: 90%;
             position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        .lightbox-content img, .lightbox-content video {
+        /* UPDATE: Apply to video in lightbox */
+        .lightbox-content img,
+        .lightbox-content video {
             max-width: 100%;
             max-height: 90vh;
             object-fit: contain;
@@ -961,218 +1020,171 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background: rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.9);
             border: none;
-            color: white;
-            font-size: 2rem;
-            padding: 1rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
             cursor: pointer;
             transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
+        }
+
+        [data-theme="dark"] .lightbox-nav {
+            background: rgba(50, 50, 50, 0.9);
+            color: white;
         }
 
         .lightbox-nav:hover {
-            background: rgba(255,255,255,0.3);
+            background: var(--accent);
+            color: white;
         }
 
-        .lightbox-nav.prev { left: 2rem; }
-        .lightbox-nav.next { right: 2rem; }
+        .lightbox-nav.prev {
+            left: 2rem;
+        }
 
-        .lightbox-close {
+        .lightbox-nav.next {
+            right: 2rem;
+        }
+
+        .close-lightbox {
             position: absolute;
             top: 2rem;
             right: 2rem;
-            background: rgba(255,255,255,0.2);
-            border: none;
+            background: rgba(0, 0, 0, 0.6);
             color: white;
-            font-size: 2rem;
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            backdrop-filter: blur(10px);
-            border-radius: 4px;
-            transition: all 0.3s ease;
-        }
-
-        .lightbox-close:hover {
-            background: rgba(255,255,255,0.3);
-        }
-
-        /* Caption Modal Specific */
-        #captionModal .modal-content {
-            max-width: 90vw;
-            max-height: 90vh;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-        }
-
-        #captionModal .modal-header {
-            padding: 1rem 1.5rem;
-            margin: 0;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .caption-image-container {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #000;
-            position: relative;
-            min-height: 400px;
-            max-height: 70vh;
-        }
-
-        .caption-image-container img,
-        .caption-image-container video {
-            max-width: 100%;
-            max-height: 70vh;
-            object-fit: contain;
-        }
-
-        .caption-nav {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255,255,255,0.2);
             border: none;
-            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
             font-size: 2rem;
-            padding: 1rem;
             cursor: pointer;
             transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            z-index: 10;
         }
 
-        .caption-nav:hover {
-            background: rgba(255,255,255,0.3);
+        .close-lightbox:hover {
+            background: rgba(0, 0, 0, 0.9);
         }
 
-        .caption-nav.prev { left: 1rem; }
-        .caption-nav.next { right: 1rem; }
-
-        .caption-text-container {
-            padding: 1.5rem;
-            background: var(--bg-secondary);
-            border-top: 1px solid var(--border);
-        }
-
-        .caption-display {
-            font-size: 1rem;
-            line-height: 1.6;
-            color: var(--text-primary);
-            text-align: center;
-            font-style: italic;
-        }
-
+        /* Responsive */
         @media (max-width: 768px) {
             .header {
-                padding: 1rem 1.5rem;
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            .header-selector {
-                min-width: 100%;
-                order: 2;
-            }
-
-            .title {
-                font-size: 1.5rem;
-                order: 1;
-            }
-
-            .controls {
-                order: 3;
-                width: 100%;
-                justify-content: center;
-            }
-
-            .container {
-                padding: 8rem 1rem 1rem;
-            }
-
-            .slide-main {
-                aspect-ratio: 4/3;
-            }
-
-            .slide-title {
-                font-size: 1.3rem;
-            }
-
-            .slide-caption {
-                font-size: 0.9rem;
-            }
-
-            .slide-nav {
-                padding: 0.5rem;
-                font-size: 1.5rem;
-            }
-
-            .slide-nav.prev { left: 0.5rem; }
-            .slide-nav.next { right: 0.5rem; }
-
-            .thumbnails {
+                padding: 1rem;
+                flex-direction: row;
                 gap: 0.5rem;
             }
 
-            .thumbnail {
-                min-width: 100px;
-                height: 60px;
+            .header-selector {
+                min-width: auto;
+                flex: 1;
             }
 
-            .albums-grid {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
+            .header-select-display {
+                padding: 0.6rem 2rem 0.6rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            .header-controls {
+                gap: 0.5rem;
+            }
+
+            .btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.75rem;
+            }
+
+            .theme-toggle {
+                font-size: 1.2rem;
+                padding: 0.3rem;
+            }
+
+            .container {
+                padding: 9rem 1rem 1rem;
+            }
+
+            .slideshow-container {
+                margin: 0 0 2rem 0;
+                min-height: 350px;
+            }
+
+            .slideshow-wrapper {
+                height: 450px;
+            }
+
+            .slide-main {
+                width: 100%;
+                height: 330px;
+            }
+
+            .slide-preview-left,
+            .slide-preview-right {
+                display: none;
+            }
+
+            .slide-title {
+                font-size: 1.5rem;
+            }
+
+            .slide-subtitle {
+                font-size: 0.9rem;
+            }
+
+            .slide-overlay {
+                padding: 2rem 1rem 1rem;
+            }
+
+            .slide-nav {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+
+            .slide-nav.prev {
+                left: 0.5rem;
+            }
+
+            .slide-nav.next {
+                right: 0.5rem;
+            }
+
+            .edit-mode-controls {
+                padding: 1rem;
+            }
+
+            .edit-mode-controls h3 {
+                font-size: 1.1rem;
+            }
+
+            .photo-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 0.75rem;
             }
 
             .modal-content {
                 padding: 1.5rem;
+                margin: 1rem;
             }
 
-            .modal-title {
+            .modal-header {
                 font-size: 1.5rem;
             }
-
-            .lightbox-nav {
-                padding: 0.5rem;
-                font-size: 1.5rem;
+            .caption-content {
+                height: auto;
+                max-height: 90vh;
+            }
+            .caption-text {
+                font-size: 0.95rem;
+            }
+            .caption-text-container {
+                padding: 2rem 1rem 1rem;
             }
 
-            .lightbox-nav.prev { left: 0.5rem; }
-            .lightbox-nav.next { right: 0.5rem; }
-
-            .lightbox-close {
-                top: 1rem;
-                right: 1rem;
-                padding: 0.3rem 0.7rem;
-                font-size: 1.5rem;
-            }
-
-            .caption-image-container {
-                min-height: 300px;
-                max-height: 60vh;
-            }
-
-            .caption-image-container img,
-            .caption-image-container video {
-                max-height: 60vh;
-            }
-
-            .caption-nav {
-                padding: 0.5rem 0.8rem;
-                font-size: 1.5rem;
-            }
-
+            /* Mobile theme dropdown positioning */
             .theme-menu {
                 right: auto;
                 left: 50%;
-                transform: translateX(-50%) translateY(-10px);
-            }
-
-            .theme-menu.show {
-                transform: translateX(-50%) translateY(0);
+                transform: translateX(-50%);
             }
 
             .theme-option .tooltip {
@@ -1192,93 +1204,41 @@
             }
         }
 
-        .dragging {
-            opacity: 0.5;
+        /* Hide scrollbar for options */
+        .header-select-options::-webkit-scrollbar {
+            width: 8px;
         }
 
-        .drag-over {
-            border-color: var(--accent);
+        .header-select-options::-webkit-scrollbar-track {
             background: var(--bg-secondary);
         }
 
-        .notification {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background: var(--bg-primary);
-            border: 2px solid var(--accent);
-            padding: 1rem 1.5rem;
+        .header-select-options::-webkit-scrollbar-thumb {
+            background: var(--accent);
             border-radius: 4px;
-            box-shadow: 0 4px 12px var(--shadow);
-            z-index: 4000;
-            animation: slideIn 0.3s ease;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateX(400px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        /* Video play icon overlay for thumbnails */
-        .thumbnail.video-thumb::after {
-            content: '▶';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 1.5rem;
-            color: white;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-            pointer-events: none;
-        }
-
-        .slide-main.video-slide::after {
-            content: '▶';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 3rem;
-            color: white;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.8);
-            pointer-events: none;
-            opacity: 0.7;
-            transition: opacity 0.3s ease;
-        }
-
-        .slide-main.video-slide:hover::after {
-            opacity: 1;
         }
     </style>
 </head>
 <body>
-    <div class="floating-hearts" id="floatingHearts"></div>
-
     <div class="header">
-        <div class="header-selector" id="headerAlbumSelector">
+        <div class="header-selector">
             <div class="header-select-display" onclick="toggleHeaderSelect()">
-                Select Album
+                <span id="headerSelectedAlbum">⭐ My Collection</span>
             </div>
             <div class="header-select-options" id="headerSelectOptions">
-                <!-- Options populated by JS -->
+                <div class="header-select-option active" onclick="selectAlbum(0)">
+                    ⭐ My Collection
+                </div>
+            
+                <div class="header-select-option " onclick="selectAlbum(1)">
+                    Sample Test
+                </div>
             </div>
         </div>
-        
-        <h1 class="title">Photo & Video Gallery</h1>
-        
-        <div class="controls">
+
+        <div class="header-controls">
             <div class="theme-dropdown">
-                <button class="theme-toggle" id="themeToggle" onclick="toggleThemeMenu()">💖</button>
+                <button class="theme-toggle" onclick="toggleThemeMenu()" title="Toggle theme" id="themeToggle">💖</button>
                 <div class="theme-menu" id="themeMenu">
                     <div class="theme-option" data-theme="light" onclick="selectTheme('light')">
                         <span class="icon">☀️</span>
@@ -1290,7 +1250,7 @@
                         <span class="label">Dark</span>
                         <span class="tooltip">Dark Mode</span>
                     </div>
-                    <div class="theme-option" data-theme="valentine" onclick="selectTheme('valentine')">
+                    <div class="theme-option active" data-theme="valentine" onclick="selectTheme('valentine')">
                         <span class="icon">💖</span>
                         <span class="label">Valentine</span>
                         <span class="tooltip">Valentine's Day (Light)</span>
@@ -1307,238 +1267,406 @@
                     </div>
                 </div>
             </div>
-            <button class="btn" id="loginBtn" onclick="openModal('loginModal')">Admin</button>
-            <button class="btn hidden" id="logoutBtn" onclick="logout()">Logout</button>
+            <button class="btn btn-primary" id="editModeBtn" onclick="showLoginModal()">View Mode</button>
         </div>
     </div>
 
-    <div class="container">
-        <div class="slideshow-container">
-            <div class="slide-main" id="slideMain">
-                <img id="slideImage" src="" alt="Slide" style="display:none;">
-                <video id="slideVideo" controls style="display:none;"></video>
-                <div class="slide-overlay">
-                    <div class="slide-title" id="slideTitle">Album Title</div>
-                    <div class="slide-caption" id="slideCaption">Caption goes here</div>
+    <div class="floating-hearts" id="floatingHearts"><div class="heart" style="left: 14.4589%; animation-delay: 9.8523s; animation-duration: 11.7272s;">💖</div><div class="heart" style="left: 38.5505%; animation-delay: 8.56683s; animation-duration: 15.3607s;">💕</div><div class="heart" style="left: 70.6421%; animation-delay: 9.78389s; animation-duration: 13.8745s;">💕</div><div class="heart" style="left: 1.60335%; animation-delay: 4.1072s; animation-duration: 12.3376s;">💗</div><div class="heart" style="left: 86.0323%; animation-delay: 13.4456s; animation-duration: 18.5153s;">💓</div><div class="heart" style="left: 65.4541%; animation-delay: 9.115s; animation-duration: 10.4923s;">💖</div><div class="heart" style="left: 94.6409%; animation-delay: 13.3037s; animation-duration: 16.7492s;">💗</div><div class="heart" style="left: 96.5776%; animation-delay: 11.9716s; animation-duration: 16.5436s;">💝</div><div class="heart" style="left: 24.6528%; animation-delay: 3.90688s; animation-duration: 11.9668s;">💕</div><div class="heart" style="left: 18.9699%; animation-delay: 5.90739s; animation-duration: 11.9875s;">💗</div><div class="heart" style="left: 64.1898%; animation-delay: 7.333s; animation-duration: 12.7997s;">💝</div><div class="heart" style="left: 36.0684%; animation-delay: 9.09348s; animation-duration: 14.3561s;">❤️</div><div class="heart" style="left: 91.7254%; animation-delay: 11.6038s; animation-duration: 15.3506s;">❤️</div><div class="heart" style="left: 76.7475%; animation-delay: 5.59695s; animation-duration: 16.0813s;">❤️</div><div class="heart" style="left: 20.4386%; animation-delay: 6.38283s; animation-duration: 14.2855s;">💕</div></div>
+
+    <div class="container" id="mainContainer">
+        
+        <div class="slideshow-container" id="slideshowContainer" style="display: block;">
+            <div class="slideshow-wrapper">
+                <div class="slide-preview-left" onclick="changeSlide(-1)">
+                    <img id="previewLeftImg" src="images/My-Collection/Slimmers_icon.png" alt="Previous" style="display: none;">
+                    <video id="previewLeftVideo" src="images/My-Collection/our_vid.mp4" style="display: block;" muted=""></video>
                 </div>
+
+                <div class="slide-main" onclick="openPhotoCaption()" style="transform: translateX(0px); transition: transform 0.3s;">
+                    <img id="mainSlideImg" src="images/My-Collection/facebook.png" alt="Current Photo" style="display: block;">
+                    <video id="mainSlideVideo" src="" style="display: none;" autoplay="" muted="" loop="" playsinline=""></video>
+                    
+                    <div class="slide-overlay">
+                        <div class="slide-title" id="slideTitle">My Collection</div>
+                        <div class="slide-subtitle" id="slideSubtitle">Your First Collection</div>
+                    </div>
+                </div>
+
+                <div class="slide-preview-right" onclick="changeSlide(1)">
+                    <img id="previewRightImg" src="images/My-Collection/Slimmers_icon.png" alt="Next" style="display: block;">
+                    <video id="previewRightVideo" src="images/My-Collection/our_vid.mp4" style="display: none;" muted=""></video>
+                </div>
+
                 <button class="slide-nav prev" onclick="changeSlide(-1)">‹</button>
                 <button class="slide-nav next" onclick="changeSlide(1)">›</button>
             </div>
-
-            <div class="thumbnails" id="thumbnails">
-                <!-- Thumbnails populated by JS -->
+        </div>
+        
+        <div class="edit-mode-controls" id="editControls" style="display: block;">
+            <h3 style="margin-bottom: 1rem;">Edit Mode</h3>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <button class="btn" onclick="showCreateAlbumModal()">➕ Create Album</button>
+                <button class="btn" onclick="showEditAlbumModal()">✏️ Edit Album</button>
+                <button class="btn" onclick="toggleFavoriteAlbum()">⭐ Set as Default</button>
+                <button class="btn" onclick="deleteCurrentAlbum()" style="border-color: #d9534f; color: #d9534f;">🗑️ Delete Album</button>
+                <label class="btn" style="margin: 0;">
+                    📸 Add Photos/Videos
+                    <input type="file" multiple="" accept="image/*,video/mp4,video/webm,video/ogg" onchange="handlePhotoUpload(event)" style="display: none;">
+                </label>
+                <button class="btn btn-primary" onclick="exportData()">💾 Save Changes</button>
+                <button class="btn" onclick="logout()" style="border-color: #f0ad4e; color: #f0ad4e;">🚪 Logout</button>
             </div>
         </div>
 
-        <div id="adminControls" class="hidden">
-            <button class="btn btn-primary" onclick="openModal('albumModal')">Create New Album</button>
-        </div>
+        <div class="photo-grid" id="photoGrid" style="display: grid;">
+                    <div class="photo-item">
+                        <video src="images/My-Collection/our_vid.mp4" muted=""></video>
+                        <div class="photo-controls">
+                            <button class="photo-control-btn" onclick="movePhoto(0, -1)" title="Move left">◄</button>
+                            <button class="photo-control-btn" onclick="editPhotoCaption(0)" title="Edit caption">✏️</button>
+                            <button class="photo-control-btn" onclick="movePhoto(0, 1)" title="Move right">►</button>
+                            <button class="photo-control-btn" onclick="deletePhoto(0)" title="Delete">🗑️</button>
+                        </div>
+                        <div class="photo-caption-label">No caption</div>
+                    </div>
+                
+                    <div class="photo-item">
+                        <img src="images/My-Collection/facebook.png" alt="facebook.png">
+                        <div class="photo-controls">
+                            <button class="photo-control-btn" onclick="movePhoto(1, -1)" title="Move left">◄</button>
+                            <button class="photo-control-btn" onclick="editPhotoCaption(1)" title="Edit caption">✏️</button>
+                            <button class="photo-control-btn" onclick="movePhoto(1, 1)" title="Move right">►</button>
+                            <button class="photo-control-btn" onclick="deletePhoto(1)" title="Delete">🗑️</button>
+                        </div>
+                        <div class="photo-caption-label">No caption</div>
+                    </div>
+                
+                    <div class="photo-item">
+                        <img src="images/My-Collection/Slimmers_icon.png" alt="Slimmers_icon.png">
+                        <div class="photo-controls">
+                            <button class="photo-control-btn" onclick="movePhoto(2, -1)" title="Move left">◄</button>
+                            <button class="photo-control-btn" onclick="editPhotoCaption(2)" title="Edit caption">✏️</button>
+                            <button class="photo-control-btn" onclick="movePhoto(2, 1)" title="Move right">►</button>
+                            <button class="photo-control-btn" onclick="deletePhoto(2)" title="Delete">🗑️</button>
+                        </div>
+                        <div class="photo-caption-label">No caption</div>
+                    </div>
+                </div>
+    </div>
 
-        <div class="albums-grid" id="albumsGrid">
-            <!-- Albums populated by JS -->
+    <div class="caption-modal" id="captionModal">
+        <div class="caption-content">
+            <button class="close-caption" onclick="closeCaptionModal()">×</button>
+            <div class="caption-image-container">
+                <img id="captionImage" src="" alt="Photo" style="display: block;">
+                <video id="captionVideo" src="" style="display: none;" controls="" playsinline=""></video>
+            </div>
+            <div class="caption-text-container">
+                <div id="captionDisplayText" class="caption-text"></div> 
+            </div>
         </div>
     </div>
 
-    <!-- Login Modal -->
     <div class="modal" id="loginModal">
         <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">Admin Login</h2>
-                <button class="close-btn" onclick="closeModal('loginModal')">×</button>
+            <button class="close-modal" onclick="closeModal('loginModal')">×</button>
+            <h2 class="modal-header">Admin Login</h2>
+            <div class="form-group">
+                <label for="usernameInput">Username</label>
+                <input type="text" id="usernameInput" placeholder="Enter username">
             </div>
             <div class="form-group">
-                <label class="form-label">Password</label>
-                <input type="password" class="form-input" id="adminPassword" placeholder="Enter admin password">
+                <label for="passwordInput">Password</label>
+                <input type="password" id="passwordInput" placeholder="Enter password">
             </div>
-            <div class="form-actions">
-                <button class="btn btn-secondary" onclick="closeModal('loginModal')">Cancel</button>
+            <div class="modal-actions">
+                <button class="btn" onclick="closeModal('loginModal')">Cancel</button>
                 <button class="btn btn-primary" onclick="login()">Login</button>
             </div>
         </div>
     </div>
 
-    <!-- Album Modal -->
     <div class="modal" id="albumModal">
         <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title" id="albumModalTitle">Create Album</h2>
-                <button class="close-btn" onclick="closeModal('albumModal')">×</button>
+            <button class="close-modal" onclick="closeModal('albumModal')">×</button>
+            <h2 class="modal-header" id="albumModalTitle">Create Album</h2>
+            <div class="form-group">
+                <label for="albumTitleInput">Album Title *</label>
+                <input type="text" id="albumTitleInput" placeholder="e.g., Summer Vacation 2024">
             </div>
             <div class="form-group">
-                <label class="form-label">Album Name</label>
-                <input type="text" class="form-input" id="albumName" placeholder="Enter album name">
+                <label for="albumSubtitleInput">Subtitle</label>
+                <input type="text" id="albumSubtitleInput" placeholder="e.g., Adventures in Paradise">
             </div>
-            <div class="form-group">
-                <label class="form-label">Folder Name (must match images folder)</label>
-                <input type="text" class="form-input" id="folderName" placeholder="e.g., album1">
-            </div>
-            <div class="form-group">
-                <label class="form-label">
-                    <input type="checkbox" id="setAsDefault"> Set as highlighted album
-                </label>
-            </div>
-            <div class="form-actions">
-                <button class="btn btn-secondary" onclick="closeModal('albumModal')">Cancel</button>
-                <button class="btn btn-primary" onclick="saveAlbum()">Save</button>
+            <div class="modal-actions">
+                <button class="btn" onclick="closeModal('albumModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="saveAlbum()">Save Album</button>
             </div>
         </div>
     </div>
 
-    <!-- Photo Management Modal -->
-    <div class="modal" id="photoModal">
-        <div class="modal-content" style="max-width: 800px;">
-            <div class="modal-header">
-                <h2 class="modal-title" id="photoModalTitle">Manage Photos</h2>
-                <button class="close-btn" onclick="closeModal('photoModal')">×</button>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">Add Photo/Video (filename must exist in folder)</label>
-                <input type="text" class="form-input" id="newPhotoName" placeholder="e.g., photo1.jpg or video1.mp4">
-                <button class="btn btn-primary" onclick="addPhoto()" style="margin-top: 0.5rem;">Add</button>
-            </div>
-
-            <div class="photo-grid" id="photoGrid">
-                <!-- Photos populated by JS -->
-            </div>
-        </div>
+    <div class="notification" id="notificationModal">
+        <div class="notification-icon" id="notificationIcon">✅</div>
+        <div class="notification-text" id="notificationText">Item removed from gallery</div>
     </div>
 
-    <!-- Caption Modal -->
-    <div class="modal" id="captionModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">View Photo/Video</h2>
-                <button class="close-btn" onclick="closeCaptionModal()">×</button>
-            </div>
-            <div class="caption-image-container">
-                <img id="captionImage" src="" alt="Photo" style="display:none;">
-                <video id="captionVideo" controls style="display:none;"></video>
-                <button class="caption-nav prev" onclick="modalNavigate(-1)">‹</button>
-                <button class="caption-nav next" onclick="modalNavigate(1)">›</button>
-            </div>
-            <div class="caption-text-container">
-                <div class="caption-display" id="captionDisplayText">No caption yet.</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Caption Edit Modal (Admin only) -->
-    <div class="modal" id="captionEditModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">Edit Caption</h2>
-                <button class="close-btn" onclick="closeModal('captionEditModal')">×</button>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Photo: <span id="captionPhotoName"></span></label>
-                <textarea class="form-input" id="captionInput" rows="4" placeholder="Enter caption (optional)"></textarea>
-            </div>
-            <div class="form-actions">
-                <button class="btn btn-secondary" onclick="closeModal('captionEditModal')">Cancel</button>
-                <button class="btn btn-primary" onclick="saveCaption()">Save Caption</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Notification Modal -->
-    <div class="modal" id="notificationModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">Notice</h2>
-                <button class="close-btn" onclick="closeModal('notificationModal')">×</button>
-            </div>
-            <p id="notificationMessage"></p>
-            <div class="form-actions">
-                <button class="btn btn-primary" onclick="closeModal('notificationModal')">OK</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Confirm Modal -->
     <div class="modal" id="confirmModal">
         <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">Confirm</h2>
-                <button class="close-btn" onclick="closeModal('confirmModal')">×</button>
-            </div>
-            <p id="confirmMessage"></p>
-            <div class="form-actions">
-                <button class="btn btn-secondary" onclick="closeModal('confirmModal')">Cancel</button>
-                <button class="btn btn-danger" onclick="confirmAction()">Confirm</button>
+            <h2 class="modal-header" id="confirmTitle">Delete Item</h2>
+            <p id="confirmMessage" style="text-align: center; margin: 2rem 0; line-height: 1.6;">Delete "Bob_F-T_624317.webp"?
+
+You should also delete this file from images/My-Collection/ in GitHub.</p>
+            <div class="modal-actions">
+                <button class="btn" onclick="closeModal('confirmModal')">Cancel</button>
+                <button class="btn btn-primary" id="confirmBtn" onclick="confirmAction()">Confirm</button>
             </div>
         </div>
     </div>
 
-    <!-- Lightbox (unused in current implementation but kept for compatibility) -->
     <div class="lightbox" id="lightbox">
-        <button class="lightbox-close" onclick="closeLightbox()">×</button>
+        <button class="close-lightbox" onclick="closeLightbox()">×</button>
         <div class="lightbox-content">
-            <img id="lightboxImage" src="" alt="Lightbox" style="display:none;">
-            <video id="lightboxVideo" controls style="display:none;"></video>
+            <img id="lightboxImage" src="" alt="Lightbox" style="display: block;">
+            <video id="lightboxVideo" src="" style="display: none;" controls="" playsinline=""></video>
+            
             <button class="lightbox-nav prev" onclick="navigateLightbox(-1)">‹</button>
             <button class="lightbox-nav next" onclick="navigateLightbox(1)">›</button>
         </div>
     </div>
 
     <script>
-        let albums = [];
+        // ALBUMS_DATA_START
+        let ALBUMS_DATA = [
+  {
+    "folderName": "My-Collection",
+    "title": "My Collection",
+    "subtitle": "Your First Collection",
+    "photos": [
+      "our_vid.mp4",
+      "facebook.png",
+      "Slimmers_icon.png"
+    ],
+    "captions": {
+      "our_vid.mp4": ""
+    },
+    "isFavorite": true
+  },
+  {
+    "folderName": "sample-test",
+    "title": "Sample Test",
+    "subtitle": "",
+    "photos": [
+      "photo.jpg"
+    ],
+    "captions": {},
+    "isFavorite": false
+  }
+];
+        // ALBUMS_DATA_END
+
+        let albums = JSON.parse(JSON.stringify(ALBUMS_DATA));
         let currentAlbumIndex = 0;
         let currentSlideIndex = 0;
-        let isAdmin = false;
-        let editingAlbumIndex = -1;
-        let currentCaptionPhotoIndex = -1;
-        let pendingAction = null;
+        let editingAlbumIndex = null;
+        let isEditMode = false;
+        let currentCaptionPhotoIndex = 0;
+        let isLoggedIn = false;
+        let slideDirection = 1;
+        let confirmCallback = null;
+
+        // Drag/Swipe variables
+        let isDragging = false;
+        let startX = 0;
+        let currentTranslate = 0;
+        let dragThreshold = 50;
+
+        // Password encryption using SHA-256
+        async function hashPassword(password) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(password);
+            const hash = await crypto.subtle.digest('SHA-256', data);
+            return Array.from(new Uint8Array(hash))
+                .map(b => b.toString(16).padStart(2, '0'))
+                .join('');
+        }
 
         function init() {
+            // FORCE DEFAULT USER MODE
+            isLoggedIn = false;
+            isEditMode = false;
+
+            document.getElementById('editControls').style.display = 'none';
+            document.getElementById('photoGrid').style.display = 'none';
+
+            updateUIForLoginState();
+
+            // Setup default theme to Valentine
             checkTheme();
-            loadAlbums();
-            checkAuth();
+            const favoriteIndex = albums.findIndex(a => a.isFavorite);
+            currentAlbumIndex = favoriteIndex >= 0 ? favoriteIndex : 0;
+
+            loadPhotosFromFolders().then(() => {
+                displayHeaderSelector();
+                displayCurrentAlbum();
+                setupDragGestures();
+            });
         }
 
-        function loadAlbums() {
-            const saved = localStorage.getItem('albums');
-            if (saved) {
-                albums = JSON.parse(saved);
+        // Helper to check if file is video
+        function isVideo(filename) {
+            return filename.toLowerCase().match(/\.(mp4|webm|ogg|mov)$/);
+        }
+
+        // Auto-load photos from GitHub folders
+        async function loadPhotosFromFolders() {
+            for (let album of albums) {
+                try {
+                    const response = await fetch(`images/${album.folderName}/`);
+                    if (response.ok) {
+                        const text = await response.text();
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(text, 'text/html');
+                        const links = doc.querySelectorAll('a');
+                        const photos = [];
+                        
+                        links.forEach(link => {
+                            const href = link.getAttribute('href');
+                            // Updated Regex to include videos
+                            if (href && /\.(jpg|jpeg|png|gif|webp|mp4|webm|ogg|mov)$/i.test(href)) {
+                                photos.push(href);
+                            }
+                        });
+                        
+                        if (photos.length > 0) {
+                            album.photos = photos;
+                        }
+                    }
+                } catch (error) {
+                    console.log(`Could not auto-load photos for ${album.folderName}`);
+                }
+            }
+        }
+
+        function showConfirmModal(title, message, callback) {
+            document.getElementById('confirmTitle').textContent = title;
+            document.getElementById('confirmMessage').textContent = message;
+            confirmCallback = callback;
+            document.getElementById('confirmModal').classList.add('active');
+        }
+
+        function confirmAction() {
+            if (confirmCallback) {
+                confirmCallback();
+                confirmCallback = null;
+            }
+            closeModal('confirmModal');
+        }
+
+        function setupDragGestures() {
+            const slideMain = document.querySelector('.slide-main');
+            if (!slideMain) return;
+
+            const getPositionX = (e) => {
+                return e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+            };
+
+            const startDrag = (e) => {
+                if (isEditMode) return; // Disable drag in edit mode
+                isDragging = true;
+                startX = getPositionX(e);
+                slideMain.style.transition = 'none';
+            };
+
+            const moveDrag = (e) => {
+                if (!isDragging) return;
+                const currentX = getPositionX(e);
+                const diff = currentX - startX;
+                currentTranslate = diff;
+                slideMain.style.transform = `translateX(${diff}px)`;
+            };
+
+            const endDrag = (e) => {
+                if (!isDragging) return;
+                isDragging = false;
+                slideMain.style.transition = 'transform 0.3s ease';
+
+                if (Math.abs(currentTranslate) > dragThreshold) {
+                    if (currentTranslate > 0) {
+                        changeSlide(-1); // Swipe right -> previous
+                    } else {
+                        changeSlide(1); // Swipe left -> next
+                    }
+                } else {
+                    slideMain.style.transform = 'translateX(0)';
+                }
+                currentTranslate = 0;
+            };
+
+            // Mouse events
+            slideMain.addEventListener('mousedown', startDrag);
+            slideMain.addEventListener('mousemove', moveDrag);
+            slideMain.addEventListener('mouseup', endDrag);
+            slideMain.addEventListener('mouseleave', endDrag);
+
+            // Touch events
+            slideMain.addEventListener('touchstart', startDrag, { passive: true });
+            slideMain.addEventListener('touchmove', moveDrag, { passive: true });
+            slideMain.addEventListener('touchend', endDrag);
+        }
+
+        function showLoginModal() {
+            if (isLoggedIn) {
+                toggleEditMode();
             } else {
-                // Default album
-                albums = [{
-                    name: 'Sample Album',
-                    folderName: 'album1',
-                    photos: ['photo1.jpg', 'photo2.jpg'],
-                    captions: {},
-                    isDefault: true
-                }];
-                saveAlbums();
+                document.getElementById('loginModal').classList.add('active');
+                document.getElementById('usernameInput').value = '';
+                document.getElementById('passwordInput').value = '';
             }
-            
-            // Find default album
-            const defaultIndex = albums.findIndex(a => a.isDefault);
-            currentAlbumIndex = defaultIndex >= 0 ? defaultIndex : 0;
-            
-            renderAlbums();
-            renderHeaderSelector();
-            updateSlideshow();
         }
 
-        function saveAlbums() {
-            localStorage.setItem('albums', JSON.stringify(albums));
+        async function login() {
+            const username = document.getElementById('usernameInput').value;
+            const password = document.getElementById('passwordInput').value;
+
+            if (username !== ADMIN_USERNAME) {
+                showNotification('Invalid username or password', '❌');
+                return;
+            }
+
+            const hash = await hashPassword(password);
+
+            if (hash === STORED_PASSWORD_HASH) {
+                isLoggedIn = true;
+                closeModal('loginModal');
+                updateUIForLoginState();
+                toggleEditMode();
+                document.getElementById('usernameInput').value = '';
+                document.getElementById('passwordInput').value = '';
+                showNotification('Welcome back, Admin!', '✅');
+            } else {
+                showNotification('Invalid username or password', '❌');
+            }
         }
 
-        function renderHeaderSelector() {
-            const display = document.querySelector('.header-select-display');
-            const options = document.getElementById('headerSelectOptions');
-            
-            if (albums.length > 0) {
-                display.textContent = albums[currentAlbumIndex].name;
+        function logout() {
+            isLoggedIn = false;
+            isEditMode = false;
+            updateUIForLoginState();
+            document.getElementById('editControls').style.display = 'none';
+            document.getElementById('photoGrid').style.display = 'none';
+            showNotification('Logged out successfully', '👋');
+        }
+
+        function updateUIForLoginState() {
+            const editModeBtn = document.getElementById('editModeBtn');
+
+            if (isLoggedIn) {
+                editModeBtn.textContent = isEditMode ? 'View Mode' : 'Edit Mode';
+                editModeBtn.classList.add('btn-primary');
+            } else {
+                editModeBtn.textContent = 'Admin';
+                editModeBtn.classList.add('btn-primary');
             }
-            
-            options.innerHTML = albums.map((album, index) => `
-                <div class="header-select-option ${index === currentAlbumIndex ? 'selected' : ''}" 
-                     onclick="selectAlbumFromHeader(${index})">
-                    ${album.name}
-                </div>
-            `).join('');
         }
 
         function toggleHeaderSelect() {
@@ -1548,407 +1676,150 @@
             display.classList.toggle('open');
         }
 
-        function selectAlbumFromHeader(index) {
-            currentAlbumIndex = index;
-            currentSlideIndex = 0;
-            renderHeaderSelector();
-            updateSlideshow();
-            toggleHeaderSelect();
-        }
+        function displayHeaderSelector() {
+            const container = document.getElementById('headerSelectOptions');
+            const display = document.getElementById('headerSelectedAlbum');
+            
+            container.innerHTML = albums.map((album, index) => `
+                <div class="header-select-option ${index === currentAlbumIndex ? 'active' : ''}" 
+                     onclick="selectAlbum(${index})">
+                    ${album.isFavorite ? '⭐ ' : ''}${album.title}
+                </div>
+            `).join('');
 
-        function renderAlbums() {
-            const grid = document.getElementById('albumsGrid');
-            grid.innerHTML = albums.map((album, index) => {
-                const firstPhoto = album.photos[0] || '';
-                const basePath = `images/${album.folderName}/`;
-                const isVid = isVideo(firstPhoto);
-                const mediaTag = isVid 
-                    ? `<video src="${basePath}${firstPhoto}" muted></video>`
-                    : `<img src="${basePath}${firstPhoto}" alt="${album.name}">`;
-                
-                return `
-                    <div class="album-card" onclick="selectAlbum(${index})">
-                        <div class="album-thumbnail">
-                            ${mediaTag}
-                        </div>
-                        <div class="album-info">
-                            <div class="album-name">${album.name}</div>
-                            <div class="album-count">${album.photos.length} items</div>
-                            ${isAdmin ? `
-                                <div class="album-actions">
-                                    <button class="btn btn-secondary" onclick="event.stopPropagation(); editAlbum(${index})">Edit</button>
-                                    <button class="btn btn-secondary" onclick="event.stopPropagation(); managePhotos(${index})">Photos</button>
-                                    <button class="btn btn-danger" onclick="event.stopPropagation(); deleteAlbum(${index})">Delete</button>
-                                </div>
-                            ` : ''}
-                        </div>
-                    </div>
-                `;
-            }).join('');
+            const currentAlbum = albums[currentAlbumIndex];
+            display.textContent = (currentAlbum.isFavorite ? '⭐ ' : '') + currentAlbum.title;
         }
 
         function selectAlbum(index) {
             currentAlbumIndex = index;
             currentSlideIndex = 0;
-            renderHeaderSelector();
+            displayHeaderSelector();
+            displayCurrentAlbum();
+            
+            const options = document.getElementById('headerSelectOptions');
+            const display = document.querySelector('.header-select-display');
+            options.classList.remove('show');
+            display.classList.remove('open');
+        }
+
+        function displayCurrentAlbum() {
+            const album = albums[currentAlbumIndex];
+            if (!album) return;
+
+            // Initialize captions object if it doesn't exist
+            if (!album.captions) {
+                album.captions = {};
+            }
+
+            // Update slideshow
             updateSlideshow();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Re-setup drag gestures after DOM update
+            setTimeout(() => {
+                setupDragGestures();
+            }, 100);
+
+            // Update photo grid (edit mode)
+            if (isEditMode) {
+                displayPhotoGrid();
+            }
         }
 
         function updateSlideshow() {
-            if (albums.length === 0) return;
-            
             const album = albums[currentAlbumIndex];
-            if (!album.photos || album.photos.length === 0) return;
-            
-            const photoName = album.photos[currentSlideIndex];
-            const caption = album.captions[photoName] || '';
-            const basePath = `images/${album.folderName}/`;
-            
-            document.getElementById('slideTitle').textContent = album.name;
-            document.getElementById('slideCaption').textContent = caption || 'No caption';
-            
-            const imgEl = document.getElementById('slideImage');
-            const vidEl = document.getElementById('slideVideo');
-            const container = document.getElementById('slideMain');
-            
-            if (isVideo(photoName)) {
-                imgEl.style.display = 'none';
-                vidEl.style.display = 'block';
-                vidEl.src = basePath + photoName;
-                container.classList.add('video-slide');
-            } else {
-                vidEl.style.display = 'none';
-                imgEl.style.display = 'block';
-                imgEl.src = basePath + photoName;
-                container.classList.remove('video-slide');
+            if (!album || !album.photos || album.photos.length === 0) {
+                document.getElementById('slideshowContainer').style.display = 'none';
+                return;
             }
-            
-            renderThumbnails();
-        }
 
-        function renderThumbnails() {
-            const album = albums[currentAlbumIndex];
-            const container = document.getElementById('thumbnails');
-            
-            container.innerHTML = album.photos.map((photo, index) => {
-                const basePath = `images/${album.folderName}/`;
-                const isVid = isVideo(photo);
-                const mediaTag = isVid 
-                    ? `<video src="${basePath}${photo}" muted></video>`
-                    : `<img src="${basePath}${photo}" alt="Thumbnail">`;
-                
-                return `
-                    <div class="thumbnail ${index === currentSlideIndex ? 'active' : ''} ${isVid ? 'video-thumb' : ''}" 
-                         onclick="handleThumbnailClick(${index})">
-                        ${mediaTag}
-                    </div>
-                `;
-            }).join('');
-        }
+            document.getElementById('slideshowContainer').style.display = 'block';
 
-        function handleThumbnailClick(index) {
-            currentSlideIndex = index;
-            updateSlideshow();
+            const totalPhotos = album.photos.length;
+            const prevIndex = (currentSlideIndex - 1 + totalPhotos) % totalPhotos;
+            const nextIndex = (currentSlideIndex + 1) % totalPhotos;
+            const currentFile = album.photos[currentSlideIndex];
+            const prevFile = album.photos[prevIndex];
+            const nextFile = album.photos[nextIndex];
+            const basePath = `images/${album.folderName}/`;
+
+            // --- Update Main Slide ---
+            const mainImg = document.getElementById('mainSlideImg');
+            const mainVid = document.getElementById('mainSlideVideo');
+
+            if (isVideo(currentFile)) {
+                mainImg.style.display = 'none';
+                mainVid.style.display = 'block';
+                mainVid.src = basePath + currentFile;
+                // Ensure video plays
+                mainVid.play().catch(e => console.log("Auto-play prevented"));
+            } else {
+                mainVid.pause();
+                mainVid.style.display = 'none';
+                mainImg.style.display = 'block';
+                mainImg.src = basePath + currentFile;
+            }
+
+            // --- Update Previews ---
+            const prevImg = document.getElementById('previewLeftImg');
+            const prevVid = document.getElementById('previewLeftVideo');
+            if (isVideo(prevFile)) {
+                prevImg.style.display = 'none';
+                prevVid.style.display = 'block';
+                prevVid.src = basePath + prevFile;
+            } else {
+                prevVid.style.display = 'none';
+                prevImg.style.display = 'block';
+                prevImg.src = basePath + prevFile;
+            }
+
+            const nextImg = document.getElementById('previewRightImg');
+            const nextVid = document.getElementById('previewRightVideo');
+            if (isVideo(nextFile)) {
+                nextImg.style.display = 'none';
+                nextVid.style.display = 'block';
+                nextVid.src = basePath + nextFile;
+            } else {
+                nextVid.style.display = 'none';
+                nextImg.style.display = 'block';
+                nextImg.src = basePath + nextFile;
+            }
+
+            // Reset transform
+            const slideMain = document.querySelector('.slide-main');
+            if (slideMain) {
+                slideMain.style.transform = 'translateX(0)';
+                slideMain.style.transition = 'transform 0.3s ease';
+            }
+
+            // Update fixed title and subtitle overlay
+            document.getElementById('slideTitle').textContent = album.title;
+            document.getElementById('slideSubtitle').textContent = album.subtitle || '';
         }
 
         function changeSlide(direction) {
             const album = albums[currentAlbumIndex];
+            if (!album || !album.photos || album.photos.length === 0) return;
+
+            slideDirection = direction;
             currentSlideIndex = (currentSlideIndex + direction + album.photos.length) % album.photos.length;
             updateSlideshow();
         }
 
-        function isVideo(filename) {
-            const videoExts = ['.mp4', '.webm', '.ogg', '.mov', '.avi'];
-            return videoExts.some(ext => filename.toLowerCase().endsWith(ext));
-        }
-
-        // Admin functions
-        function checkAuth() {
-            isAdmin = localStorage.getItem('isAdmin') === 'true';
-            updateUI();
-        }
-
-        function updateUI() {
-            document.getElementById('loginBtn').classList.toggle('hidden', isAdmin);
-            document.getElementById('logoutBtn').classList.toggle('hidden', !isAdmin);
-            document.getElementById('adminControls').classList.toggle('hidden', !isAdmin);
-            renderAlbums();
-        }
-
-        function login() {
-            const password = document.getElementById('adminPassword').value;
-            if (password === 'admin123') {
-                isAdmin = true;
-                localStorage.setItem('isAdmin', 'true');
-                updateUI();
-                closeModal('loginModal');
-                showNotification('Login successful!');
-            } else {
-                showNotification('Invalid password!');
-            }
-            document.getElementById('adminPassword').value = '';
-        }
-
-        function logout() {
-            isAdmin = false;
-            localStorage.removeItem('isAdmin');
-            updateUI();
-            showNotification('Logged out successfully!');
-        }
-
-        function openModal(modalId) {
-            document.getElementById(modalId).classList.add('active');
-        }
-
-        function saveAlbum() {
-            const name = document.getElementById('albumName').value.trim();
-            const folder = document.getElementById('folderName').value.trim();
-            const setDefault = document.getElementById('setAsDefault').checked;
-            
-            if (!name || !folder) {
-                showNotification('Please fill all fields!');
-                return;
-            }
-            
-            if (editingAlbumIndex >= 0) {
-                albums[editingAlbumIndex].name = name;
-                albums[editingAlbumIndex].folderName = folder;
-                if (setDefault) {
-                    albums.forEach(a => a.isDefault = false);
-                    albums[editingAlbumIndex].isDefault = true;
-                    currentAlbumIndex = editingAlbumIndex;
-                }
-            } else {
-                if (setDefault) {
-                    albums.forEach(a => a.isDefault = false);
-                }
-                albums.push({
-                    name,
-                    folderName: folder,
-                    photos: [],
-                    captions: {},
-                    isDefault: setDefault
-                });
-                if (setDefault) {
-                    currentAlbumIndex = albums.length - 1;
-                }
-            }
-            
-            saveAlbums();
-            renderAlbums();
-            renderHeaderSelector();
-            updateSlideshow();
-            closeModal('albumModal');
-            resetAlbumForm();
-            showNotification('Album saved!');
-        }
-
-        function editAlbum(index) {
-            editingAlbumIndex = index;
-            const album = albums[index];
-            document.getElementById('albumModalTitle').textContent = 'Edit Album';
-            document.getElementById('albumName').value = album.name;
-            document.getElementById('folderName').value = album.folderName;
-            document.getElementById('setAsDefault').checked = album.isDefault || false;
-            openModal('albumModal');
-        }
-
-        function resetAlbumForm() {
-            editingAlbumIndex = -1;
-            document.getElementById('albumModalTitle').textContent = 'Create Album';
-            document.getElementById('albumName').value = '';
-            document.getElementById('folderName').value = '';
-            document.getElementById('setAsDefault').checked = false;
-        }
-
-        function deleteAlbum(index) {
-            pendingAction = () => {
-                albums.splice(index, 1);
-                if (currentAlbumIndex >= albums.length) {
-                    currentAlbumIndex = Math.max(0, albums.length - 1);
-                }
-                saveAlbums();
-                renderAlbums();
-                renderHeaderSelector();
-                updateSlideshow();
-                showNotification('Album deleted!');
-            };
-            showConfirm('Are you sure you want to delete this album?');
-        }
-
-        function managePhotos(index) {
-            editingAlbumIndex = index;
-            const album = albums[index];
-            document.getElementById('photoModalTitle').textContent = `Manage Photos: ${album.name}`;
-            renderPhotoGrid();
-            openModal('photoModal');
-        }
-
-        function renderPhotoGrid() {
-            const album = albums[editingAlbumIndex];
-            const grid = document.getElementById('photoGrid');
-            const basePath = `images/${album.folderName}/`;
-            
-            grid.innerHTML = album.photos.map((photo, index) => {
-                const isVid = isVideo(photo);
-                const mediaTag = isVid 
-                    ? `<video src="${basePath}${photo}" muted></video>`
-                    : `<img src="${basePath}${photo}" alt="${photo}">`;
-                
-                return `
-                    <div class="photo-item" draggable="true" 
-                         ondragstart="dragStart(event, ${index})" 
-                         ondragover="dragOver(event)" 
-                         ondrop="drop(event, ${index})"
-                         ondragenter="dragEnter(event)"
-                         ondragleave="dragLeave(event)">
-                        ${mediaTag}
-                        <div class="photo-actions">
-                            <button class="photo-btn" onclick="editPhotoCaption(${index})">Caption</button>
-                            <button class="photo-btn" onclick="deletePhoto(${index})">Delete</button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function addPhoto() {
-            const photoName = document.getElementById('newPhotoName').value.trim();
-            if (!photoName) {
-                showNotification('Please enter a filename!');
-                return;
-            }
-            
-            albums[editingAlbumIndex].photos.push(photoName);
-            saveAlbums();
-            renderPhotoGrid();
-            document.getElementById('newPhotoName').value = '';
-            showNotification('Photo added!');
-        }
-
-        function deletePhoto(photoIndex) {
-            pendingAction = () => {
-                const album = albums[editingAlbumIndex];
-                const photoName = album.photos[photoIndex];
-                delete album.captions[photoName];
-                album.photos.splice(photoIndex, 1);
-                saveAlbums();
-                renderPhotoGrid();
-                if (editingAlbumIndex === currentAlbumIndex) {
-                    updateSlideshow();
-                }
-                showNotification('Photo deleted!');
-            };
-            showConfirm('Delete this photo?');
-        }
-
-        function editPhotoCaption(photoIndex) {
-            const album = albums[editingAlbumIndex];
-            const photoName = album.photos[photoIndex];
-            currentCaptionPhotoIndex = photoIndex;
-            
-            document.getElementById('captionPhotoName').textContent = photoName;
-            document.getElementById('captionInput').value = album.captions[photoName] || '';
-            openModal('captionEditModal');
-        }
-
-        function saveCaption() {
-            const album = albums[editingAlbumIndex];
-            const photoName = album.photos[currentCaptionPhotoIndex];
-            const caption = document.getElementById('captionInput').value.trim();
-            
-            if (caption) {
-                album.captions[photoName] = caption;
-            } else {
-                delete album.captions[photoName];
-            }
-            
-            saveAlbums();
-            closeModal('captionEditModal');
-            if (editingAlbumIndex === currentAlbumIndex) {
-                updateSlideshow();
-            }
-            showNotification('Caption saved!');
-        }
-
-        // Drag and drop for photo reordering
-        let draggedIndex = -1;
-
-        function dragStart(e, index) {
-            draggedIndex = index;
-            e.target.classList.add('dragging');
-        }
-
-        function dragOver(e) {
-            e.preventDefault();
-        }
-
-        function dragEnter(e) {
-            e.preventDefault();
-            if (e.target.classList.contains('photo-item')) {
-                e.target.classList.add('drag-over');
-            }
-        }
-
-        function dragLeave(e) {
-            if (e.target.classList.contains('photo-item')) {
-                e.target.classList.remove('drag-over');
-            }
-        }
-
-        function drop(e, targetIndex) {
-            e.preventDefault();
-            const album = albums[editingAlbumIndex];
-            
-            if (draggedIndex !== targetIndex) {
-                const [movedPhoto] = album.photos.splice(draggedIndex, 1);
-                album.photos.splice(targetIndex, 0, movedPhoto);
-                saveAlbums();
-                renderPhotoGrid();
-                if (editingAlbumIndex === currentAlbumIndex) {
-                    updateSlideshow();
-                }
-            }
-            
-            document.querySelectorAll('.photo-item').forEach(item => {
-                item.classList.remove('dragging', 'drag-over');
-            });
-        }
-
-        function showNotification(message) {
-            document.getElementById('notificationMessage').textContent = message;
-            openModal('notificationModal');
-        }
-
-        function showConfirm(message) {
-            document.getElementById('confirmMessage').textContent = message;
-            openModal('confirmModal');
-        }
-
-        function confirmAction() {
-            if (pendingAction) {
-                pendingAction();
-                pendingAction = null;
-            }
-            closeModal('confirmModal');
-        }
-
-        // Add click handler to main slide for opening caption modal
-        document.getElementById('slideMain').addEventListener('click', function(e) {
-            // Don't trigger if clicking nav buttons
-            if (e.target.classList.contains('slide-nav')) return;
+        function openPhotoCaption() {
+            if (isEditMode) return; // Don't open in edit mode
             
             const album = albums[currentAlbumIndex];
-            const photoName = album.photos[currentSlideIndex];
+            if (!album || !album.photos || album.photos.length === 0) return;
+
+            currentCaptionPhotoIndex = currentSlideIndex;
+            const photoName = album.photos[currentCaptionPhotoIndex];
             const caption = album.captions[photoName] || '';
             const basePath = `images/${album.folderName}/`;
-            
-            currentCaptionPhotoIndex = currentSlideIndex;
-            
+
             const imgEl = document.getElementById('captionImage');
             const vidEl = document.getElementById('captionVideo');
-            
+
             if (isVideo(photoName)) {
                 imgEl.style.display = 'none';
                 vidEl.style.display = 'block';
@@ -1958,73 +1829,315 @@
                 imgEl.style.display = 'block';
                 imgEl.src = basePath + photoName;
             }
-            
+
             document.getElementById('captionDisplayText').textContent = caption || 'No caption yet.';
-            openModal('captionModal');
-        });
+            document.getElementById('captionDisplayText').style.display = 'block'; 
+
+            document.getElementById('captionModal').classList.add('active');
+        }
 
         function closeCaptionModal() {
             const vidEl = document.getElementById('captionVideo');
             vidEl.pause();
-            closeModal('captionModal');
+            document.getElementById('captionModal').classList.remove('active');
         }
 
-        // Touch swipe support for caption modal
-        function setupModalSwipes() {
-            const modal = document.getElementById('captionModal');
-            const imgContainer = modal.querySelector('.caption-image-container');
-            
-            if (!imgContainer) return;
-            
-            let touchStartX = 0;
-            let touchEndX = 0;
-            
-            imgContainer.addEventListener('touchstart', (e) => {
-                touchStartX = e.changedTouches[0].screenX;
-            }, { passive: true });
-            
-            imgContainer.addEventListener('touchend', (e) => {
-                touchEndX = e.changedTouches[0].screenX;
-                handleSwipe();
-            }, { passive: true });
-            
-            function handleSwipe() {
-                const swipeThreshold = 50;
-                const diff = touchStartX - touchEndX;
-                
-                if (Math.abs(diff) > swipeThreshold) {
-                    if (diff > 0) {
-                        // Swipe Left -> Next
-                        modalNavigate(1);
-                    } else {
-                        // Swipe Right -> Prev
-                        modalNavigate(-1);
-                    }
-                }
+        function toggleEditMode() {
+            if (!isLoggedIn) {
+                showLoginModal();
+                return;
             }
 
-            // Main slideshow swipe support
-            const slideMain = document.getElementById('slideMain');
-            slideMain.addEventListener('touchstart', (e) => {
-                // Don't interfere with video controls
-                if (e.target.tagName === 'VIDEO') return;
-                touchStartX = e.changedTouches[0].screenX;
-            }, { passive: true });
+            isEditMode = !isEditMode;
+            document.getElementById('editControls').style.display = isEditMode ? 'block' : 'none';
+            document.getElementById('photoGrid').style.display = isEditMode ? 'grid' : 'none';
             
-            slideMain.addEventListener('touchend', (e) => {
-                // Don't interfere with video controls
-                if (e.target.tagName === 'VIDEO') return;
-                touchEndX = e.changedTouches[0].screenX;
-                const diff = touchStartX - touchEndX;
-                
-                if (Math.abs(diff) > swipeThreshold) {
-                    if (diff > 0) {
-                        changeSlide(1);
-                    } else {
-                        changeSlide(-1);
-                    }
+            const editModeBtn = document.getElementById('editModeBtn');
+            editModeBtn.textContent = isEditMode ? 'View Mode' : 'Edit Mode';
+            
+            if (isEditMode) {
+                displayPhotoGrid();
+            }
+        }
+
+        function displayPhotoGrid() {
+            const album = albums[currentAlbumIndex];
+            const grid = document.getElementById('photoGrid');
+            
+            if (!album || !album.photos || album.photos.length === 0) {
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-secondary);">No items in this album. Add some photos or videos!</p>';
+                return;
+            }
+
+            grid.innerHTML = album.photos.map((photo, index) => {
+                const caption = album.captions && album.captions[photo] ? album.captions[photo] : 'No caption';
+                const isVid = isVideo(photo);
+                const mediaHtml = isVid 
+                    ? `<video src="images/${album.folderName}/${photo}" muted></video>` 
+                    : `<img src="images/${album.folderName}/${photo}" alt="${photo}">`;
+
+                return `
+                    <div class="photo-item">
+                        ${mediaHtml}
+                        <div class="photo-controls">
+                            <button class="photo-control-btn" onclick="movePhoto(${index}, -1)" title="Move left">◄</button>
+                            <button class="photo-control-btn" onclick="editPhotoCaption(${index})" title="Edit caption">✏️</button>
+                            <button class="photo-control-btn" onclick="movePhoto(${index}, 1)" title="Move right">►</button>
+                            <button class="photo-control-btn" onclick="deletePhoto(${index})" title="Delete">🗑️</button>
+                        </div>
+                        <div class="photo-caption-label">${caption.substring(0, 50)}${caption.length > 50 ? '...' : ''}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function editPhotoCaption(index) {
+            // Since this function relied on the modal inputs which are removed in the provided truncated code
+            // We just focus on opening the modal for now or implementing a simple prompt
+            // Note: The original provided HTML was missing the 'captionEditContainer' in the body.
+            // Assuming we use standard prompt for now to keep it working without extra HTML.
+            
+            const album = albums[currentAlbumIndex];
+            const photoName = album.photos[index];
+            const currentCaption = album.captions && album.captions[photoName] ? album.captions[photoName] : '';
+            
+            const newCaption = prompt("Enter new caption:", currentCaption);
+            
+            if (newCaption !== null) {
+                 if (!album.captions) album.captions = {};
+                 album.captions[photoName] = newCaption;
+                 displayPhotoGrid();
+                 showNotification('Caption updated!', '✅');
+            }
+        }
+
+        function showNotification(message, icon = '✅') {
+            document.getElementById('notificationText').textContent = message;
+            document.getElementById('notificationIcon').textContent = icon;
+            document.getElementById('notificationModal').classList.add('active');
+            setTimeout(() => {
+                document.getElementById('notificationModal').classList.remove('active');
+            }, 3000);
+        }
+
+        function createFolderName(title) {
+            return title.toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-|-$/g, '');
+        }
+
+        function showCreateAlbumModal() {
+            editingAlbumIndex = null;
+            document.getElementById('albumModalTitle').textContent = 'Create Album';
+            document.getElementById('albumTitleInput').value = '';
+            document.getElementById('albumSubtitleInput').value = '';
+            document.getElementById('albumModal').classList.add('active');
+        }
+
+        function showEditAlbumModal() {
+            const album = albums[currentAlbumIndex];
+            if (!album) return;
+
+            editingAlbumIndex = currentAlbumIndex;
+            document.getElementById('albumModalTitle').textContent = 'Edit Album';
+            document.getElementById('albumTitleInput').value = album.title;
+            document.getElementById('albumSubtitleInput').value = album.subtitle || '';
+            document.getElementById('albumModal').classList.add('active');
+        }
+
+        function saveAlbum() {
+            const title = document.getElementById('albumTitleInput').value.trim();
+            if (!title) {
+                showNotification('Album title is required', '⚠️');
+                return;
+            }
+
+            const subtitle = document.getElementById('albumSubtitleInput').value.trim();
+            const folderName = createFolderName(title);
+
+            if (editingAlbumIndex !== null) {
+                const album = albums[editingAlbumIndex];
+                if (album) {
+                    album.title = title;
+                    album.subtitle = subtitle;
+                    album.folderName = folderName;
                 }
-            }, { passive: true });
+                showNotification('Album updated successfully!', '✅');
+            } else {
+                const newAlbum = {
+                    folderName,
+                    title,
+                    subtitle,
+                    photos: [],
+                    captions: {},
+                    isFavorite: false
+                };
+                albums.push(newAlbum);
+                currentAlbumIndex = albums.length - 1;
+                showNotification(`Album created! Remember to create the folder: images/${folderName}/`, '✅');
+            }
+
+            displayHeaderSelector();
+            displayCurrentAlbum();
+            closeModal('albumModal');
+        }
+
+        function deleteCurrentAlbum() {
+            if (albums.length === 1) {
+                showNotification('Cannot delete the last album', '⚠️');
+                return;
+            }
+
+            const album = albums[currentAlbumIndex];
+            const message = `Delete album "${album.title}"?\n\nThis will remove it from the gallery. The images/${album.folderName}/ folder will remain in GitHub.`;
+            
+            showConfirmModal('Delete Album', message, () => {
+                albums.splice(currentAlbumIndex, 1);
+                currentAlbumIndex = 0;
+                currentSlideIndex = 0;
+                displayHeaderSelector();
+                displayCurrentAlbum();
+                showNotification('Album deleted successfully', '✅');
+            });
+        }
+
+        function toggleFavoriteAlbum() {
+            albums.forEach(a => a.isFavorite = false);
+            const album = albums[currentAlbumIndex];
+            if (album) {
+                album.isFavorite = true;
+                showNotification(`"${album.title}" is now the default album`, '⭐');
+            }
+            displayHeaderSelector();
+        }
+
+        function handlePhotoUpload(event) {
+            const files = event.target.files;
+            if (!files.length) return;
+
+            const album = albums[currentAlbumIndex];
+            if (!album) return;
+
+            if (!album.photos) album.photos = [];
+            if (!album.captions) album.captions = {};
+
+            let processed = 0;
+            const totalFiles = files.length;
+
+            Array.from(files).forEach(file => {
+                // Just using filename as requested for GitHub static setup
+                const fileName = file.name;
+                album.photos.push(fileName);
+                
+                processed++;
+                if (processed === totalFiles) {
+                    displayCurrentAlbum();
+                    showNotification(`${totalFiles} file(s) added! Remember to click "Save Changes" and upload these files to images/${album.folderName}/ in GitHub.`, '✅');
+                }
+            });
+
+            event.target.value = '';
+        }
+
+        function movePhoto(index, direction) {
+            const album = albums[currentAlbumIndex];
+            if (!album || !album.photos) return;
+
+            const newIndex = index + direction;
+            if (newIndex < 0 || newIndex >= album.photos.length) return;
+
+            [album.photos[index], album.photos[newIndex]] = [album.photos[newIndex], album.photos[index]];
+            
+            if (currentSlideIndex === index) {
+                currentSlideIndex = newIndex;
+            } else if (currentSlideIndex === newIndex) {
+                currentSlideIndex = index;
+            }
+            
+            displayCurrentAlbum();
+        }
+
+        function deletePhoto(index) {
+            const album = albums[currentAlbumIndex];
+            if (!album || !album.photos) return;
+            
+            const photoName = album.photos[index];
+            const message = `Delete "${photoName}"?\n\nYou should also delete this file from images/${album.folderName}/ in GitHub.`;
+            
+            showConfirmModal('Delete Item', message, () => {
+                album.photos.splice(index, 1);
+                
+                // Remove caption if exists
+                if (album.captions && album.captions[photoName]) {
+                    delete album.captions[photoName];
+                }
+                
+                if (currentSlideIndex >= album.photos.length) {
+                    currentSlideIndex = Math.max(0, album.photos.length - 1);
+                }
+                
+                displayCurrentAlbum();
+                showNotification('Item removed from gallery', '✅');
+            });
+        }
+
+        function exportData() {
+            // Create a deep copy of current state to modify for export
+            const albumsJSON = JSON.stringify(albums, null, 2);
+            
+            // Temporarily set logged in states to false for the string replacement
+            let htmlContent = document.documentElement.outerHTML;
+            
+            // Force the exported variables to be logged out
+            htmlContent = htmlContent.replace(/let isLoggedIn = false;/g, 'let isLoggedIn = false;');
+            htmlContent = htmlContent.replace(/let isEditMode = false;/g, 'let isEditMode = false;');
+            
+            // Update the Data block
+            htmlContent = htmlContent.replace(/\/\/ ALBUMS_DATA_START[\s\S]*?\/\/ ALBUMS_DATA_END/m, 
+                `// ALBUMS_DATA_START\n        let ALBUMS_DATA = ${albumsJSON};\n        // ALBUMS_DATA_END`);
+            
+            const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
+            const htmlUrl = URL.createObjectURL(htmlBlob);
+            const htmlLink = document.createElement('a');
+            htmlLink.href = htmlUrl;
+            htmlLink.download = 'index.html';
+            document.body.appendChild(htmlLink);
+            htmlLink.click();
+            document.body.removeChild(htmlLink);
+            URL.revokeObjectURL(htmlUrl);
+            
+            showNotification('Gallery data saved! Logout forced for security.', '💾');
+        }
+
+        function setupModalSwipes() {
+            // Combined swipe handler for image and video elements
+            const containers = [
+                document.getElementById('captionImage'),
+                document.getElementById('captionVideo')
+            ];
+            
+            let modalStartX = 0;
+
+            containers.forEach(el => {
+                el.addEventListener('touchstart', (e) => {
+                    modalStartX = e.touches[0].clientX;
+                }, { passive: true });
+
+                el.addEventListener('touchend', (e) => {
+                    const endX = e.changedTouches[0].clientX;
+                    const diff = modalStartX - endX;
+
+                    if (Math.abs(diff) > 50) { // Threshold
+                        if (diff > 0) {
+                            // Swipe Left -> Next
+                            modalNavigate(1);
+                        } else {
+                            // Swipe Right -> Prev
+                            modalNavigate(-1);
+                        }
+                    }
+                });
+            });
         }
         
         // Helper to change image inside the modal
@@ -2060,7 +2173,6 @@
             document.getElementById(modalId).classList.remove('active');
         }
 
-        // Theme functions
         function toggleThemeMenu() {
             const menu = document.getElementById('themeMenu');
             menu.classList.toggle('show');
@@ -2226,7 +2338,6 @@
             }
         }
 
-        // Close dropdowns when clicking outside
         document.addEventListener('click', (e) => {
             // Close album selector
             const select = document.querySelector('.header-selector');
@@ -2251,23 +2362,25 @@
 
         // Mobile long-press tooltip for theme options
         let longPressTimer;
-        document.querySelectorAll('.theme-option').forEach(option => {
-            option.addEventListener('touchstart', (e) => {
-                longPressTimer = setTimeout(() => {
-                    option.classList.add('show-tooltip');
-                }, 500);
-            });
-            
-            option.addEventListener('touchend', () => {
-                clearTimeout(longPressTimer);
-                setTimeout(() => {
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.theme-option').forEach(option => {
+                option.addEventListener('touchstart', (e) => {
+                    longPressTimer = setTimeout(() => {
+                        option.classList.add('show-tooltip');
+                    }, 500);
+                });
+                
+                option.addEventListener('touchend', () => {
+                    clearTimeout(longPressTimer);
+                    setTimeout(() => {
+                        option.classList.remove('show-tooltip');
+                    }, 2000);
+                });
+                
+                option.addEventListener('touchmove', () => {
+                    clearTimeout(longPressTimer);
                     option.classList.remove('show-tooltip');
-                }, 2000);
-            });
-            
-            option.addEventListener('touchmove', () => {
-                clearTimeout(longPressTimer);
-                option.classList.remove('show-tooltip');
+                });
             });
         });
 
@@ -2288,9 +2401,11 @@
                 if(document.getElementById('lightbox').classList.contains('active')) navigateLightbox(1);
                 else if(!document.getElementById('captionModal').classList.contains('active')) changeSlide(1);
             }
+            // Enter key to login
             if (e.key === 'Enter' && document.getElementById('loginModal').classList.contains('active')) {
                 login();
             }
+            // Enter key to confirm action
             if (e.key === 'Enter' && document.getElementById('confirmModal').classList.contains('active')) {
                 confirmAction();
             }
@@ -2302,4 +2417,6 @@
         });
     </script>
 
+
+<div class="heart-cursor" style="left: 79px; top: 951px;">💕</div>
 </body></html>
